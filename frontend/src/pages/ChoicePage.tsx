@@ -20,22 +20,24 @@ const Image = styled.div<ImageProps>`
 `
 
 export default function ChociePage() {
+    
     const [visible, setVisible] = useState(false);
     return(
-        <div>
+        <div className='flex h-screen items-center justify-center'>
             <Image url={data.url}>
                 {visible ? "": <div className="w-full h-16 absolute left-0 top-3.5 bg-white/60" />}
                 {visible ? "": <div className="w-full h-16 absolute left-0 bottom-0 bg-white/60" />}
-                <button 
-                    className="animate-pulse animate-infinite absolute inset-x-2/4 inset-y-2/4 text-left text-7xl text-white"
+
+                {visible ? <Choice story={data.story} question={data.question} choices={data.choices} /> : "click!"}
+            </Image>
+            <button 
+                    className="animate-pulse animate-infinite text-left text-7xl text-white"
                     onClick={() => {
                         setVisible(!visible)
                     }}
                 > 
                     {visible ? "": "click!"}
-                </button>
-                {visible ? <Choice story={data.story} question={data.question} choices={data.choices} /> : "click!"}
-            </Image>
+            </button>
         </div>
     );
 }
