@@ -1,5 +1,6 @@
 import React from 'react';
 import SelectBox from './SelectBox';
+import Loading from '../components/Loading'
 
 interface ChoiceProps {
     story: string;
@@ -9,7 +10,9 @@ interface ChoiceProps {
 
 export default function Choice({story, question, choices}: ChoiceProps) {
     return (
+
         <div className="w-screen h-screen bg-white/60">
+            <Loading></Loading>
             <div className="flex justify-center h-screen">
                 <div className='w-7/12 absolute top-36'>
                     <div className='flex flex-col space-y-4'>
