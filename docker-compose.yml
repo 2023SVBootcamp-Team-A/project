@@ -12,28 +12,32 @@ services:
     stdin_open: true
     volumes:
       - ./frontend/:/frontend
-      - ./frontend/node_modules/:/frontend/node_modules
+      - /frontend/node_modules
+      # - ./frontend/node_modules/:/frontend/node_modules
     tty: true
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
 
   db:
     image: postgres
     environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: mydatabase
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
 
   pgadmin:
     image: dpage/pgadmin4
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@example.com
-      PGADMIN_DEFAULT_PASSWORD: admin
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
     ports:
       - '8080:80'
 
   web:
     build:
       context: ./backend
-      dockerfile: ../Dockerfile
+      dockerfile: Dockerfile
     volumes:
       - ./backend:/app/backend
     ports:
