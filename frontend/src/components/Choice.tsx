@@ -10,14 +10,13 @@ interface ChoiceProps {
 
 export default function Choice({story, question, choices}: ChoiceProps) {
     return (
-
-        <div className="w-screen h-screen bg-white/60">
+        <div className="bg-white/60">
             <Loading></Loading>
-            <div className="flex justify-center h-screen">
-                <div className='w-7/12 absolute top-36'>
+            <div className="flex justify-center">
+                <div className='w-7/12 absolute top-32'>
                     <div className='flex flex-col space-y-4'>
                         <div
-                            className="h-4/6 px-16 py-9 bg-beige-white text-left text-black"
+                            className="h-[350px] px-16 py-9 bg-beige-white text-left text-black"
                             style={{
                                 boxShadow: "0px 4px 15px 10px rgba(0, 0, 0, 0.25) inset, 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
                                 backdropFilter: "blur(5px)"
@@ -37,13 +36,10 @@ export default function Choice({story, question, choices}: ChoiceProps) {
                                 { question }
                             </span>
                         </div>
-                        
-                        <div className='h-14'>
-                            <div className='flex-col space-y-2'>
-                                {choices.map((choice) => (
-                                    <SelectBox seq={choice.id} question={choice.choice} />
-                                ))}
-                            </div>
+                        <div className='flex-col space-y-2'>
+                            {choices.map((choice) => (
+                                <SelectBox seq={choice.id} question={choice.choice} />
+                            ))}
                         </div>
                     </div>
                 </div>

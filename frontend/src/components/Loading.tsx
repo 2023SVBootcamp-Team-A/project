@@ -1,4 +1,3 @@
-
 import React from 'react';
 import spinner from '../assets/gif/spinner-black.gif';
 import styled from 'styled-components';
@@ -21,6 +20,7 @@ export const Background = styled.div`
 export default () => {
   return (
     <Background>
+      <div className='bg-white/60' />
       <img src={spinner} alt="로딩중" width="10%" />
         <span className='text-black text-2xl'>
             소설을 작성 중입니다..
