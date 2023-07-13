@@ -1,0 +1,244 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bookShelf {
+  --height: 200px;
+  --width: 100%;
+  --depth: 200px;
+  --color-shelf-back-panel: #a17941;
+  --color-shelf-bottom-panel: #795832;
+  --color-shelf-bottom-panel-front: #9b7d50;
+  --color-shelf-side-panel: #956e39;
+  --color-shelf-shadow: #653b17;
+}
+
+@layer components {
+  .title {
+    @apply mt-8 text-4xl font-bold text-[#612d08];
+  }
+
+  .books-container {
+    @apply flex justify-center items-end gap-11 relative h-[var(--height)] box-border;
+  }
+
+  .book {
+    @apply h-40 w-28 bg-white flex justify-center items-center shadow-md;
+    box-shadow: 0 1px 3px 0 black, 0 1px 2px -1px black;
+  }
+
+  .bookContainer {
+    @apply relative;
+  }
+
+  .photocard {
+    @apply h-40 w-28 block outline-none;
+  }
+
+  .bookName {
+    @apply bg-gray-600 bg-opacity-50 text-white py-1 text-center absolute left-0 right-0 bottom-0;
+  }
+
+  .floor-thickness {
+    @apply h-6 w-[45rem] mx-auto bg-[var(--color-shelf-bottom-panel-front)];
+    box-shadow: 15px 15px 30px 1.5px black;
+  }
+
+  .navLeftArrow {
+    @apply flex items-center justify-center px-4 h-10 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg;
+  }
+
+  .navFirstItem {
+    @apply flex items-center justify-center px-4 h-10 leading-tight text-black bg-paginationdeepgray hover:bg-paginationlightgray;
+  }
+
+  .navSecondItem {
+    @apply flex items-center justify-center px-4 h-10 leading-tight text-black bg-paginationdeepgray hover:bg-paginationlightgray;
+  }
+
+  .navThirdItem {
+    @apply flex items-center justify-center px-4 h-10 text-black bg-paginationlightgray;
+  }
+
+  .navFourthItem {
+    @apply flex items-center justify-center px-4 h-10 leading-tight text-black bg-paginationdeepgray hover:bg-paginationlightgray;
+  }
+
+  .navFifthItem {
+    @apply flex items-center justify-center px-4 h-10 leading-tight text-black bg-paginationdeepgray hover:bg-paginationlightgray;
+  }
+
+  .navRightArrow {
+    @apply flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white rounded-r-lg ml-1;
+  }
+}
+
+/* .title {
+  margin-top: 2rem;
+  font-size: xx-large;
+  font-weight: bold;
+  color: #612d08;
+} */
+
+/* .books-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 3rem;
+  position: relative;
+  height: var(--height);
+  box-sizing: border-box;
+} */
+
+/* .book {
+  height: 10rem;
+  width: 7rem;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 1px 3px 0 black, 0 1px 2px -1px black;
+} */
+
+/* .bookContainer {
+  position: relative;
+} */
+
+/* .photocard {
+  height: 10rem;
+  width: 7rem;
+  outline: 1px solid transparent;
+  display: block;
+} */
+
+/* .bookName {
+  background: rgba(55, 55, 55, 0.5);
+  color: white;
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+  text-align: center;
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+} */
+
+/* .floor-thickness {
+  height: 1.5rem;
+  width: 45rem;
+  margin-left: auto;
+  margin-right: auto;
+  background: var(--color-shelf-bottom-panel-front);
+  box-shadow: 15px 15px 30px 1.5px black;
+} */
+
+/* .navLeftArrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  height: 2.5rem;
+  margin-left: 0;
+  line-height: tight;
+  color: #7d7d7d;
+  background-color: #ffffff;
+  border-radius: 4px 0 0 4px;
+}
+
+.navFirstItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  height: 2.5rem;
+  line-height: tight;
+  color: #000000;
+  background-color: #d0cfcd;
+  border: 1px solid #d2d2d2;
+}
+
+.navFirstItem:hover {
+  color: #000000;
+  background-color: #eae9e9;
+}
+
+.navSecondItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  height: 2.5rem;
+  line-height: tight;
+  color: #000000;
+  background-color: #d0cfcd;
+  border: 1px solid #d2d2d2;
+}
+
+.navSecondItem:hover {
+  color: #000000;
+  background-color: #eae9e9;
+}
+
+.navThirdItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  height: 2.5rem;
+  color: #000000;
+  background-color: #eae9e9;
+  border: 1px solid #d2d2d2;
+}
+
+.navThirdItem:hover {
+  background-color: #e1ebff;
+  color: #0c63bd;
+}
+
+.navFourthItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  height: 2.5rem;
+  line-height: tight;
+  color: #000000;
+  background-color: #d0cfcd;
+  border: 1px solid #d2d2d2;
+}
+
+.navFourthItem:hover {
+  color: #000000;
+  background-color: #eae9e9;
+}
+
+.navFifthItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  height: 2.5rem;
+  line-height: tight;
+  color: #000000;
+  background-color: #d0cfcd;
+  border: 1px solid #d2d2d2;
+}
+
+.navFifthItem:hover {
+  color: #000000;
+  background-color: #eae9e9;
+}
+
+.navRightArrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  height: 2.5rem;
+  line-height: tight;
+  color: #7d7d7d;
+  background-color: #ffffff;
+  border-radius: 0 4px 4px 0;
+  margin-left: 1px;
+} */
