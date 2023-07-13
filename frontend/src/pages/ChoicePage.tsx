@@ -11,11 +11,12 @@ export default function ChociePage() {
     
     const [visible, setVisible] = useState(false);
     return(
-        <>
+        <div className="w-screen h-screen min-h-screen relative overflow-scroll">
             <div
-                className="w-screen h-screen relative bg-fixed bg-no-repeat bg-center bg-cover" 
+                className="w-screen h-screen min-h-screen relative overflow-scroll bg-scroll bg-no-repeat bg-top bg-cover hover:bg-fixed" 
                 style={{
-                    backgroundImage: `url(${data.url})`
+                    backgroundImage: `url(${data.url})`,
+                    backgroundSize: "cover",
                 }}
             >
                 <button 
@@ -24,12 +25,16 @@ export default function ChociePage() {
                             setVisible(!visible)
                         }}
                     > 
-                        {visible ? null: "click!"}
+                        {!visible && "click!"}
                 </button>             
+                {!visible && (
+                    <>
+                        <div className="w-full h-16 absolute left-0 top-3.5 bg-white/60" />
+                        <div className="w-full h-16 absolute left-0 bottom-0 bg-white/60" />
+                    </>
+                )}
+                {visible && <Choice story={data.story} question={data.question} choices={data.choices} />}
             </div>
-            {visible ? "": <div className="md:hidden w-full h-16 absolute left-0 top-3.5 bg-white/60" />}
-            {visible ? "": <div className="md:hidden w-full h-16 absolute left-0 bottom-0 bg-white/60" />}
-            {visible ? <Choice story={data.story} question={data.question} choices={data.choices} /> : null }
-        </>
+        </div>
     );
 }

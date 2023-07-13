@@ -6,6 +6,7 @@ export const Background = styled.div`
   position: absolute;
   width: 100vw;
   height: 100vh;
+  min-height: 100vh;
   top: 0;
   left: 0;
   background: #ffffffb7;
@@ -20,7 +21,7 @@ export const Background = styled.div`
 export default () => {
   return (
     <Background>
-      <div className='bg-white/60' />
+      <div className='bg-white/60 overflow-scroll' />
       <img src={spinner} alt="로딩중" width="10%" />
         <span className='text-black text-2xl'>
             소설을 작성 중입니다..

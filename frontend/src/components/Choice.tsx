@@ -10,13 +10,13 @@ interface ChoiceProps {
 
 export default function Choice({story, question, choices}: ChoiceProps) {
     return (
-        <div className="bg-white/60">
-            <Loading></Loading>
+        <div className="w-screen h-screen bg-white/60 absolute top-0 left-0 overflow-scroll">
+            {/* <Loading></Loading> */}
             <div className="flex justify-center">
-                <div className='w-7/12 absolute top-32'>
+                <div className='w-7/12 absolute top-32 p-4'>
                     <div className='flex flex-col space-y-4'>
                         <div
-                            className="h-[350px] px-16 py-9 bg-beige-white text-left text-black"
+                            className="overflow-y-scroll h-[350px] px-16 py-9 bg-beige-white text-left text-black"
                             style={{
                                 boxShadow: "0px 4px 15px 10px rgba(0, 0, 0, 0.25) inset, 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
                                 backdropFilter: "blur(5px)"
