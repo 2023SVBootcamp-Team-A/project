@@ -25,7 +25,7 @@ export default function ChociePage() {
                             setVisible(!visible)
                         }}
                     > 
-                        {!visible && "click!"}
+                    {!visible && "click!"}
                 </button>             
                 {!visible && (
                     <>
@@ -33,8 +33,8 @@ export default function ChociePage() {
                         <div className="w-full h-16 absolute left-0 bottom-0 bg-white/60" />
                     </>
                 )}
-                {visible && <Choice story={data.story} question={data.question} choices={data.choices} />}
             </div>
+            {visible && <Choice story={data.story} question={data.question} choices={data.choices} />}
         </div>
     );
 }
