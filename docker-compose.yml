@@ -39,9 +39,11 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     volumes:
-      - ./backend:/app/backend
+      - ./backend:/backend/
     ports:
       - '8000:8000'
     depends_on:
       - db
     container_name: backend
+    environment: 
+      - DJANGO_DEBUG=True
