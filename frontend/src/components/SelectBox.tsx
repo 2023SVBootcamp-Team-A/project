@@ -1,20 +1,34 @@
-import React from 'react';
+import React, {useState} from 'react';
+import Loading from './Loading';
 
-export default function SelectBox() {
+interface SelectBoxProps {
+    seq: string;
+    question: string;
+}
+
+export default function SelectBox({seq, question}: SelectBoxProps) {
+
+    const [isClick, setIsClick] = useState(false);
     return (
-        <div className="w-7/12 h-12">
+        <div>
             <button 
-                className="w-7/12 h-12 bg-beige-white absolute inset-x-80 text-17 font-light text-center text-black"
+                className="w-full h-14 bg-beige-white text-17 font-light text-left text-black"
                 style={{ boxShadow: "0px 4px 4px 0 rgba(0,0,0,0.25)" }}
             >
-                받아들인다.
+                <button 
+                className="w-20 h-14 bg-choice text-25 font-light text-center text-black"
+                style={{ boxShadow: "0px 4px 4px 0 rgba(0,0,0,0.25)"}}
+                onClick={() => {
+                    setIsClick(true)
+                }}
+                >
+                    {seq}
+                </button>
+                <span className='absoulte p-3'>
+                    {question}
+                </span>
             </button>
-            <button 
-                className="w-[81px] h-12 bg-choice absolute inset-x-80 text-25 font-light text-center text-black"
-                style={{ boxShadow: "0px 4px 4px 0 rgba(0,0,0,0.25)" }}
-            >
-                A
-            </button>
+            {isClick && <Loading />}
         </div>
     );
 }

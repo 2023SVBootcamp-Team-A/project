@@ -12,6 +12,10 @@ export default {
   content: ["./index.html", "./src/**/*.{html,js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      backgroundImage: {
+        'background-img' : "/images/background.png"
+      },
+      variants: {},
       borderRadius: px0_100,
       text: px0_100,
       fontSize: px0_100,
