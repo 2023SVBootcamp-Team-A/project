@@ -15,14 +15,16 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        <Routes>
-          <Route path="/choice" element={<ChoicePage />} />
-          <Route path="/background" element={<Background />} />
-          <Route path="/setting" element={<SettingPage />} />
-          <Route path="/SignUp" element={<SignUp />} />
-          <Route path="/login" element={<Login/>} />
-        </Routes>
+        <Background>
+          <Routes>
+            <Route path="/choice" element={<ChoicePage />} />
+            <Route path="/setting" element={<SettingPage />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/login" element={<Login/>} />
+          </Routes>
+        </Background>
       </div>
+      <NavigationBar />
     </BrowserRouter>
   );
 }
