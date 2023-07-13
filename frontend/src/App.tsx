@@ -6,6 +6,8 @@ import './App.css';
 import ChoicePage from './pages/ChoicePage';
 import NavigationBar from './components/NavigationBar';
 import Background from './components/Background';
+import SettingPage from './pages/SettingPage';
+
 
 function App() {
   return (
@@ -14,6 +16,7 @@ function App() {
         <Routes>
           <Route path="/choice" element={<ChoicePage />} />
           <Route path="/background" element={<Background />} />
+          <Route path="/setting" element={<SettingPage />} />
         </Routes>
       </div>
       <NavigationBar />
