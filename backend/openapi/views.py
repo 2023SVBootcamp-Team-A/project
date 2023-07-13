@@ -23,8 +23,7 @@ def input_form(request):
     if request.method == 'POST':
         input_data = request.POST.get('input_field', '')
         # 메시지를 챗봇에 보내고 응답을 받아옵니다
-        novel_id = request.POST.get('novel_id', '')
-        response_message = send_message(input_data, novel_id)
+        response_message = send_message(input_data,)
         # 챗봇 응답을 처리하고 필요한 형식으로 변환합니다
         processed_data = process_data(response_message)
         # 템플릿에 결과를 전달합니다
@@ -37,15 +36,14 @@ def input_form(request):
 # chat 함수
 @csrf_exempt
 def chat(request):
-    message = request.GET.get('message', '')
-    novel_id = request.GET.get('novel_id', None) # 소설의 id를 받아옴
-    response_message = send_message(message, novel_id)
+    message = request.GET.get('message', '') 
+    response_message = send_message(message) #novel_id
     return HttpResponse(response_message)
 
 
 # send_message 함수는 ChatGPT API를 사용하여 메시지를 보내고, 챗봇의 응답을 반환
 @csrf_exempt
-def send_message(message, novel_id): # novel_id를 매개변수로 추가
+def send_message(message): # novel_id를 매개변수로 추가
     url = 'https://api.openai.com/v1/chat/completions'
     headers = {
         'Authorization': f'Bearer {os.getenv("OPENAI_SECRET_KEY")}',
@@ -57,7 +55,6 @@ def send_message(message, novel_id): # novel_id를 매개변수로 추가
             {'role': 'system', 'content': 'You are a helpful assistant.'},
             {'role': 'user', 'content': message},
             {'role': 'system', 'content': ' '},  # 빈 시스템 메시지 추가
-            {'role': 'novel_id', 'content': novel_id}  # novel_id 매개변수를 추가
         ],
         'temperature': 1.0
     }
@@ -71,13 +68,9 @@ def send_message(message, novel_id): # novel_id를 매개변수로 추가
         answer = response_json['choices'][0]['message']['content']
         data['messages'].append({'role': 'assistant', 'content': answer})
 
-        previous_chat_logs = ChatLog.objects.filter(novel_id=novel_id).values_list('chat_log', flat=True) # 해당 소설의 chat_log목록을 가져 온다
-        for chat_log in previous_chat_logs:
-            data['messages'].append({'role': 'assistant', 'content': chat_log})
-
-        chat_log = ChatLog(chat_log=answer, novel_id=novel_id)  # 새로운 ChatLog 인스턴스 생성
+        chat_log = ChatLog(chat_log=answer)
         chat_log.save()
-
+        
         return answer
     except requests.exceptions.RequestException as e:
         print('An error occurred while sending the request:', str(e))
