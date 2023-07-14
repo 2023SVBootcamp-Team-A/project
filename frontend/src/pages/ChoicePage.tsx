@@ -1,11 +1,6 @@
 import React, {useState} from 'react';
-import styled from 'styled-components';
 import Choice from '../components/Choice';
 import data from '../data/choice-data.json';
-
-type ImageProps = {
-    url: string
-}
 
 export default function ChociePage() {
     

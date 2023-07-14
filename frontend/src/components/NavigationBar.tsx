@@ -6,7 +6,7 @@ export default function NavigationBar() {
     const [menuToggle, setMenuToggle] = useState(false);
     return(
         <>
-            <div className='flex flex-col items-center'>
+            <div className='flex flex-col items-center z-10'>
                 <div className="w-5/6 h-16 top-3.5 absolute">
                     <div className='flex content-center'>
                         <div className='flex-1 flex-col items-center'>

@@ -28,8 +28,8 @@ export default function SettingPage() {
   
 
   return (
-    <div className="h-fit w-full flex flex-col">
-        <div className="h-5/6 w-full mt-24 mb-2 bg-[#E9E7E4] flex flex-col rounded-2xl ">
+    <div className="h-fit flex flex-col items-center p-8">
+        <div className="h-5/6 w-5/6 mt-24 mb-2 bg-[#E9E7E4] flex flex-col rounded-2xl ">
           <div className="flex items-center w-128 h-8 ml-10 mt-10">
               <div className="w-28 h-7 bg-[#9B8F8F] rounded-xl font-bold text-lg text-white">등장인물</div>
               <div className="ml-4 content-around font-bold text-[#898181] text-lg">원하는 등장인물의 이름과 특징을 입력하세요.</div>
@@ -102,10 +102,10 @@ export default function SettingPage() {
               </div>
           </div>
       </div>
-              {/* 시작버튼 */}
-      <div className="w-screen ml-96">
-        <button type="button"
-         className="px-16 py-3 font-bold text-white bg-[#9B8F8F] hover:bg-[#E9E7E4] hover:text-[#898181] rounded-2xl text-center shadow-lg shadow-black-800/80 dark:shadow-lg dark:shadow-black-800/80">시작하기</button>
+        {/* 시작버튼 */}
+        <div className="h-5/6 w-5/6 flex flex-col items-end">
+            <button type="button"
+            className="px-16 py-3 pr-16 font-bold text-white bg-[#9B8F8F] hover:bg-[#E9E7E4] hover:text-[#898181] rounded-2xl text-center shadow-lg shadow-black-800/80 dark:shadow-lg dark:shadow-black-800/80">시작하기</button>
         </div>
     </div>
   );
