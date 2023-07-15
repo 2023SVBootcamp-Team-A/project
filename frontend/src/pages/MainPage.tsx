@@ -16,35 +16,43 @@ import "./MainPage.css";
 export default function MainPage() {
   const [slides, setSlides] = useState([
     {
-      image: "https://via.placeholder.com/200x350",
+      image:
+        "https://raw.github.com/peterwestendorp/shelves/master/photos/1.jpg",
       caption: "Slide 1",
     },
     {
-      image: "https://via.placeholder.com/200x350",
+      image:
+        "https://raw.github.com/peterwestendorp/shelves/master/photos/2.jpg",
       caption: "Slide 1",
     },
     {
-      image: "https://via.placeholder.com/200x350",
+      image:
+        "https://raw.github.com/peterwestendorp/shelves/master/photos/3.jpg",
       caption: "Slide 1",
     },
     {
-      image: "https://via.placeholder.com/200x350",
+      image:
+        "https://raw.github.com/peterwestendorp/shelves/master/photos/4.jpg",
       caption: "Slide 1",
     },
     {
-      image: "https://via.placeholder.com/200x350",
+      image:
+        "https://raw.github.com/peterwestendorp/shelves/master/photos/5.jpg",
       caption: "Slide 1",
     },
     {
-      image: "https://via.placeholder.com/200x350",
+      image:
+        "https://raw.github.com/peterwestendorp/shelves/master/photos/6.jpg",
       caption: "Slide 1",
     },
     {
-      image: "https://via.placeholder.com/200x350",
+      image:
+        "https://raw.github.com/peterwestendorp/shelves/master/photos/7.jpg",
       caption: "Slide 1",
     },
     {
-      image: "https://via.placeholder.com/200x350",
+      image:
+        "https://raw.github.com/peterwestendorp/shelves/master/photos/8.jpg",
       caption: "Slide 1",
     },
   ]);
