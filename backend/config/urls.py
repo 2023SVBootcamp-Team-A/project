@@ -7,5 +7,6 @@ from users import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("user/", include("users.urls")),
+    path("openapi/", include("openapi.urls")),
     path("", views.index, name="index"),  # '/' 에 해당되는 path
 ]
