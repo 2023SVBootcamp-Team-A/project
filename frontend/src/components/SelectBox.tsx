@@ -1,5 +1,4 @@
-import React, {useState} from 'react';
-import Loading from './Loading';
+import React from 'react';
 
 interface SelectBoxProps {
     seq: string;
@@ -7,8 +6,6 @@ interface SelectBoxProps {
 }
 
 export default function SelectBox({seq, question}: SelectBoxProps) {
-
-    const [isClick, setIsClick] = useState(false);
     return (
         <div>
             <button 
@@ -18,9 +15,6 @@ export default function SelectBox({seq, question}: SelectBoxProps) {
                 <button 
                 className="w-20 h-14 bg-choice text-25 font-light text-center text-black"
                 style={{ boxShadow: "0px 4px 4px 0 rgba(0,0,0,0.25)"}}
-                onClick={() => {
-                    setIsClick(true)
-                }}
                 >
                     {seq}
                 </button>
@@ -28,7 +22,6 @@ export default function SelectBox({seq, question}: SelectBoxProps) {
                     {question}
                 </span>
             </button>
-            {isClick && <Loading />}
         </div>
     );
 }

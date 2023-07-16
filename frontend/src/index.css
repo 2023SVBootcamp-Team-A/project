@@ -1,27 +1,28 @@
-@import url("App.css");
+@import url('App.css');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+
 @font-face {
-  font-family: "IBMPlexSansKR";
-  src: url("./assets/fonts/IBMPlexSansKR-Medium.ttf") format("ttf");
+  font-family: 'IBMPlexSansKR';
+  src: url('./assets/fonts/IBMPlexSansKR-Medium.ttf') format('ttf');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "IBMPlexSansKR";
-  src: url("./assets/fonts/IBMPlexSansKR-Bold.ttf") format("ttf");
+  font-family: 'IBMPlexSansKR';
+  src: url('./assets/fonts/IBMPlexSansKR-Bold.ttf') format('ttf');
 }
 
 @font-face {
-  font-family: "IBMPlexSansKR";
-  src: url("./assets/fonts/IBMPlexSansKR-Light.ttf") format("ttf");
+  font-family: 'IBMPlexSansKR';
+  src: url('./assets/fonts/IBMPlexSansKR-Light.ttf') format('ttf');
 }
 
 @font-face {
-  font-family: "IBMPlexSansKR";
-  src: url("./assets/fonts/IBMPlexSansKR-SemiBold.ttf") format("ttf");
+  font-family: 'IBMPlexSansKR';
+  src: url('./assets/fonts/IBMPlexSansKR-SemiBold.ttf') format('ttf');
 }

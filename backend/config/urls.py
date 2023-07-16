@@ -1,7 +1,5 @@
-
 from django.contrib import admin
 from django.urls import path, include
-from openapi import views
 
 # from django.contrib.auth import views as auth_views
 from users import views
@@ -11,7 +9,4 @@ urlpatterns = [
     path("user/", include("users.urls")),
     path("openapi/", include("openapi.urls")),
     path("", views.index, name="index"),  # '/' 에 해당되는 path
-    path('input_form/', views.input_form, name='input_form'),
-    path('chat/', views.chat, name='chat'),
 ]
-

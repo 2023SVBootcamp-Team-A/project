@@ -8,7 +8,7 @@ interface NavigationBarProps {
 
 export default function NavigationBarBtn({ children, link }: NavigationBarProps) {
     return (
-        <div className='text-27 font-medium text-white'>
+        <div className='text-27 font-medium text-left text-white'>
             <Link to={link}>
                 { children }
             </Link>
