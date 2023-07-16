@@ -1,7 +1,10 @@
 from django.db import models
 from users.models import MyUser
+
+
+
 class Novel(models.Model):
-    user_id = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name='user_novel')
+    user = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name='user_novel')
     novel_name = models.CharField(max_length=100)
     novel_image = models.CharField(max_length=255)
     status = models.BooleanField(default=True)
@@ -12,22 +15,24 @@ class Novel(models.Model):
         return self.novel_name
     
 class ChatLog(models.Model):
-    novel_id = models.ForeignKey(Novel, on_delete=models.CASCADE, related_name='novel_chatlog')
+    novel = models.ForeignKey(Novel, on_delete=models.CASCADE, related_name='novel_chatlog', primary_key=True)
     chat_log = models.TextField()
     create_at = models.DateTimeField(auto_now_add=True)
     udate_at = models.DateTimeField(auto_now=True)
     delete_at = models.DateTimeField(null=True)
 
+
 class Character(models.Model):
-    novel_id = models.ForeignKey(Novel, on_delete=models.CASCADE, related_name='novel_character')
+    novel = models.ForeignKey(Novel, on_delete=models.CASCADE, related_name='novel_character')
     name = models.CharField(max_length=20)
     personality = models.CharField(max_length=100)
     create_at = models.DateTimeField(auto_now_add=True)
     udate_at = models.DateTimeField(auto_now=True)
     delete_at = models.DateTimeField(null=True)
 
+
 class NovelStory(models.Model):
-    novel_id = models.ForeignKey(Novel, on_delete=models.CASCADE, related_name='novel_story')
+    novel = models.ForeignKey(Novel, on_delete=models.CASCADE, related_name='novel_story')
     page = models.IntegerField()
     content = models.TextField()
     image = models.CharField(max_length=100)
@@ -35,8 +40,9 @@ class NovelStory(models.Model):
     udate_at = models.DateTimeField(auto_now=True)
     delete_at = models.DateTimeField(null=True)
 
+
 class Background(models.Model):
-    novel_id = models.ForeignKey(Novel, on_delete=models.CASCADE, related_name='novel_background')
+    novel = models.ForeignKey(Novel, on_delete=models.CASCADE, related_name='novel_background')
     genre = models.CharField(max_length=100)
     time_period = models.CharField(max_length=100)
     time_projection = models.CharField(max_length=100)

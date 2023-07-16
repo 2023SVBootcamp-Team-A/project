@@ -1,7 +1,6 @@
-version: '3'
+version: "3"
 
 services:
-
   frontend:
     container_name: frontend
     build:
@@ -32,16 +31,18 @@ services:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
       - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
     ports:
-      - '8080:80'
+      - "8080:80"
 
   web:
     build:
       context: ./backend
       dockerfile: Dockerfile
     volumes:
-      - ./backend:/app/backend
+      - ./backend:/backend/
     ports:
-      - '8000:8000'
+      - "8000:8000"
     depends_on:
       - db
     container_name: backend
+    environment:
+      - DJANGO_DEBUG=True
