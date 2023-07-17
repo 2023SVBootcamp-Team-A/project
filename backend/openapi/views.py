@@ -1,8 +1,11 @@
+from io import BytesIO
 import json
 import os
 import requests
 from django.http import HttpResponse
-from .models import ChatLogfrom 
+import boto3
+from botocore.exceptions import NoCredentialsError
+from django.conf import settings
 from .models import Novel
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
@@ -22,7 +25,7 @@ def novel_list(request):
     
 
 @csrf_exempt
-def novel_detail(request, novel_id):
+def mynovels(request, novel_id):
     if request.method == "GET":
         novel = get_object_or_404(Novel, pk=novel_id)
 
@@ -47,11 +50,6 @@ def novel_detail(request, novel_id):
         # JSON으로 변환
         json_data = json.dumps(serialized_data, cls=DjangoJSONEncoder, ensure_ascii=False)
         return JsonResponse(json_data, safe=False, content_type='application/json')
-
-    
-
-@csrf_exempt
-def novel_delete(request, novel_id):
     if request.method == "DELETE":
         try:
             novel = Novel.objects.get(pk=novel_id)
@@ -65,4 +63,4 @@ def novel_delete(request, novel_id):
         return JsonResponse({"error": "이 메소드는 허용되지 않습니다."}, status=405)
 
 
-
+       
