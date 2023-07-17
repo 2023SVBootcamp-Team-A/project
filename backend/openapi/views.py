@@ -1,17 +1,11 @@
-import json
 import os
 import requests
 from django.http import HttpResponse
-from .models import ChatLogfrom 
 from django.shortcuts import render
 from .models import Novel
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib import messages
-from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render, get_object_or_404
 from django.core import serializers
 from django.http import JsonResponse
-from django.core.serializers.json import DjangoJSONEncoder
 from .models import ChatLog
 from rest_framework import serializers
 from rest_framework.decorators import api_view
