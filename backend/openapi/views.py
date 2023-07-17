@@ -26,7 +26,7 @@ class NovelSerializer(serializers.ModelSerializer):
         model = Novel
         fields = '__all__'
 
-@csrf_exempt
+
 @api_view(['GET'])
 def novel_list(request):
     if request.method == 'GET':
@@ -36,7 +36,7 @@ def novel_list(request):
         data = serializer.data
         return Response(data, status=status.HTTP_200_OK)
 
-@csrf_exempt
+
 @api_view(['GET', 'POST'])
 def mynovels(request, novel_id):
     if request.method == "GET":
