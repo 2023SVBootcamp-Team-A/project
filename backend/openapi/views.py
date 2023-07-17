@@ -74,13 +74,16 @@ def send_message(message): # novel_id를 매개변수로 추가
         answer = response_json['choices'][0]['message']['content']
         data['messages'].append({'role': 'assistant', 'content': answer})
 
+        chat_log = ChatLog(chat_log=message)
+        chat_log.save()
         chat_log = ChatLog(chat_log=answer)
         chat_log.save()
+
 
         return answer
     except requests.exceptions.RequestException as e:
         print('An error occurred while sending the request:', str(e))
-
+        
 @csrf_exempt
 def chat_with_history(request, novel_id):
     message = request.GET.get('message', '')
