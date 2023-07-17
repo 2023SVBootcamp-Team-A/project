@@ -3,7 +3,7 @@ from users.models import MyUser
 
 
 class Novel(models.Model):
-    user_id = models.ForeignKey(
+    user = models.ForeignKey(
         MyUser, on_delete=models.CASCADE, related_name="user_novel"
     )
     novel_name = models.CharField(max_length=100)
@@ -18,17 +18,28 @@ class Novel(models.Model):
 
 
 class ChatLog(models.Model):
-    novel_id = models.ForeignKey(
-        Novel, on_delete=models.CASCADE, related_name="novel_chatlog"
+    novel = models.ForeignKey(
+        Novel,
+        on_delete=models.CASCADE,
+        related_name="novel_chatlog",
+        blank=True,
+        null=True,
     )
     chat_log = models.TextField()
     create_at = models.DateTimeField(auto_now_add=True)
     udate_at = models.DateTimeField(auto_now=True)
     delete_at = models.DateTimeField(null=True)
 
+    def __str__(self):
+        return self.chat_log
+
+    class Meta:
+        ordering = ["novel", "create_at"]
+        # novel 필드 기준으로 오름차순 정렬 동일한 novel값 내에서는 creat_at 필드 기준 정렬
+
 
 class Character(models.Model):
-    novel_id = models.ForeignKey(
+    novel = models.ForeignKey(
         Novel, on_delete=models.CASCADE, related_name="novel_character"
     )
     name = models.CharField(max_length=20)
@@ -39,7 +50,7 @@ class Character(models.Model):
 
 
 class NovelStory(models.Model):
-    novel_id = models.ForeignKey(
+    novel = models.ForeignKey(
         Novel, on_delete=models.CASCADE, related_name="novel_story"
     )
     page = models.IntegerField()
@@ -51,7 +62,7 @@ class NovelStory(models.Model):
 
 
 class Background(models.Model):
-    novel_id = models.ForeignKey(
+    novel = models.ForeignKey(
         Novel, on_delete=models.CASCADE, related_name="novel_background"
     )
     genre = models.CharField(max_length=100)

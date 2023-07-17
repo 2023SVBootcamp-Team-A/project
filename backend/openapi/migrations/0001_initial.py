@@ -6,7 +6,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -15,66 +14,154 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Novel',
+            name="Novel",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('novel_name', models.CharField(max_length=100)),
-                ('novel_image', models.CharField(max_length=255)),
-                ('status', models.BooleanField(default=True)),
-                ('create_at', models.DateTimeField(auto_now_add=True)),
-                ('udate_at', models.DateTimeField(auto_now=True)),
-                ('delete_at', models.DateTimeField(null=True)),
-                ('user_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='user_novel', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("novel_name", models.CharField(max_length=100)),
+                ("novel_image", models.CharField(max_length=255)),
+                ("status", models.BooleanField(default=True)),
+                ("create_at", models.DateTimeField(auto_now_add=True)),
+                ("udate_at", models.DateTimeField(auto_now=True)),
+                ("delete_at", models.DateTimeField(null=True)),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="user_novel",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "user_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="user_novel",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='NovelStory',
+            name="NovelStory",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('page', models.IntegerField()),
-                ('content', models.TextField()),
-                ('image', models.CharField(max_length=100)),
-                ('create_at', models.DateTimeField(auto_now_add=True)),
-                ('udate_at', models.DateTimeField(auto_now=True)),
-                ('delete_at', models.DateTimeField(null=True)),
-                ('novel_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='novel_story', to='openapi.novel')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("page", models.IntegerField()),
+                ("content", models.TextField()),
+                ("image", models.CharField(max_length=100)),
+                ("create_at", models.DateTimeField(auto_now_add=True)),
+                ("udate_at", models.DateTimeField(auto_now=True)),
+                ("delete_at", models.DateTimeField(null=True)),
+                (
+                    "novel",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="novel_story",
+                        to="openapi.novel",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='ChatLog',
+            name="ChatLog",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('chat_log', models.TextField()),
-                ('create_at', models.DateTimeField(auto_now_add=True)),
-                ('udate_at', models.DateTimeField(auto_now=True)),
-                ('delete_at', models.DateTimeField(null=True)),
-                ('novel_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='novel_chatlog', to='openapi.novel')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("chat_log", models.TextField()),
+                ("create_at", models.DateTimeField(auto_now_add=True)),
+                ("udate_at", models.DateTimeField(auto_now=True)),
+                ("delete_at", models.DateTimeField(null=True)),
+                (
+                    "novel",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="novel_chatlog",
+                        to="openapi.novel",
+                    ),
+                ),
+            ],
+            options={
+                "ordering": ["novel", "create_at"],
+            },
+        ),
+        migrations.CreateModel(
+            name="Character",
+            fields=[
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=20)),
+                ("personality", models.CharField(max_length=100)),
+                ("create_at", models.DateTimeField(auto_now_add=True)),
+                ("udate_at", models.DateTimeField(auto_now=True)),
+                ("delete_at", models.DateTimeField(null=True)),
+                (
+                    "novel",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="novel_character",
+                        to="openapi.novel",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Character',
+            name="Background",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=20)),
-                ('personality', models.CharField(max_length=100)),
-                ('create_at', models.DateTimeField(auto_now_add=True)),
-                ('udate_at', models.DateTimeField(auto_now=True)),
-                ('delete_at', models.DateTimeField(null=True)),
-                ('novel_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='novel_character', to='openapi.novel')),
-            ],
-        ),
-        migrations.CreateModel(
-            name='Background',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('genre', models.CharField(max_length=100)),
-                ('time_period', models.CharField(max_length=100)),
-                ('time_projection', models.CharField(max_length=100)),
-                ('summary', models.TextField()),
-                ('create_at', models.DateTimeField(auto_now_add=True)),
-                ('udate_at', models.DateTimeField(auto_now=True)),
-                ('delete_at', models.DateTimeField(null=True)),
-                ('novel_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='novel_background', to='openapi.novel')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("genre", models.CharField(max_length=100)),
+                ("time_period", models.CharField(max_length=100)),
+                ("time_projection", models.CharField(max_length=100)),
+                ("summary", models.TextField()),
+                ("create_at", models.DateTimeField(auto_now_add=True)),
+                ("udate_at", models.DateTimeField(auto_now=True)),
+                ("delete_at", models.DateTimeField(null=True)),
+                (
+                    "novel",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="novel_background",
+                        to="openapi.novel",
+                    ),
+                ),
             ],
         ),
     ]

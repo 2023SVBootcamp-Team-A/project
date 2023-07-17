@@ -26,6 +26,7 @@ urlpatterns = [
     path("input_form/", openapi_views.input_form, name="input_form"),
     path("chat/", openapi_views.chat, name="chat"),
     path("background/", openapi_views.init_setting_APIView.as_view()),
+    path("api/v1/", include("openapi.urls")),
     path(
         "swagger/<str:format>/",
         schema_view.without_ui(cache_timeout=0),
