@@ -1,4 +1,8 @@
-from django.shortcuts import render
+import json
+import os
+import requests
+from django.http import HttpResponse
+from .models import ChatLogfrom 
 from .models import Novel
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
@@ -7,8 +11,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 from django.http import JsonResponse
 from django.core.serializers.json import DjangoJSONEncoder
-import json
-
 
 
 @csrf_exempt
