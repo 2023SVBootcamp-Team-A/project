@@ -10,12 +10,13 @@ class Novel(models.Model):
     create_at = models.DateTimeField(auto_now_add=True)
     udate_at = models.DateTimeField(auto_now=True)
     delete_at = models.DateTimeField(null=True)
+
     def __str__(self):
         return self.novel_name
     
 
 class ChatLog(models.Model):
-    novel = models.ForeignKey(Novel, on_delete=models.CASCADE, related_name='novel_chatlog', primary_key=True)
+    novel = models.ForeignKey(Novel, on_delete=models.CASCADE, related_name='novel_chatlog')
     chat_log = models.TextField()
     create_at = models.DateTimeField(auto_now_add=True)
     udate_at = models.DateTimeField(auto_now=True)
