@@ -40,6 +40,10 @@ def chat(request):
     response_message = send_message(message) #novel_id
     return HttpResponse(response_message)
 
+@csrf_exempt
+def load_chat_logs():
+    chat_logs = ChatLog.objects.all().values_list('chat_log', flat=True)
+    return list(chat_logs)
 
 # send_message 함수는 ChatGPT API를 사용하여 메시지를 보내고, 챗봇의 응답을 반환
 @csrf_exempt
@@ -58,7 +62,7 @@ def send_message(message): # novel_id를 매개변수로 추가
         ],
         'temperature': 1.0
     }
-    
+
     try:
         response = requests.post(url, headers=headers, json=data)
         response.raise_for_status()  # 4xx 또는 5xx 상태 코드에 대한 예외 발생
@@ -70,7 +74,27 @@ def send_message(message): # novel_id를 매개변수로 추가
 
         chat_log = ChatLog(chat_log=answer)
         chat_log.save()
-        
+
         return answer
     except requests.exceptions.RequestException as e:
         print('An error occurred while sending the request:', str(e))
+
+@csrf_exempt
+def chat_with_history(request):
+    message = request.GET.get('message', '')
+    # 이전 대화 기록을 가져와서 messages 리스트에 추가
+    chat_logs = load_chat_logs()
+    messages = [
+        {'role': 'system', 'content': 'You are a helpful assistant.'},
+        {'role': 'user', 'content': message},
+        {'role': 'system', 'content': ' '},  # 빈 시스템 메시지 추가
+    ]
+    for log in chat_logs:
+        messages.append({'role': 'user', 'content': log})
+        messages.append({'role': 'assistant', 'content': log})  # 이전 응답 기록을 추가하는 대신 이전 사용자 메시지를 추가
+    # 현재 사용자 메시지를 전달하고 응답을 받음
+    response_message = send_message(message)
+    # 챗봇 응답을 처리하고 필요한 형식으로 변환
+    processed_data = process_data(response_message)
+    # 템플릿에 결과를 전달
+    return render(request, 'chat_with_history.html', {'result': processed_data, 'response_message': response_message})

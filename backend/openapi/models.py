@@ -18,6 +18,9 @@ class ChatLog(models.Model):
     udate_at = models.DateTimeField(auto_now=True)
     delete_at = models.DateTimeField(null=True)
 
+    def __str__(self):
+        return self.chat_log
+
     class Meta:
         ordering = ['novel', 'create_at'] 
         # novel 필드 기준으로 오름차순 정렬 동일한 novel값 내에서는 creat_at 필드 기준 정렬
