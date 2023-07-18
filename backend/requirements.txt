@@ -5,3 +5,4 @@ djangorestframework
 openai
 boto3
 django-storages
+drf_yasg

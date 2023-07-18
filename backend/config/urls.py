@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from openapi import openapi_views
+from openapi import views
 from drf_yasg.views import get_schema_view
 from users import user_views
 from drf_yasg import openapi
@@ -23,10 +23,10 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("user/", include("users.urls")),
     path("", user_views.index, name="index"),  # '/' 에 해당되는 path
-    path("input_form/", openapi_views.input_form, name="input_form"),
-    path("chat/", openapi_views.chat, name="chat"),
-    path("background/", openapi_views.init_setting_APIView.as_view()),
+    path("input_form/", views.input_form, name="input_form"),
+    path("chat/", views.chat, name="chat"),
     path("api/v1/", include("openapi.urls")),
+    path("background/", views.init_setting_APIView.as_view()),
     path(
         "swagger/<str:format>/",
         schema_view.without_ui(cache_timeout=0),
