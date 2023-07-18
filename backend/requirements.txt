@@ -4,3 +4,5 @@ django-environ==0.10.0
 openai
 djangorestframework==3.14.0
 requests==2.31.0
+django-cors-headers
+drf-yasg

@@ -22,21 +22,26 @@ function SignUp() {
     }));
   };
 
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     try {
-      const response = await axios.post("/user/sign",formData);
+      const response = await axios.post("http://localhost:8000/user/sign/",formData);
 
-      if(response.status===200) {
+      if(response.status===201) {
         const token = response.data.token;
         localStorage.setItem('token',token);
         console.log('회원가입 성공!');
       } else{
+
+        console.log(response)
         console.log('회원가입 실패');
       } 
     } catch (error) {
       console.error('API 요청 중 오류가 발생했습니다', error);
+      console.log(formData)
+      
     }
   };
 
