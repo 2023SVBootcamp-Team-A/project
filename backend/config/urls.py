@@ -26,7 +26,7 @@ urlpatterns = [
     path("api/v1/user/", include("users.urls")),
     path("api/v1/", include("openapi.urls")),
     path("", views.index, name="index"),  # '/' 에 해당되는 path
-    path("background/", views.init_setting_APIView.as_view()),
+    # path("background/", views.init_setting_APIView.as_view()),
     path(
         "swagger/<str:format>/",
         schema_view.without_ui(cache_timeout=0),
