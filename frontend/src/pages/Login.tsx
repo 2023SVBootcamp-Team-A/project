@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 interface FormData {
   id: string;
@@ -19,9 +20,21 @@ function Login() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
+    
+    try {
+      const response = await axios.post('url',formData);
+
+      if (response.status===200) {
+        console.log('로그인 성공!');
+      } else {
+        console.log('로그인 실패');
+      }
+    } catch(error) {
+      console.error('API 요청 중 오류가 발생하였습니다.', error);
+    }
+ 
   };
 
   return (
@@ -71,62 +84,3 @@ function Login() {
 }
 
 export default Login;
-
-
-// import React, { useState, useRef } from 'react';
-// import { useForm, UseFormRegister } from 'react-hook-form';
-
-// interface FormData {
-//   id: string;
-//   password: string;
-// }
-
-// function Login() {
-//   const [name, setName] = useState('Haeun Kim');
-//   const { register, handleSubmit } = useForm<FormData>();
-//   const idRef = useRef<HTMLInputElement | null>(null);
-//   const passwordRef = useRef<HTMLInputElement | null>(null);
-  
-//   const onSubmit = handleSubmit(({id, password}) => {
-//     console.log(id, password);
-//   })
-
-
-//   return (
-//     <div className="min-h-screen bg-gray-50 flex flex-col justify-center">
-//       <div className="max-w-md w-full mx-auto">
-//         <div className="text-3xl font-bold text-gray-900 mt-2 text-center">로그인</div>
-//       </div>
-//       <div className="max-w-md w-full mx-auto mt-4">
-//         <form action="" className="space-y-6" onSubmit={onSubmit}>
-//           <div>
-//             <label htmlFor="" className="text-sm font-bold text-gray-600 block">로그인</label>
-//             <input 
-//             ref={(e) => {
-//               register('id', { value: e?.value });
-//               idRef.current = e;
-//             }}
-//             name="id" type="text" className="w-full p-2  border border-gray-300 rounded mt-1" />
-//           </div>
-//           <div>
-//             <label htmlFor="" className="text-sm font-bold text-gray-600 block">비밀번호</label>
-//             <input 
-//             ref={(e) => {
-//               register('password', { value: e?.value });
-//               passwordRef.current = e;
-//             }}
-//             name="password" type="password" className="w-full p-2 border border-gray-300 rounded mt-1" />  
-//           </div>
-//          <div className="flex items-center justify-between">
-//           <div>
-//             <button className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 rounded-md text-white text-sm">로그인</button> 
-//           </div>
-//          </div>
-//         </form>
-//       </div>
-//     </div>
-//   );
-// }
-
-
-// export default Login;

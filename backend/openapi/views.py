@@ -2,7 +2,6 @@ import json
 import os
 import requests
 from django.http import HttpResponse
-from .models import ChatLogfrom 
 from django.shortcuts import render
 from .models import Novel
 from django.contrib.auth.decorators import login_required
