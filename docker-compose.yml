@@ -46,4 +46,3 @@ services:
     container_name: backend
     environment:
       - DJANGO_DEBUG=True
-

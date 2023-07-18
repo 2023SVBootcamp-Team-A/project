@@ -1,19 +1,11 @@
-from io import BytesIO
-import json
 import os
 import requests
 from django.http import HttpResponse
-import boto3
-from botocore.exceptions import NoCredentialsError
-from django.conf import settings
 from .models import Novel
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib import messages
+from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 from django.http import JsonResponse
-from django.core.serializers.json import DjangoJSONEncoder
 from .models import ChatLog
 from openapi.serializers import (
     BackgroundSerializer,
@@ -22,19 +14,28 @@ from openapi.serializers import (
 )
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import serializers
+from rest_framework.decorators import api_view
+from rest_framework import status
 
 
-@csrf_exempt
+class NovelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Novel
+        fields = "__all__"
+
+
+@api_view(["GET"])
 def novel_list(request):
     if request.method == "GET":
         id_param = request.META.get("HTTP_ID")
-        data = serializers.serialize(
-            "json", Novel.objects.filter(user_id=id_param).order_by("-create_at")
-        )
-        return JsonResponse(data, safe=False)
+        novels = Novel.objects.filter(user_id=id_param).order_by("-create_at")
+        serializer = NovelSerializer(novels, many=True)
+        data = serializer.data
+        return Response(data, status=status.HTTP_200_OK)
 
 
-@csrf_exempt
+@api_view(["GET", "POST"])
 def mynovels(request, novel_id):
     if request.method == "GET":
         novel = get_object_or_404(Novel, pk=novel_id)
@@ -58,10 +59,7 @@ def mynovels(request, novel_id):
         }
 
         # JSON으로 변환
-        json_data = json.dumps(
-            serialized_data, cls=DjangoJSONEncoder, ensure_ascii=False
-        )
-        return JsonResponse(json_data, safe=False, content_type="application/json")
+        return Response(serialized_data, status=status.HTTP_200_OK)
     if request.method == "DELETE":
         try:
             novel = Novel.objects.get(pk=novel_id)
