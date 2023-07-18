@@ -1,30 +1,36 @@
-import json
 import os
 import requests
 from django.http import HttpResponse
-from .models import ChatLogfrom 
-from django.shortcuts import render
 from .models import Novel
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib import messages
+from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 from django.http import JsonResponse
-from django.core.serializers.json import DjangoJSONEncoder
+from .models import ChatLog
+from rest_framework import serializers
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
 
 
+class NovelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Novel
+        fields = '__all__'
 
-@csrf_exempt
+
+@api_view(['GET'])
 def novel_list(request):
-    if request.method =="GET":
+    if request.method == 'GET':
         id_param = request.META.get('HTTP_ID')
-        data = serializers.serialize('json', Novel.objects.filter(user_id=id_param).order_by('-create_at'))
-        return JsonResponse(data, safe=False)
-    
+        novels = Novel.objects.filter(user_id=id_param).order_by('-create_at')
+        serializer = NovelSerializer(novels, many=True)
+        data = serializer.data
+        return Response(data, status=status.HTTP_200_OK)
 
-@csrf_exempt
-def novel_detail(request, novel_id):
+
+@api_view(['GET', 'POST'])
+def mynovels(request, novel_id):
     if request.method == "GET":
         novel = get_object_or_404(Novel, pk=novel_id)
 
@@ -47,13 +53,7 @@ def novel_detail(request, novel_id):
         }
         
         # JSON으로 변환
-        json_data = json.dumps(serialized_data, cls=DjangoJSONEncoder, ensure_ascii=False)
-        return JsonResponse(json_data, safe=False, content_type='application/json')
-
-    
-
-@csrf_exempt
-def novel_delete(request, novel_id):
+        return Response(serialized_data, status=status.HTTP_200_OK)
     if request.method == "DELETE":
         try:
             novel = Novel.objects.get(pk=novel_id)
@@ -67,8 +67,10 @@ def novel_delete(request, novel_id):
         return JsonResponse({"error": "이 메소드는 허용되지 않습니다."}, status=405)
 
 
-# 입력 데이터를 처리하는 로직을 구현
+
+# 입력 데이터를 처리하는 로직을 구현 
 # 예시로 입력 데이터를 대문자로 변환하는 간단한 예시를 제공
+@csrf_exempt
 def process_data(input_data):
     if input_data is not None and input_data != '':
         processed_data = input_data.upper()
@@ -77,11 +79,12 @@ def process_data(input_data):
         return ''
 
 # 함수 설명: 입력 폼에서 제출된 데이터를 받아와 process_data 함수로 전달하여 처리한 뒤 결과를 템플릿에 전달
+@csrf_exempt
 def input_form(request):
     if request.method == 'POST':
         input_data = request.POST.get('input_field', '')
         # 메시지를 챗봇에 보내고 응답을 받아옵니다
-        response_message = send_message(input_data)
+        response_message = send_message(input_data,)
         # 챗봇 응답을 처리하고 필요한 형식으로 변환합니다
         processed_data = process_data(response_message)
         # 템플릿에 결과를 전달합니다
@@ -91,14 +94,21 @@ def input_form(request):
 
 
 # 함수 설명: 사용자가 전달한 메시지를 받아와 send_message 함수로 전달한 후, 챗봇의 응답을 HTTP 응답으로 반환
+# chat 함수
+@csrf_exempt
 def chat(request):
-    message = request.GET.get('message', '')
-    response_message = send_message(message)
+    message = request.GET.get('message', '') 
+    response_message = send_message(message) #novel_id
     return HttpResponse(response_message)
 
+@csrf_exempt
+def load_chat_logs():
+    chat_logs = ChatLog.objects.all().values_list('chat_log', flat=True)
+    return list(chat_logs)
 
 # send_message 함수는 ChatGPT API를 사용하여 메시지를 보내고, 챗봇의 응답을 반환
-def send_message(message):
+@csrf_exempt
+def send_message(message): # novel_id를 매개변수로 추가
     url = 'https://api.openai.com/v1/chat/completions'
     headers = {
         'Authorization': f'Bearer {os.getenv("OPENAI_SECRET_KEY")}',
@@ -123,18 +133,29 @@ def send_message(message):
         answer = response_json['choices'][0]['message']['content']
         data['messages'].append({'role': 'assistant', 'content': answer})
 
-        previous_chat_log = ChatLog.objects.last()
-        if previous_chat_log:
-            previous_chat_log.chat_log = answer
-            previous_chat_log.save()
-        else:
-            chat_log = ChatLog(chat_log=answer)
-            chat_log.save()
+        chat_log = ChatLog(chat_log=answer)
+        chat_log.save()
 
         return answer
     except requests.exceptions.RequestException as e:
         print('An error occurred while sending the request:', str(e))
 
-   
-
-
+@csrf_exempt
+def chat_with_history(request):
+    message = request.GET.get('message', '')
+    # 이전 대화 기록을 가져와서 messages 리스트에 추가
+    chat_logs = load_chat_logs()
+    messages = [
+        {'role': 'system', 'content': 'You are a helpful assistant.'},
+        {'role': 'user', 'content': message},
+        {'role': 'system', 'content': ' '},  # 빈 시스템 메시지 추가
+    ]
+    for log in chat_logs:
+        messages.append({'role': 'user', 'content': log})
+        messages.append({'role': 'assistant', 'content': log})  # 이전 응답 기록을 추가하는 대신 이전 사용자 메시지를 추가
+    # 현재 사용자 메시지를 전달하고 응답을 받음
+    response_message = send_message(message)
+    # 챗봇 응답을 처리하고 필요한 형식으로 변환
+    processed_data = process_data(response_message)
+    # 템플릿에 결과를 전달
+    return render(request, 'chat_with_history.html', {'result': processed_data, 'response_message': response_message})
