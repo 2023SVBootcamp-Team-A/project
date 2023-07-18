@@ -8,10 +8,8 @@ from users import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("user/", include("users.urls")),
-    path("openapi/", include("openapi.urls")),
+    path("api/v1/user/", include("users.urls")),
+    path("api/v1/", include("openapi.urls")),
     path("", views.index, name="index"),  # '/' 에 해당되는 path
-    path('input_form/', views.input_form, name='input_form'),
-    path('chat/', views.chat, name='chat'),
 ]
 
