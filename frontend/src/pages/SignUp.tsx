@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 interface FormData {
@@ -8,6 +9,7 @@ interface FormData {
 }
 
 function SignUp() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
     email: '',
     nickname: '',
@@ -33,6 +35,7 @@ function SignUp() {
         const token = response.data.token;
         localStorage.setItem('token',token);
         console.log('회원가입 성공!');
+        navigate('/login');
       } else{
 
         console.log(response)
