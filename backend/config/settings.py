@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import environ
 from pathlib import Path
-import environ
 import os
 
 
@@ -163,8 +162,8 @@ AWS_S3_REGION_NAME = AWS_S3_REGION_NAME
 AWS_S3_ENDPOINT_URL = AWS_S3_ENDPOINT_URL
 
 # DEFAULT_FILE_STORAGE 및 STATICFILES_STORAGE 설정
-DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+# DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+# STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": [
