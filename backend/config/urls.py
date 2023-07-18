@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from openapi import views
+from openapi import views as openapi_views
 from users import views
 
 from drf_yasg.views import get_schema_view
@@ -26,7 +26,7 @@ urlpatterns = [
     path("api/v1/user/", include("users.urls")),
     path("api/v1/", include("openapi.urls")),
     path("", views.index, name="index"),  # '/' 에 해당되는 path
-    # path("background/", views.init_setting_APIView.as_view()),
+    path("background/", openapi_views.init_setting_APIView.as_view()),
     path(
         "swagger/<str:format>/",
         schema_view.without_ui(cache_timeout=0),

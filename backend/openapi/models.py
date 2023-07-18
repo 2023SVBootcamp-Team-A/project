@@ -6,8 +6,10 @@ class Novel(models.Model):
     user = models.ForeignKey(
         MyUser, on_delete=models.CASCADE, related_name="user_novel"
     )
-    novel_name = models.CharField(max_length=100)
-    novel_image = models.CharField(max_length=255)
+    novel_name = models.CharField(max_length=100, null=True)
+    # ##########################################################################
+    novel_image = models.CharField(max_length=255, null=True)  # 얘 null-True가능?
+    ###################################################################
     status = models.BooleanField(default=True)
     create_at = models.DateTimeField(auto_now_add=True)
     udate_at = models.DateTimeField(auto_now=True)
@@ -19,7 +21,11 @@ class Novel(models.Model):
 
 class ChatLog(models.Model):
     novel = models.ForeignKey(
-        Novel, on_delete=models.CASCADE, related_name="novel_chatlog", primary_key=True
+        Novel,
+        on_delete=models.CASCADE,
+        related_name="novel_chatlog",
+        primary_key=True,
+        unique=True,
     )
     chat_log = models.TextField()
     create_at = models.DateTimeField(auto_now_add=True)
