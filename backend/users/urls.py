@@ -2,6 +2,7 @@ from django.urls import path
 from users.views import index, RegistrationAPIView, LoginAPIView
 
 
+
 urlpatterns = [
     path("", index),
     path(
