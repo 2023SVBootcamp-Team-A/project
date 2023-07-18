@@ -2,6 +2,8 @@ Django==4.0.3
 psycopg2>=2.9.1
 django-environ==0.10.0
 openai
+boto3
+django-storages
 djangorestframework==3.14.0
 requests==2.31.0
 drf_yasg
