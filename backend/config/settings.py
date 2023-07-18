@@ -34,7 +34,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['backend','localhost']
 
 
 # Application definition
@@ -54,6 +54,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "django_prometheus.middleware.PrometheusBeforeMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -61,7 +62,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "django_prometheus.middleware.PrometheusBeforeMiddleware",
+    "django_prometheus.middleware.PrometheusAfterMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -119,6 +120,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+PROMETHEUS_EXPORT_MIGRATIONS = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
