@@ -24,7 +24,7 @@ schema_view = get_schema_view(
 
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+
     path("api/v1/user/", include("users.urls")),
     path("api/v1/", include("openapi.urls")),
     path("", views.index, name="index"),  # '/' 에 해당되는 path
