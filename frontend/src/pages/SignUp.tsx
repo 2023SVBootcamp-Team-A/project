@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 interface FormData {
-  id: string;
-  password: string;
+  email: string;
   nickname: string;
+  password: string;
 }
 
 function SignUp() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
-    id: '',
-    password: '',
-    nickname: ''
+    email: '',
+    nickname: '',
+    password: ''
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,9 +24,28 @@ function SignUp() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
+    
+    try {
+      const response = await axios.post("http://localhost:8000/user/sign/",formData);
+
+      if(response.status===201) {
+        const token = response.data.token;
+        localStorage.setItem('token',token);
+        console.log('회원가입 성공!');
+        navigate('/login');
+      } else{
+
+        console.log(response)
+        console.log('회원가입 실패');
+      } 
+    } catch (error) {
+      console.error('API 요청 중 오류가 발생했습니다', error);
+      console.log(formData)
+      
+    }
   };
 
   return (
@@ -34,14 +56,14 @@ function SignUp() {
       <div className="max-w-md w-full mx-auto mt-4">
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="id" className="text-sm text-left font-normal text-black block">
-              로그인
+            <label htmlFor="email" className="text-sm text-left font-normal text-black block">
+              이메일
             </label>
             <input
-              id="id"
-              name="id"
-              type="text"
-              value={formData.id}
+              id="email"
+              name="email"
+              type="email"
+              value={formData.email}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300"
             />

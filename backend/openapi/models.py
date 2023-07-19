@@ -2,17 +2,17 @@ from django.db import models
 from users.models import MyUser
 
 
-
 class Novel(models.Model):
     user = models.ForeignKey(
         MyUser, on_delete=models.CASCADE, related_name="user_novel"
     )
-    novel_name = models.CharField(max_length=100)
-    novel_image = models.CharField(max_length=255)
+    novel_name = models.CharField(max_length=100, null=True)
+    novel_image = models.CharField(max_length=255, null=True)
     status = models.BooleanField(default=True)
     create_at = models.DateTimeField(auto_now_add=True)
     udate_at = models.DateTimeField(auto_now=True)
     delete_at = models.DateTimeField(null=True)
+
     def __str__(self):
         return self.novel_name
 
