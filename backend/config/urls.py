@@ -30,7 +30,6 @@ urlpatterns = [
     path("api/v1/", include("openapi.urls")),
     path("", views.index, name="index"),  # '/' 에 해당되는 path
     path('', include('django_prometheus.urls')),
-
     # path("background/", views.init_setting_APIView.as_view()),
     path(
         "swagger/<str:format>/",
@@ -48,5 +47,4 @@ urlpatterns = [
         schema_view.without_ui(cache_timeout=0),
         name="schema-swagger-ui-config",
     ),
-
 ]
