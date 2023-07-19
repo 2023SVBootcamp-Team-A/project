@@ -1,3 +1,4 @@
+import json
 import os
 import requests
 from django.http import HttpResponse
@@ -224,24 +225,32 @@ class init_setting_APIView(APIView):
     def post(self, request):
         # 요청할 때 입력한 정보들로 serializer를 생성한다
         data = request.data.copy()
-        data["user"] = MyUser.objects.get(id=1).id
+        data["user"] = MyUser.objects.get(id=26).id
         novel_serializer = NovelSerializer(data=data)
         background_serializer = BackgroundSerializer(data=data)
-        character_serializer = CharacterSerializer(data=data)
+
+        character_array = request.data["character"]
 
         if novel_serializer.is_valid():
             novel_instance = novel_serializer.save()
-            if background_serializer.is_valid() and character_serializer.is_valid():
+            if background_serializer.is_valid():
                 if novel_instance is not None:
                     background_serializer.validated_data["novel"] = novel_instance
-                    character_serializer.validated_data["novel"] = novel_instance
                     background_serializer.save()
+            for character_data in character_array:
+                character_serializer = CharacterSerializer(data=character_data)
+                if character_serializer.is_valid():
+                    character_serializer.validated_data["novel"] = novel_instance
                     character_serializer.save()
-
-                    # 위의 과정이 모두 올바르게 작동할 시 novel_id를 반환한다
-                    response_data = {"novel": novel_instance.id}
-                    return Response(response_data, status=201)
                 else:
-                    return Response({"error": "inv111alid data"}, status=400)
+                    return Response(
+                        {
+                            "error": "Invalid character data",
+                            "character_data": character_data,
+                        },
+                        status=400,
+                    )
+            response_data = {"novel": novel_instance.id}
+            return Response(response_data, status=201)
         else:
             return Response({"error": novel_serializer.errors}, status=400)
