@@ -16,13 +16,25 @@ class Novel(models.Model):
     def __str__(self):
         return self.novel_name
 
-    
+
 class ChatLog(models.Model):
-    novel = models.ForeignKey(Novel, on_delete=models.CASCADE, related_name='novel_chatlog')
+    ROLE_CHOICES = (
+        ('user', 'User'),
+        ('assistant', 'Assistant'),
+    )
+    novel = models.ForeignKey(Novel, on_delete=models.CASCADE, related_name='novel_chatlog', blank=True, null=True)
     chat_log = models.TextField()
     create_at = models.DateTimeField(auto_now_add=True)
     udate_at = models.DateTimeField(auto_now=True)
     delete_at = models.DateTimeField(null=True)
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='user')
+
+    def __str__(self):
+        return self.chat_log
+
+    class Meta:
+        ordering = ['novel', 'create_at']
+
 
 
 class Character(models.Model):

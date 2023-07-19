@@ -47,7 +47,6 @@ def novel_list(request):
 def mynovels(request, novel_id):
     if request.method == "GET":
         novel = get_object_or_404(Novel, pk=novel_id)
-from django.db.models import Max
 
         # 각 모델에 대한 필드 리스트
         character_fields = ["name", "personality"]
@@ -86,16 +85,13 @@ from django.db.models import Max
 # 예시로 입력 데이터를 대문자로 변환하는 간단한 예시를 제공
 @csrf_exempt
 def process_data(input_data):
-
     if input_data is not None and input_data != "":
-        processed_data = input_data.upper()
-        return processed_data
+        return process_data
     else:
         return ""
 
 
 @csrf_exempt
-
 def input_form(request, novel_id):
     if request.method == 'POST':
         print('Received POST request in input_form')
@@ -116,12 +112,10 @@ def input_form(request, novel_id):
         return HttpResponse("Invalid request method")
 
 
-
 # 함수 설명: 사용자가 전달한 메시지를 받아와 send_message 함수로 전달한 후, 챗봇의 응답을 HTTP 응답으로 반환
 # chat 함수
 @csrf_exempt
 def chat(request):
-
     message = request.GET.get("message", "")
     response_message = send_message(message)  # novel_id
     return HttpResponse(response_message)
@@ -163,12 +157,9 @@ def chat_with_history(request, novel_id):
     processed_data = process_data(message_content)
     return render(request, 'chat_with_history.html', {'result': processed_data, 'response_message': message_content})
 
-from django.http import JsonResponse
-
 @csrf_exempt
 def get_parsed_result(request, novel_id):
     chat_logs = load_chat_logs(novel_id)
-
     # Retrieve the parsed result from the latest assistant's response
     for log in reversed(chat_logs):
         if log.role == 'assistant':
@@ -186,22 +177,16 @@ def get_parsed_result(request, novel_id):
                     choices.append(line)
                 else:
                     novel_content += line + '\n'
-
-            return JsonResponse({
-                'response_message': answer,
-                'response_content': novel_content,
-                'choices': choices
-            })
+    print(choices)
+    return JsonResponse({
+        'response_message': answer,
+        'response_content': novel_content,
+        'choices': choices
+    })
 
     return JsonResponse({
         'message': 'No parsed result found for the given novel_id.'
     })
-
-
-@csrf_exempt
-def load_chat_logs():
-    chat_logs = ChatLog.objects.all().values_list("chat_log", flat=True)
-    return list(chat_logs)
 
 
 # send_message 함수는 ChatGPT API를 사용하여 메시지를 보내고, 챗봇의 응답을 반환
@@ -213,53 +198,13 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
         "Authorization": f'Bearer {os.getenv("OPENAI_SECRET_KEY")}',
         "Content-Type": "application/json",
     }
-    data = {
-        "model": "gpt-3.5-turbo",
-        "messages": [
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": message},
-            {"role": "system", "content": " "},  # 빈 시스템 메시지 추가
-        ],
-        "temperature": 1.0,
-    }
-
-
-    # Load chat logs
-
-    try:
-        response = requests.post(url, headers=headers, json=data)
-        response.raise_for_status()  # 4xx 또는 5xx 상태 코드에 대한 예외 발생
-        response_json = response.json()  # 서버로부터 받은 응답을 JSON 형식으로 파싱
-
-        # 챗봇의 응답을 가져와서 messages 리스트에 추가합니다
-        answer = response_json["choices"][0]["message"]["content"]
-        data["messages"].append({"role": "assistant", "content": answer})
-
-        chat_log = ChatLog(chat_log=message)
-        chat_log.save()
-        chat_log = ChatLog(chat_log=answer)
-        chat_log.save()
-
-
-        return answer
-    except requests.exceptions.RequestException as e:
-        print("An error occurred while sending the request:", str(e))
-
-
-@csrf_exempt
-def chat_with_history(request, novel_id):
-    message = request.GET.get('message', '')
-    # 이전 대화 기록을 가져와서 messages 리스트에 추가
     chat_logs = load_chat_logs(novel_id)
-    novel_id=1
-    # Prepare messages list with previous chat logs and current message
     messages = [
         {'role': 'system', 'content': 'You are a helpful assistant.'},
         {'role': 'user', 'content': message},
     ]
     for log in chat_logs:
         messages.append({'role': log.role, 'content': log.chat_log})
-
 
     # Send message to GPT API
     data = {
@@ -269,69 +214,25 @@ def chat_with_history(request, novel_id):
     }
     try:
         response = requests.post(url, headers=headers, json=data)
-        response.raise_for_status()
-        response_json = response.json()
+        response.raise_for_status()  # 4xx 또는 5xx 상태 코드에 대한 예외 발생
+        response_json = response.json()  # 서버로부터 받은 응답을 JSON 형식으로 파싱
 
-        # Get assistant's response
-        answer = response_json['choices'][0]['message']['content']
+        # 챗봇의 응답을 가져와서 messages 리스트에 추가합니다
+        answer = response_json["choices"][0]["message"]["content"]
 
-        # Save the assistant's response to the database
+
         chat_log = ChatLog(novel_id=novel_id, role='assistant', chat_log=answer)
         chat_log.save()
 
-        return {'response_message': answer}
-
+        return {
+            'response_message': answer
+        }
     except requests.exceptions.RequestException as e:
         print('An error occurred while sending the request:', str(e))
 
-        return {'response_message': 'Error occurred while sending the request'}
-        # 챗봇의 응답을 가져와서 messages 리스트에 추가합니다
-        answer = response_json["choices"][0]["message"]["content"]
-        data["messages"].append({"role": "assistant", "content": answer})
-
-        chat_log = ChatLog(chat_log=answer)
-        chat_log.save()
-
-        return answer
-    except requests.exceptions.RequestException as e:
-        print("An error occurred while sending the request:", str(e))
-
-
-@csrf_exempt
-def chat_with_history(request):
-    message = request.GET.get("message", "")
-    # 이전 대화 기록을 가져와서 messages 리스트에 추가
-    chat_logs = load_chat_logs()
-    messages = [
-        {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": message},
-        {"role": "system", "content": " "},  # 빈 시스템 메시지 추가
-    ]
-    for log in chat_logs:
-        messages.append({"role": "user", "content": log})
-        messages.append({"role": "assistant", "content": log})  # 이전 응답 기록을 추가하는 대신 이전 사용자 메시지를 추가
-       
-    for log in chat_logs:
-        messages.append({"role": "user", "content": log})
-        messages.append(
-            {"role": "assistant", "content": log}
-        )  # 이전 응답 기록을 추가하는 대신 이전 사용자 메시지를 추가
-
-        messages.append({'role': 'user', 'content': log})
-        messages.append({'role': 'assistant', 'content': log})  # 이전 응답 기록을 추가하는 대신 이전 사용자 메시지를 추가
-    messages.append({'role': 'user', 'content': message})
-        
-    # 현재 사용자 메시지를 전달하고 응답을 받음
-    response_message = send_message(message)
-    # 챗봇 응답을 처리하고 필요한 형식으로 변환
-    processed_data = process_data(response_message)
-    # 템플릿에 결과를 전달
-    return render(
-        request,
-        "chat_with_history.html",
-        {"result": processed_data, "response_message": response_message},
-    )
-
+    return {
+        'response_message': 'Error occurred while sending the request',
+    }
 
 class init_setting_APIView(APIView):
     def post(self, request):
