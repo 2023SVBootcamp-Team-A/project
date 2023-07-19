@@ -42,13 +42,10 @@ def novel_list(request):
         return Response(data, status=status.HTTP_200_OK)
 
 
-
-@api_view(['GET', 'POST'])
+@api_view(["GET", "POST"])
 def mynovels(request, novel_id):
     if request.method == "GET":
         novel = get_object_or_404(Novel, pk=novel_id)
-from django.db.models import Max
-
         # 각 모델에 대한 필드 리스트
         character_fields = ["name", "personality"]
         novel_story_fields = ["page", "content", "image"]
@@ -126,8 +123,12 @@ def chat(request):
 @csrf_exempt
 def load_chat_logs():
     chat_logs = ChatLog.objects.all().values_list("chat_log", flat=True)
+
+
 def load_chat_logs(novel_id):
-    chat_logs = ChatLog.objects.filter(novel_id=novel_id).values_list('chat_log', flat=True)
+    chat_logs = ChatLog.objects.filter(novel_id=novel_id).values_list(
+        "chat_log", flat=True
+    )
     return list(chat_logs)
 
 
@@ -163,7 +164,6 @@ def send_message(message):  # novel_id를 매개변수로 추가
         chat_log = ChatLog(chat_log=answer)
         chat_log.save()
 
-
         return answer
     except requests.exceptions.RequestException as e:
         print("An error occurred while sending the request:", str(e))
@@ -173,12 +173,12 @@ def send_message(message):  # novel_id를 매개변수로 추가
 def chat_with_history(request):
     message = request.GET.get("message", "")
 
-        print('An error occurred while sending the request:', str(e))
-        
+    print("An error occurred while sending the request:", str(e))
+
+
 @csrf_exempt
 def chat_with_history(request, novel_id):
-    message = request.GET.get('message', '')
-
+    message = request.GET.get("message", "")
 
     # 이전 대화 기록을 가져와서 messages 리스트에 추가
     chat_logs = load_chat_logs(novel_id)
@@ -193,10 +193,11 @@ def chat_with_history(request, novel_id):
             {"role": "assistant", "content": log}
         )  # 이전 응답 기록을 추가하는 대신 이전 사용자 메시지를 추가
 
-        messages.append({'role': 'user', 'content': log})
-        messages.append({'role': 'assistant', 'content': log})  # 이전 응답 기록을 추가하는 대신 이전 사용자 메시지를 추가
-    messages.append({'role': 'user', 'content': message})
-        
+        messages.append({"role": "user", "content": log})
+        messages.append(
+            {"role": "assistant", "content": log}
+        )  # 이전 응답 기록을 추가하는 대신 이전 사용자 메시지를 추가
+    messages.append({"role": "user", "content": message})
 
     # 현재 사용자 메시지를 전달하고 응답을 받음
     response_message = send_message(message)
@@ -209,7 +210,6 @@ def chat_with_history(request, novel_id):
     chat_log.save()
     chat_log = ChatLog(chat_log=response_message, novel_id=novel_id)
     chat_log.save()
-
 
     # 템플릿에 결과를 전달
     return render(
