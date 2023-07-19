@@ -7,6 +7,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 from django.http import JsonResponse
 from .models import ChatLog
+from rest_framework import serializers
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
 
 from openapi.serializers import (
     BackgroundSerializer,
@@ -33,12 +37,14 @@ def novel_list(request):
     if request.method == "GET":
         id_param = request.META.get("HTTP_ID")
         novels = Novel.objects.filter(user_id=id_param).order_by("-create_at")
+
         serializer = NovelSerializer(novels, many=True)
         data = serializer.data
         return Response(data, status=status.HTTP_200_OK)
 
 
-@api_view(["GET", "POST"])
+
+@api_view(['GET', 'POST'])
 def mynovels(request, novel_id):
     if request.method == "GET":
         novel = get_object_or_404(Novel, pk=novel_id)

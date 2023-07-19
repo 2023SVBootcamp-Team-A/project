@@ -1,3 +1,4 @@
+
 from django.contrib import admin
 from django.urls import path, include
 from openapi import views as openapi_views
@@ -21,6 +22,8 @@ schema_view = get_schema_view(
 
 # from django.contrib.auth import views as auth_views
 
+
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/user/", include("users.urls")),
@@ -43,4 +46,6 @@ urlpatterns = [
         schema_view.without_ui(cache_timeout=0),
         name="schema-swagger-ui-config",
     ),
+
 ]
+

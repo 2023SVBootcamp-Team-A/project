@@ -7,9 +7,7 @@ class Novel(models.Model):
         MyUser, on_delete=models.CASCADE, related_name="user_novel"
     )
     novel_name = models.CharField(max_length=100, null=True)
-    # ##########################################################################
-    novel_image = models.CharField(max_length=255, null=True)  # 얘 null-True가능?
-    ###################################################################
+    novel_image = models.CharField(max_length=255, null=True)
     status = models.BooleanField(default=True)
     create_at = models.DateTimeField(auto_now_add=True)
     udate_at = models.DateTimeField(auto_now=True)
