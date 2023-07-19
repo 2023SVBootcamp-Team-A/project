@@ -22,7 +22,6 @@ class ChatLog(models.Model):
         Novel,
         on_delete=models.CASCADE,
         related_name="novel_chatlog",
-        primary_key=True,
         unique=True,
     )
     chat_log = models.TextField()
