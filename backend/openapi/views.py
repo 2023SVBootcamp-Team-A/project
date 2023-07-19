@@ -23,6 +23,7 @@ from rest_framework.views import APIView
 from rest_framework import serializers
 from rest_framework.decorators import api_view
 from rest_framework import status
+from users.models import MyUser
 
 
 class NovelSerializer(serializers.ModelSerializer):
@@ -42,13 +43,10 @@ def novel_list(request):
         return Response(data, status=status.HTTP_200_OK)
 
 
-
-@api_view(['GET', 'POST'])
+@api_view(["GET", "POST"])
 def mynovels(request, novel_id):
     if request.method == "GET":
         novel = get_object_or_404(Novel, pk=novel_id)
-from django.db.models import Max
-
         # 각 모델에 대한 필드 리스트
         character_fields = ["name", "personality"]
         novel_story_fields = ["page", "content", "image"]
@@ -126,8 +124,12 @@ def chat(request):
 @csrf_exempt
 def load_chat_logs():
     chat_logs = ChatLog.objects.all().values_list("chat_log", flat=True)
+
+
 def load_chat_logs(novel_id):
-    chat_logs = ChatLog.objects.filter(novel_id=novel_id).values_list('chat_log', flat=True)
+    chat_logs = ChatLog.objects.filter(novel_id=novel_id).values_list(
+        "chat_log", flat=True
+    )
     return list(chat_logs)
 
 
@@ -163,7 +165,6 @@ def send_message(message):  # novel_id를 매개변수로 추가
         chat_log = ChatLog(chat_log=answer)
         chat_log.save()
 
-
         return answer
     except requests.exceptions.RequestException as e:
         print("An error occurred while sending the request:", str(e))
@@ -173,12 +174,12 @@ def send_message(message):  # novel_id를 매개변수로 추가
 def chat_with_history(request):
     message = request.GET.get("message", "")
 
-        print('An error occurred while sending the request:', str(e))
-        
+    print("An error occurred while sending the request:", str(e))
+
+
 @csrf_exempt
 def chat_with_history(request, novel_id):
-    message = request.GET.get('message', '')
-
+    message = request.GET.get("message", "")
 
     # 이전 대화 기록을 가져와서 messages 리스트에 추가
     chat_logs = load_chat_logs(novel_id)
@@ -193,10 +194,11 @@ def chat_with_history(request, novel_id):
             {"role": "assistant", "content": log}
         )  # 이전 응답 기록을 추가하는 대신 이전 사용자 메시지를 추가
 
-        messages.append({'role': 'user', 'content': log})
-        messages.append({'role': 'assistant', 'content': log})  # 이전 응답 기록을 추가하는 대신 이전 사용자 메시지를 추가
-    messages.append({'role': 'user', 'content': message})
-        
+        messages.append({"role": "user", "content": log})
+        messages.append(
+            {"role": "assistant", "content": log}
+        )  # 이전 응답 기록을 추가하는 대신 이전 사용자 메시지를 추가
+    messages.append({"role": "user", "content": message})
 
     # 현재 사용자 메시지를 전달하고 응답을 받음
     response_message = send_message(message)
@@ -210,7 +212,6 @@ def chat_with_history(request, novel_id):
     chat_log = ChatLog(chat_log=response_message, novel_id=novel_id)
     chat_log.save()
 
-
     # 템플릿에 결과를 전달
     return render(
         request,
@@ -222,26 +223,25 @@ def chat_with_history(request, novel_id):
 class init_setting_APIView(APIView):
     def post(self, request):
         # 요청할 때 입력한 정보들로 serializer를 생성한다
-        background_serializer = BackgroundSerializer(data=request.data)
-        character_serializer = CharacterSerializer(data=request.data)
-        # novel_serializer = NovelSerializer(data=request.data)
-        # novel_instance = None
+        data = request.data.copy()
+        data["user"] = MyUser.objects.get(id=1).id
+        novel_serializer = NovelSerializer(data=data)
+        background_serializer = BackgroundSerializer(data=data)
+        character_serializer = CharacterSerializer(data=data)
 
-        # if novel_serializer.is_valid():
-        #     novel_instance = novel_serializer.save()
+        if novel_serializer.is_valid():
+            novel_instance = novel_serializer.save()
+            if background_serializer.is_valid() and character_serializer.is_valid():
+                if novel_instance is not None:
+                    background_serializer.validated_data["novel"] = novel_instance
+                    character_serializer.validated_data["novel"] = novel_instance
+                    background_serializer.save()
+                    character_serializer.save()
 
-        # serializer의 데이터 유효성 검사를 마치면,
-        # novel_id에 해당하는 novel 객체를 가지고 오고
-        # background와 character serializer에 novel_id를 입력한다
-        if background_serializer.is_valid() and character_serializer.is_valid():
-            # if novel_instance is not None:
-            #     background_serializer.validated_data["novel"] = novel_instance.id
-            #     character_serializer.validated_data["novel"] = novel_instance.id
-            background_instance = background_serializer.save(novel_id=100)
-            character_instance = character_serializer.save(novel_id=100)
-
-            # 위의 과정이 모두 올바르게 작동할 시 novel_id를 반환한다
-            response_data = {"novel": "success"}
-            return Response(response_data, status=201)
+                    # 위의 과정이 모두 올바르게 작동할 시 novel_id를 반환한다
+                    response_data = {"novel": novel_instance.id}
+                    return Response(response_data, status=201)
+                else:
+                    return Response({"error": "inv111alid data"}, status=400)
         else:
-            return Response({"error": "invalied data"}, status=400)
+            return Response({"error": novel_serializer.errors}, status=400)

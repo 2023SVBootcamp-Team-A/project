@@ -19,4 +19,4 @@ class CharacterSerializer(serializers.ModelSerializer):
 class NovelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Novel
-        fields = "__all__"
+        fields = ["user"]
