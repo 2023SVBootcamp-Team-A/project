@@ -10,4 +10,4 @@ django-cors-headers
 drf_yasg
 django-prometheus
 django-storages
-boto3
+Pillow
