@@ -9,7 +9,7 @@ const Page: React.FC<{ children: React.ReactNode; number: number; chapter: numbe
       <div className="page" ref={ref}>
             <div className="page-content">
                 <h2 className="page-header">Chapter {props.chapter}</h2>
-                <div className="page-text">{props.children}</div>
+                <div className="page-text lg:text-21 text-15">{props.children}</div>
                 <div className="page-footer">{props.number}</div>
             </div>
       </div>
@@ -22,32 +22,32 @@ const FlipBook: React.FC = () => {
   return (
     <div className="w-screen h-screen ">
       <div className="flex flex-col justify-center items-center">
-        <div className="w-8/12 h-4/6 absolute top-28">
+        <div className="xl:w-9/12 md:w-5/6 w-7/12 h-3/6 absolute md:top-28 top-20">
         <div className="flex flex-col justify-center items-center">
           <HTMLFlipBook
-            width={600}
-            height={750}
+            width={580}
+            height={680}
             size="stretch"
-            minWidth={300}
-            maxWidth={600}
+            minWidth={400}
+            maxWidth={650}
             minHeight={600}
-            maxHeight={750}
+            maxHeight={680}
             drawShadow={true}
             flippingTime={1000}
             className="book-theme"
             startPage={1}
-            usePortrait={false}
+            usePortrait={true}
             startZIndex={30}
             autoSize={true}
             maxShadowOpacity={0.5}
             showCover={true}
             mobileScrollSupport={true}
-            clickEventForward={false}
+            clickEventForward={true}
             useMouseEvents={true}
             swipeDistance={3}
             showPageCorners={true}
-            disableFlipByClick={true}
-            style={{ top: 1/2 }}
+            disableFlipByClick={false}
+            style={{ }}
             ref={book}
           >
             <div className="page page-cover page-cover-top" data-density="hard">
