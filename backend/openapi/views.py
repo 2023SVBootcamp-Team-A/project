@@ -12,6 +12,7 @@ from rest_framework import serializers
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from .QuestionList import getFirstQuestion
 
 from openapi.serializers import (
     BackgroundSerializer,
@@ -86,37 +87,45 @@ def mynovels(request, novel_id):
     else:
         return JsonResponse({"error": "이 메소드는 허용되지 않습니다."}, status=405)
 
+class NovelView(APIView):
+    def get(self, request, novel_id):
+        chat_logs = load_chat_logs(novel_id)
+        # Retrieve the parsed result from the latest assistant's response
+        for log in reversed(chat_logs):
+            if log.role == 'assistant':
+                answer = log.chat_log
+                novel_content = ''
+                choices = []
+                parsing_choices = False
 
-# 입력 데이터를 처리하는 로직을 구현
-# 예시로 입력 데이터를 대문자로 변환하는 간단한 예시를 제공
-@csrf_exempt
-def process_data(input_data):
-    if input_data is not None and input_data != "":
-        return process_data
-    else:
-        return ""
-
-
-@csrf_exempt
-def input_form(request, novel_id):
-    if request.method == 'POST':
-        print('Received POST request in input_form')
+                for line in answer.split('\n'):
+                    line = line.strip()
+                    if line.startswith('A'):
+                        parsing_choices = True
+                        choices.append(line)
+                    elif parsing_choices:
+                        choices.append(line)
+                    else:
+                        novel_content += line + '\n'
+                return JsonResponse({
+                    'response_message': answer,
+                    'response_content': novel_content,
+                    'choices': choices
+                })
+        return JsonResponse({
+            'message': 'No parsed result found for the given novel_id.'
+        })
+    def post(self, request, novel_id):
         input_data = request.POST.get('input_field', '')
-        response_message = send_message(input_data, novel_id)
-        processed_data = process_data(response_message)
-
         chat_log = ChatLog(novel_id=novel_id, role='user', chat_log=input_data)
         chat_log.save()
-
+        response_message = send_message(input_data, novel_id)
         # 응답 본문에 챗봇의 응답 포함
         response_data = {
             'input': input_data,
             'response': response_message['response_message']
         }
         return JsonResponse(response_data)
-    else:
-        return HttpResponse("Invalid request method")
-
 
 # 함수 설명: 사용자가 전달한 메시지를 받아와 send_message 함수로 전달한 후, 챗봇의 응답을 HTTP 응답으로 반환
 # chat 함수
@@ -130,7 +139,8 @@ def chat(request):
 @csrf_exempt
 
 def load_chat_logs(novel_id):
-    chat_logs = ChatLog.objects.filter(novel_id=novel_id).order_by('id')
+    chat_logs = ChatLog.objects.filter(novel_id=novel_id, role='assistant').last()
+    print(chat_logs)
     return chat_logs
 
 
@@ -162,39 +172,10 @@ def chat_with_history(request, novel_id):
 
     processed_data = process_data(message_content)
     return render(request, 'chat_with_history.html', {'result': processed_data, 'response_message': message_content})
-
-@csrf_exempt
-def get_parsed_result(request, novel_id):
-    chat_logs = load_chat_logs(novel_id)
-    # Retrieve the parsed result from the latest assistant's response
-    for log in reversed(chat_logs):
-        if log.role == 'assistant':
-            answer = log.chat_log
-            novel_content = ''
-            choices = []
-            parsing_choices = False
-
-            for line in answer.split('\n'):
-                line = line.strip()
-                if line.startswith('A'):
-                    parsing_choices = True
-                    choices.append(line)
-                elif parsing_choices:
-                    choices.append(line)
-                else:
-                    novel_content += line + '\n'
-            return JsonResponse({
-                'response_message': answer,
-                'response_content': novel_content,
-                'choices': choices
-            })
-    return JsonResponse({
-        'message': 'No parsed result found for the given novel_id.'
-    })
   
 @csrf_exempt
 def load_chat_logs(novel_id):
-    chat_logs = ChatLog.objects.filter(novel_id=novel_id).order_by('id')
+    chat_logs = ChatLog.objects.filter(novel_id=novel_id).order_by('create_at')
     return chat_logs
 
 
@@ -206,14 +187,13 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
         "Authorization": f'Bearer {os.getenv("OPENAI_SECRET_KEY")}',
         "Content-Type": "application/json",
     }
-    chat_logs = load_chat_logs(novel_id)
     messages = [
-        {'role': 'system', 'content': 'You are a helpful assistant.'},
-        {'role': 'user', 'content': message},
+        {'role': 'system', 'content': 'You are a helpful assistant.'}
     ]
+    chat_logs = load_chat_logs(novel_id)
     for log in chat_logs:
         messages.append({'role': log.role, 'content': log.chat_log})
-
+    print(messages)
     # Send message to GPT API
     data = {
         'model': 'gpt-3.5-turbo',
@@ -224,7 +204,6 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
         response = requests.post(url, headers=headers, json=data)
         response.raise_for_status()  # 4xx 또는 5xx 상태 코드에 대한 예외 발생
         response_json = response.json()  # 서버로부터 받은 응답을 JSON 형식으로 파싱
-
         # 챗봇의 응답을 가져와서 messages 리스트에 추가합니다
         answer = response_json["choices"][0]["message"]["content"]
 
@@ -244,12 +223,12 @@ class init_setting_APIView(APIView):
     def post(self, request):
         # 요청할 때 입력한 정보들로 serializer를 생성한다
         data = request.data.copy()
-        data["user"] = MyUser.objects.get(id=26).id
+        data["user"] = MyUser.objects.get(id=1).id
         novel_serializer = NovelSerializer(data=data)
         background_serializer = BackgroundSerializer(data=data)
-
+        print(background_serializer)
         character_array = request.data["character"]
-
+        print(character_array)
         if novel_serializer.is_valid():
             novel_instance = novel_serializer.save()
             if background_serializer.is_valid():
@@ -270,10 +249,11 @@ class init_setting_APIView(APIView):
                         status=400,
                     )
             response_data = {"novel": novel_instance.id}
+            message = getFirstQuestion(data["genre"], data["time_period"], data["time_projection"], data["summary"], data["character"])
+            send_message(message, novel_instance.id)
             return Response(response_data, status=201)
         else:
             return Response({"error": novel_serializer.errors}, status=400)
-
 
 def dalleIMG(query):
     OPENAI_API_KEY = os.getenv("OPENAI_SECRET_KEY")
@@ -378,7 +358,6 @@ def dalleIMG(query):
 
     # JSON 형식으로 응답 반환
     return JsonResponse({'image_url': image_s3_url})
-    
 
 def save_image_to_s3(image, bucket_name, file_name):
     try:
