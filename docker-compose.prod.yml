@@ -11,13 +11,24 @@ services:
       - 5173:5173
     stdin_open: true
     volumes:
-      - ./frontend/:/frontend
-      - build_folder:/frontend/build
+    # :을 기준으로 왼쪽은 빌드 이전의 로컬 폴더 오른쪽은 컨테이너 내부의 폴더
+      - ./frontend/:/frontend # 로컬의 ./frontend 폴더를 frontend 컨테이너의 /frontend로 한다.
+      # 하단 volumes에서 build_folder를 정의헀으므로 build_folder는 마치 변수와도 같이 취급된다.
+      # build_folder:/frontend/build가 실행될 때, frontend 컨테이너의 /frontend/build의 내용이 하단에서 null으로 정의했던 build_folder로 동기화된다.
+      # 즉, frontend 컨테이너의 /frontend/build의 내용이 build_folder로, 오른쪽에서 왼쪽으로 전달되는 것으로 이해하면 된다.
+      - build_folder:/frontend/build # 하단 volume에서 정의한 build_folder을 frontend 컨테이너의 /frontend/build/로 한다.
       - ./frontend/node_modules/:/frontend/node_modules
     tty: true
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
+
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
 
   pgadmin:
     image: dpage/pgadmin4
@@ -49,10 +60,10 @@ services:
     expose:
       - 80
     volumes:
-      - build_folder:/var/www/frontend
+      - build_folder:/var/www/frontend # 하단 volumes에서 정의한 build_folder를 nginx 컨테이너의 /var/www/frontend/로 한다.
       - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
     depends_on:
-      - frontend
+      - frontend # frontend 컨테이너에 의존관계를 설정한다. 따라서 nginx 컨테이너는 frontend 컨테이너가 실행된 이후에 실행된다.
 
 volumes:
-  build_folder: null
+  build_folder: null # frontend 컨테이너가 실행되기 전에는 빈 값이나, frontend 컨테이너가 실행된 이후에는 build_folder의 내용이 빌드된 리액트 정적 파일들이 있게 된다. 
