@@ -1,6 +1,6 @@
-import json
 import os
 import requests
+import openai
 from django.http import HttpResponse
 from .models import Novel
 from django.shortcuts import render, get_object_or_404
@@ -25,6 +25,12 @@ from rest_framework import serializers
 from rest_framework.decorators import api_view
 from rest_framework import status
 from users.models import MyUser
+import datetime
+import random
+from PIL import Image
+from io import BytesIO
+import boto3
+from django.conf import settings
 
 
 class NovelSerializer(serializers.ModelSerializer):
@@ -269,3 +275,129 @@ class init_setting_APIView(APIView):
             return Response(response_data, status=201)
         else:
             return Response({"error": novel_serializer.errors}, status=400)
+
+
+def dalleIMG(query):
+    OPENAI_API_KEY = os.getenv("OPENAI_SECRET_KEY")
+  
+    # openai API 키 인증
+    openai.api_key = OPENAI_API_KEY
+
+    # 모델 - GPT 3.5 Turbo 선택
+    model = "gpt-3.5-turbo"
+
+
+
+    messages = [
+        {
+            "role": "system",
+            "content": "You are a helpful assistant who is good at translating."
+        },
+        {
+            "role": "assistant",
+            "content": query
+        }
+    ]
+
+    # 사용자 메시지 추가
+    messages.append(
+        {
+            "role": "user", 
+            "content": "영어로 번역해주세요."
+        }
+    )
+
+    # ChatGPT API 호출하기
+    response = openai.ChatCompletion.create(
+        model=model,
+        messages=messages
+    )
+    answer3 = response['choices'][0]['message']['content']
+    print(answer3)
+
+    # 새 메시지 구성
+    messages = [
+        {
+            "role": "system",
+            "content": "You are an assistant who is good at creating prompts for image creation."
+        },
+        {
+            "role": "assistant",
+            "content": answer3
+        }
+    ]
+
+    # 사용자 메시지 추가
+    messages.append(
+        {
+            "role": "user", 
+            "content": "Condense up to 4 outward description to focus on nouns and adjectives separated by ,"
+        }
+    )
+
+    # ChatGPT API 호출하기
+    response = openai.ChatCompletion.create(
+        model=model,
+        messages=messages
+    )
+    answer4 = response['choices'][0]['message']['content']
+    print(answer4)
+
+    # 이미지 생성을 위한 프롬프트
+    params = ", concept art, realistic lighting, ultra-detailed, 8K, photorealism, digital art"
+    prompt = f"{answer4}{params}"
+    print(prompt)
+
+    response = openai.Image.create(
+    prompt=prompt,
+    n=1,
+    size="512x512"
+    )
+    image_url = response['data'][0]['url']
+    print(image_url)
+
+
+    # 이미지 다운로드
+    res = requests.get(image_url)
+    if res.status_code != 200:
+        return JsonResponse({'error': 'Failed to download image'}, status=400)
+    
+    # 이미지 열기
+    img = Image.open(BytesIO(res.content))
+
+    # S3에 이미지 저장
+    # 고유한 키 이름 생성
+    now = datetime.datetime.now()
+    random_suffix = random.randint(1000, 9999)
+    s3_filename = f'images/{now.strftime("%Y-%m-%d-%H-%M-%S")}_{random_suffix}.png'
+    
+    s3_bucket = 'team-a-s3-bucket'
+    
+    save_image_to_s3(img, s3_bucket, s3_filename)
+
+    # 저장된 이미지의 URL 생성
+    image_s3_url = f'{settings.AWS_S3_ENDPOINT_URL}/{s3_bucket}/{s3_filename}'
+
+    # JSON 형식으로 응답 반환
+    return JsonResponse({'image_url': image_s3_url})
+    
+
+def save_image_to_s3(image, bucket_name, file_name):
+    try:
+        # S3에 이미지 업로드
+        s3 = boto3.client(
+            's3',
+            aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+            region_name=settings.AWS_S3_REGION_NAME,
+            endpoint_url=settings.AWS_S3_ENDPOINT_URL
+        )
+        with BytesIO() as output:
+            image.save(output, format='PNG')
+            output.seek(0)
+            s3.upload_fileobj(output, bucket_name, file_name)
+        print(f"Image saved successfully to S3 bucket: {bucket_name}, with file name: {file_name}")
+        return True
+    except Exception as e:
+        print(f"Failed to save image to S3: {str(e)}")
+        return False
