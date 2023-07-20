@@ -1,28 +1,23 @@
-version: "3"
+version: '3'
 
 services:
+
   frontend:
     container_name: frontend
     build:
       context: ./frontend
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.prod
     ports:
       - 5173:5173
     stdin_open: true
     volumes:
       - ./frontend/:/frontend
-      - /frontend/node_modules
+      - build_folder:/frontend/build
+      - ./frontend/node_modules/:/frontend/node_modules
     tty: true
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
-
-  db:
-    image: postgres
-    environment:
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_DB=${DB_NAME}
 
   pgadmin:
     image: dpage/pgadmin4
@@ -30,18 +25,34 @@ services:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
       - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
     ports:
-      - "8080:80"
+      - '8080:80'
 
   web:
     build:
       context: ./backend
       dockerfile: Dockerfile
     volumes:
-      - ./backend:/backend/
+      - ./backend:/app/backend
     ports:
-      - "8000:8000"
+      - '8000:8000'
     depends_on:
       - db
     container_name: backend
-    environment:
-      - DJANGO_DEBUG=True
+
+  nginx:
+    container_name: nginx
+    restart: unless-stopped
+    build:
+      context: ./nginx
+    ports:
+      - "80:80"
+    expose:
+      - 80
+    volumes:
+      - build_folder:/var/www/frontend
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+    depends_on:
+      - frontend
+
+volumes:
+  build_folder: null
