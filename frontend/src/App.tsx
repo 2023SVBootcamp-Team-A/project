@@ -12,21 +12,21 @@ import Bookshelf from "./pages/Bookshelf";
 
 function App() {
   return (
-    <BrowserRouter>
+    <>
       <div className="App">
         <Background>
           <Routes>
             <Route path="/choice" element={<ChoicePage />} />
             <Route path="/setting" element={<SettingPage />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/login" element={<Login/>} />
+            <Route path="/login" element={<Login />} />
             <Route path="/mainpage" element={<MainPage />} />
             <Route path="/bookshelf" element={<Bookshelf />} />
           </Routes>
         </Background>
       </div>
       <NavigationBar />
-    </BrowserRouter>
+    </>
   );
 }
 
