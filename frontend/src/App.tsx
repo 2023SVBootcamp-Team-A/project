@@ -9,6 +9,7 @@ import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import MainPage from "./pages/MainPage";
 import Bookshelf from "./pages/Bookshelf";
+import SettingPageFirst from "./pages/SettingPageFirst";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/login" element={<Login/>} />
             <Route path="/mainpage" element={<MainPage />} />
             <Route path="/bookshelf" element={<Bookshelf />} />
+            <Route path="/settingfirst" element={<SettingPageFirst/>}/>
           </Routes>
         </Background>
       </div>
