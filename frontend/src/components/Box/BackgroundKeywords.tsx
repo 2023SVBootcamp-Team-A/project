@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-interface GenreKeywordsProps {
+interface BackgroundKeywordsProps {
   selectedKeywords: string[];
   onKeywordClick: (keyword: string) => void;
 }
 
-const GenreKeywords: React.FC<GenreKeywordsProps> = ({ selectedKeywords, onKeywordClick }) => {
+const BackgroundKeywords: React.FC<BackgroundKeywordsProps> = ({ selectedKeywords, onKeywordClick }) => {
   const [clickedKeywords, setClickedKeywords] = useState<string[]>([]);
 
   useEffect(() => {
@@ -62,4 +62,4 @@ const GenreKeywords: React.FC<GenreKeywordsProps> = ({ selectedKeywords, onKeywo
   );
 };
 
-export default GenreKeywords;
+export default BackgroundKeywords;

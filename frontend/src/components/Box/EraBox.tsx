@@ -1,53 +1,53 @@
 import React, { useState } from 'react';
 import addLogo from "/images/add.png";
 
-interface GenreBoxProps {
-  selectedGenres: string[];
-  onGenreClick: (genre: string) => void;
-  onGenreSubmit: (genre: string) => void;
+interface EraBoxProps {
+  selectedEras: string[];
+  onEraClick: (era: string) => void;
+  onEraSubmit: (era: string) => void;
 }
 
-const GenreBox: React.FC<GenreBoxProps> = ({ selectedGenres, onGenreClick, onGenreSubmit }) => {
+const EraBox: React.FC<EraBoxProps> = ({ selectedEras, onEraClick, onEraSubmit }) => {
  
-  const predefinedGenres = ['공포', 'SF', '로맨스', '판타지', '코미디', '아몰랑']; 
+  const predefinedEras = ['현대', '근대', '미래', '조선', 'ㅇㅇ', '아몰랑']; 
   
-  const [newGenre, setNewGenre] = useState('');
+  const [newEra, setNewEra] = useState('');
   const [enterPressed, setEnterPressed] = useState(false);
-  const [predefinedGenresState, setPredefinedGenresState] = useState<string[]>(predefinedGenres);
+  const [predefinedErasState, setPredefinedErasState] = useState<string[]>(predefinedEras);
   
 
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!enterPressed) {
-      setNewGenre(event.target.value);
+      setNewEra(event.target.value);
     }
   };
 
-  const handleAddGenre = () => {
-    if (newGenre.trim() !== '') {
-      onGenreSubmit(newGenre.trim());
-      setNewGenre('');
+  const handleAddEra = () => {
+    if (newEra.trim() !== '') {
+      onEraSubmit(newEra.trim());
+      setNewEra('');
     }
   };
 
-  const handleGenreClick = (genre: string) => {
-    if (selectedGenres.includes(genre)) {
-      onGenreClick(genre);
+  const handleEraClick = (era: string) => {
+    if (selectedEras.includes(era)) {
+      onEraClick(era);
     } else {
-      if (!predefinedGenres.includes(genre)) {
-        onGenreClick(genre);
+      if (!predefinedEras.includes(era)) {
+        onEraClick(era);
       }
     }
   };
 
-  const handlePredefinedGenreClick = (genre: string) => {
-    setPredefinedGenresState((prevState) => {
-      if (selectedGenres.includes(genre)) {
+  const handlePredefinedEraClick = (era: string) => {
+    setPredefinedErasState((prevState) => {
+      if (selectedEras.includes(era)) {
         return prevState;
       } else {
-        return prevState.includes(genre)
-          ? prevState.filter((g) => g !== genre) 
-          : [...prevState, genre]; 
+        return prevState.includes(era)
+          ? prevState.filter((g) => g !== era) 
+          : [...prevState, era]; 
       }
     });
   };
@@ -57,21 +57,21 @@ const GenreBox: React.FC<GenreBoxProps> = ({ selectedGenres, onGenreClick, onGen
       event.preventDefault();
       if (!enterPressed) {
         setEnterPressed(true);
-        handleAddGenre();
+        handleAddEra();
       }
     } else {
       setEnterPressed(false);
     }
   };
 
-  const renderGenreButtons = () => {
-    return predefinedGenres.map((genre, index) => (
+  const renderEraButtons = () => {
+    return predefinedEras.map((era, index) => (
       <div
         key={index}
         style={{
           width: '78.6px',
           height: '40.1px',
-          backgroundColor: predefinedGenresState.includes(genre) ? '#E3DDD7' : '#9B8F8F',
+          backgroundColor: predefinedErasState.includes(era) ? '#E3DDD7' : '#9B8F8F',
           borderRadius: '20px',
           margin: '5px',
           display: 'flex',
@@ -79,22 +79,22 @@ const GenreBox: React.FC<GenreBoxProps> = ({ selectedGenres, onGenreClick, onGen
           alignItems: 'center',
           cursor: 'pointer',
         }}
-        onClick={() => handlePredefinedGenreClick(genre)}
+        onClick={() => handlePredefinedEraClick(era)}
       >
-        <p style={{ color: predefinedGenresState.includes(genre) ? '#000000' : '#ffffff' }}>{genre}</p>
+        <p style={{ color: predefinedErasState.includes(era) ? '#000000' : '#ffffff' }}>{era}</p>
       </div>
     ));
   };
 
-  const renderSelectedGenres = () => {       
-    if (selectedGenres.length > 0) {
-      return selectedGenres.map((genre, index) => (
+  const renderSelectedEras = () => {       
+    if (selectedEras.length > 0) {
+      return selectedEras.map((era, index) => (
         <div
           key={index}
           style={{
             width: '78.6px',
             height: '40.1px',
-            backgroundColor: selectedGenres.includes(genre) ? '#9B8F8F' : '#E3DDD7',
+            backgroundColor: selectedEras.includes(era) ? '#9B8F8F' : '#E3DDD7',
             borderRadius: '20px',
             margin: '5px',
             display: 'flex',
@@ -102,9 +102,9 @@ const GenreBox: React.FC<GenreBoxProps> = ({ selectedGenres, onGenreClick, onGen
             alignItems: 'center',
             cursor: 'pointer',
           }}
-          onClick={() => handleGenreClick(genre)}
+          onClick={() => handleEraClick(era)}
         >
-          <p style={{ color: selectedGenres.includes(genre) ? '#FFFFF' : '#000000' }}>{genre}</p>
+          <p style={{ color: selectedEras.includes(era) ? '#FFFFF' : '#000000' }}>{era}</p>
         </div>
       ));
     } else {
@@ -121,14 +121,14 @@ const GenreBox: React.FC<GenreBoxProps> = ({ selectedGenres, onGenreClick, onGen
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', backgroundColor: '#C8C0B8', padding: '0 18px', marginBottom:'2px',boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.4)' }}>
-        <p style={{ color: '#FFFFFF', fontSize: '20px', marginLeft: '-10px'}}>장르</p>
+        <p style={{ color: '#FFFFFF', fontSize: '20px', marginLeft: '-10px'}}>시대</p>
         <div style={{ display: 'flex', alignItems: 'center', marginLeft: 'auto', flex: '1' }}>
           <input
             type="text"
-            value={newGenre}
+            value={newEra}
             onChange={handleInputChange}
             onKeyDown={handleInputKeyDown}
-            placeholder="원하는 장르를 추가하세요"
+            placeholder="원하는 시대를 추가하세요"
             style={{
               width: '100%',
               height: '44px',
@@ -141,7 +141,7 @@ const GenreBox: React.FC<GenreBoxProps> = ({ selectedGenres, onGenreClick, onGen
           <div>
             <button
             style={{display: 'flex', alignItems: 'center', cursor: 'pointer', fontSize: '10px', marginRight:'-12px' }}
-            onClick={handleAddGenre}
+            onClick={handleAddEra}
           >
           <img src={addLogo} alt="추가 버튼" className="w-8 h-7" />
           </button>
@@ -149,11 +149,11 @@ const GenreBox: React.FC<GenreBoxProps> = ({ selectedGenres, onGenreClick, onGen
         </div>
       </div>
       <div style={{ width: 'auto', height: 'auto', backgroundColor: '#FFFFFF', display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-        {renderGenreButtons()}
-        {renderSelectedGenres()}         
+        {renderEraButtons()}
+        {renderSelectedEras()}         
       </div>
     </div>
   );
 };
 
-export default GenreBox;  
+export default EraBox;  

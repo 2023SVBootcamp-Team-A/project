@@ -2,50 +2,38 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GenreBox from '../components/Box/GenreBox';
 import GenreKeywords from '../components/Box/GenreKeywords';
-// import MiddleBoxEra from '../components/Box/MiddleBoxEra';
-// import MiddleBoxKeywords from '../components/Box/MiddleBoxKeywords';
-// import RightBoxBackground from '../components/Box/RightBoxBackground';
-// import RightBoxKeywords from '../components/Box/RightBoxKeywords';
+import BackgroundBox from '../components/Box/BackgroundBox';
+import BackgroundKeywords from '../components/Box/BackgroundKeywords';
+import EraBox from '../components/Box/EraBox';
+import EraKeywords from '../components/Box/EraKeywords.tsx';
 
-// interface SettingPageFirstProps {
-//   // Define any props specific to SettingPageFirst here, if needed.
-// }
 
 const SettingPageFirst: React.FC = () => {
     const navigate = useNavigate();
 
-    const [genre, setGenre] = useState('');
-    const [selectedGenre, setSelectedGenre] = useState<string[]>([]);
+    const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+    const [selectedGenreKeywords, setSelectedGenreKeywords] = useState<string[]>([]);
 
-    const [background, setBackground] = useState<string[]>([]);
-    const [selectedBackground, setSelectedBackground] = useState<string[]>([]);
+    const [selectedBackgrounds, setSelectedBackgrounds] = useState<string[]>([]);
+    const [selectedBackgroundKeywords, setSelectedBackgroundKeywords] = useState<string[]>([]);
     
-    const [era, setEra] = useState<string[]>([]);
-    const [selectedEra, setSelectedEra] = useState<string[]>([]);
- 
-    const handleNextPageClick = () => {
-      navigate('/setting');
-  };
+    const [selectedEras, setSelectedEras] = useState<string[]>([]);
+    const [selectedEraKeywords, setSelectedEraKeywords] = useState<string[]>([]);
 
-  const handleGenreClick = (genre: string) => {
-    setSelectedGenre((prevGenres) => {
-      if (prevGenres.includes(genre)) {
-        return prevGenres.filter((g) => g !== genre);
+
+
+    const handleGenreClick = (genre: string) => {
+      setSelectedGenres((prevGenres) => {
+        if (prevGenres.includes(genre)) {
+          return prevGenres.filter((g) => g !== genre);
       } else {
-        return [...prevGenres, genre];
+          return [...prevGenres, genre];
       }
     });
-  };
-
-  const handleGenreKeywordSubmit = () => {
-    if (genre.trim() !== '') {
-      setSelectedGenre((prevGenres) => [...prevGenres, genre.trim()]);
-      setGenre('');
-    }
   };
 
   const handleGenreKeywordClick = (keyword: string) => {
-    setSelectedGenre((prevKeywords) => {
+    setSelectedGenreKeywords((prevKeywords) => {
       if (prevKeywords.includes(keyword)) {
         return prevKeywords;
       } else {
@@ -54,9 +42,24 @@ const SettingPageFirst: React.FC = () => {
     });
   };
 
+  const handleGenreKeywordSubmit = (keyword: string) => {
+      setSelectedGenreKeywords((prevKeywords) => [...prevKeywords, keyword]);
+    
+    };
 
-  const handleBackgroundClick = (keyword: string) => {
-    setSelectedBackground((prevKeywords) => {
+    //---//
+    const handleBackgroundClick = (background: string) => {
+      setSelectedBackgrounds((prevBackgrounds) => {
+        if (prevBackgrounds.includes(background)) {
+          return prevBackgrounds.filter((g) => g !== background);
+      } else {
+          return [...prevBackgrounds, background];
+      }
+    });
+  };
+
+  const handleBackgroundKeywordClick = (keyword: string) => {
+    setSelectedBackgroundKeywords((prevKeywords) => {
       if (prevKeywords.includes(keyword)) {
         return prevKeywords;
       } else {
@@ -64,75 +67,85 @@ const SettingPageFirst: React.FC = () => {
       }
     });
   };
-
-  const handleBackgroundKeywordClick = (background: string) => {
-    setSelectedBackground((prevBackgrounds) => {
-      if (prevBackgrounds.includes(background)) {
-        return prevBackgrounds.filter((b) => b !== background);
-      } else {
-        return [...prevBackgrounds, background];
-      }
-    });
-  };
-
-  const handleEraClick = (era: string) => {
-    setEra((prevEra) => {
-      if (prevEra.includes(era)) {
-        return prevEra.filter((e) => e !== era);
-      } else {
-        return [...prevEra, era];
-      }
-    });
-  };
-
-  const handleEraKeywordClick = (keyword: string) => {
-    setSelectedEra((prevKeywords) => {
-      if (prevKeywords.includes(keyword)) {
-        return prevKeywords;
-      } else {
-        return [...prevKeywords, keyword];
-      }
-    });
-  };
-  
 
   const handleBackgroundKeywordSubmit = (keyword: string) => {
-    setSelectedBackground((prevKeywords) => [...prevKeywords, keyword]);
-  };
+      setSelectedBackgroundKeywords((prevKeywords) => [...prevKeywords, keyword]);
+    
+    };
 
-  const handleEraKeywordSubmit = (keyword: string) => {
-    setSelectedEra((prevKeywords) => [...prevKeywords, keyword]);
-  };
+  const handleEraClick = (era: string) => {
+  setSelectedEras((prevEras) => {
+    if (prevEras.includes(era)) {
+      return prevEras.filter((g) => g !== era);
+  } else {
+      return [...prevEras, era];
+  }
+});
+};
+
+  const handleEraKeywordClick = (keyword: string) => {
+  setSelectedEraKeywords((prevKeywords) => {
+    if (prevKeywords.includes(keyword)) {
+      return prevKeywords;
+  } else {
+      return [...prevKeywords, keyword];
+  }
+  });
+};
+
+const handleEraKeywordSubmit = (keyword: string) => {
+  setSelectedEraKeywords((prevKeywords) => [...prevKeywords, keyword]);
+
+};
+    
+  const handleNextPageClick = () => {
+    navigate('/setting');
+};
+
+
 
   return (  
     <div className="min-h-screen flex flex-col mt-20 p-8">
     <div className="text-5xl font-bold text-center text-[#6B3A18]">Sketch Story</div>
-    <div className="h-5/6 w-5/6 bg-[#E9E7E4] flex flex-row p-4 mx-auto mt-10 mb-2 rounded-2xl">
+    <div className="h-5/6 w-5/6 bg-[#E9E7E4] flex flex-row p-4 mx-auto mt-5 mb-2 rounded-2xl">
     <div className="flex-1 mx-8">
-          <div className="bg-white p-4 mb-4 rounded-xl">
-          <div className="text-xl font-bold mb-2"> 장르 </div>          
+          <div className="bg-[#E9E7E4] p-4 mb-4 rounded-xl">        
           <GenreBox
-              selectedGenres={selectedGenre}
+              selectedGenres={selectedGenres}
               onGenreClick={handleGenreClick}
               onGenreSubmit={handleGenreKeywordSubmit}
               />
             <GenreKeywords
-              selectedGenres={selectedGenre}
+              selectedKeywords={selectedGenreKeywords}
               onKeywordClick={handleGenreKeywordClick}
             />
           </div>
         </div>
 
         <div className="flex-1 mx-8">
-          <div className="bg-white p-4 mb-4 rounded-xl">
-            <div className="text-xl font-bold mb-2"> 배경 </div>
-            {/* Add content for Middle Box */}
+          <div className="bg-[#E9E7E4] p-4 mb-4 rounded-xl">
+          <BackgroundBox
+              selectedBackgrounds={selectedBackgrounds}
+              onBackgroundClick={handleBackgroundClick}
+              onBackgroundSubmit={handleBackgroundKeywordSubmit}
+              />
+            <BackgroundKeywords
+              selectedKeywords={selectedBackgroundKeywords}
+              onKeywordClick={handleBackgroundKeywordClick}
+            />
           </div>
         </div>
         <div className="flex-1 mx-8">
-          <div className="bg-white p-4 mb-4 rounded-xl">
-            <div className="text-xl font-bold mb-2"> 시대 </div>
-            {/* Add content for Right Box */}
+          <div className="bg-[#E9E7E4] p-4 mb-4 rounded-xl">
+          <EraBox
+              selectedEras={selectedEras}
+              onEraClick={handleEraClick}
+              onEraSubmit={handleEraKeywordSubmit}
+              />
+            <EraKeywords       
+              selectedKeywords={selectedEraKeywords}
+              onKeywordClick={handleEraKeywordClick}
+            />
           </div>
         </div>
       </div>

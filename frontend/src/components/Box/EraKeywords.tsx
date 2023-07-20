@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-interface GenreKeywordsProps {
+interface EraKeywordsProps {
   selectedKeywords: string[];
   onKeywordClick: (keyword: string) => void;
 }
 
-const GenreKeywords: React.FC<GenreKeywordsProps> = ({ selectedKeywords, onKeywordClick }) => {
+const EraKeywords: React.FC<EraKeywordsProps> = ({ selectedKeywords, onKeywordClick }) => {
   const [clickedKeywords, setClickedKeywords] = useState<string[]>([]);
 
   useEffect(() => {
@@ -62,4 +62,4 @@ const GenreKeywords: React.FC<GenreKeywordsProps> = ({ selectedKeywords, onKeywo
   );
 };
 
-export default GenreKeywords;
+export default EraKeywords;
