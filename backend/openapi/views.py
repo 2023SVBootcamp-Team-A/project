@@ -177,13 +177,11 @@ def get_parsed_result(request, novel_id):
                     choices.append(line)
                 else:
                     novel_content += line + '\n'
-    print(choices)
-    return JsonResponse({
-        'response_message': answer,
-        'response_content': novel_content,
-        'choices': choices
-    })
-
+            return JsonResponse({
+                'response_message': answer,
+                'response_content': novel_content,
+                'choices': choices
+            })
     return JsonResponse({
         'message': 'No parsed result found for the given novel_id.'
     })
