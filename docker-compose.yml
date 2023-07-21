@@ -5,14 +5,13 @@ services:
     container_name: frontend
     build:
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     ports:
       - 5173:5173
     stdin_open: true
     volumes:
       - ./frontend/:/frontend
       - /frontend/node_modules
-      # - ./frontend/node_modules/:/frontend/node_modules
     tty: true
     environment:
       - NODE_ENV=development

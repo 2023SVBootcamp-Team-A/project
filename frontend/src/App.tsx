@@ -13,14 +13,14 @@ import SettingPageFirst from "./pages/SettingPageFirst";
 
 function App() {
   return (
-    <BrowserRouter>
+    <>
       <div className="App">
         <Background>
           <Routes>
             <Route path="/choice" element={<ChoicePage />} />
             <Route path="/setting" element={<SettingPage />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/login" element={<Login/>} />
+            <Route path="/login" element={<Login />} />
             <Route path="/mainpage" element={<MainPage />} />
             <Route path="/bookshelf" element={<Bookshelf />} />
             <Route path="/settingfirst" element={<SettingPageFirst/>}/>
@@ -28,7 +28,7 @@ function App() {
         </Background>
       </div>
       <NavigationBar />
-    </BrowserRouter>
+    </>
   );
 }
 
