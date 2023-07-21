@@ -31,6 +31,8 @@ from PIL import Image
 from io import BytesIO
 import boto3
 from django.conf import settings
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 
 class NovelSerializer(serializers.ModelSerializer):
@@ -38,33 +40,66 @@ class NovelSerializer(serializers.ModelSerializer):
         model = Novel
         fields = "__all__"
 
-
+@swagger_auto_schema(method='get', manual_parameters=[
+    openapi.Parameter('HTTP_ID', openapi.IN_HEADER, description="ID of the user who owns the novels", type=openapi.TYPE_STRING)
+])
 @api_view(["GET"])
 def novel_list(request):
+    """
+    list all the novels
+    ---
+    security:
+        - api_key: []
+    parameters:
+        - name: id
+          description: ID of the user who owns the novels
+          required: true
+          type: string
+          paramType: header
+    """
     if request.method == "GET":
         id_param = request.META.get("HTTP_ID")
         novels = Novel.objects.filter(user_id=id_param).order_by("-create_at")
-
         serializer = NovelSerializer(novels, many=True)
         data = serializer.data
         return Response(data, status=status.HTTP_200_OK)
+    
 
-
-@api_view(["GET", "POST"])
+@swagger_auto_schema(
+    methods=["GET", "DELETE"],
+    manual_parameters=[
+        openapi.Parameter('HTTP_ID', openapi.IN_HEADER, description="ID of the user who owns the novels", type=openapi.TYPE_STRING)
+    ]
+)
+@api_view(["GET", "DELETE"])
 def mynovels(request, novel_id):
+    """
+    Retrieve or delete a novel
+    ---
+    security:
+        - api_key: []
+    parameters:
+        - name: novel_id
+          description: ID of the novel to be retrieved or deleted
+          required: true
+          type: integer
+          paramType: path
+        - name: id
+          description: ID of the user who owns the novel
+          required: true
+          type: string
+          paramType: header
+    """
     if request.method == "GET":
         novel = get_object_or_404(Novel, pk=novel_id)
-        # 각 모델에 대한 필드 리스트
         character_fields = ["name", "personality"]
         novel_story_fields = ["page", "content", "image"]
         background_fields = ["genre", "time_period", "time_projection", "summary"]
 
-        # 해당 속성값을 딕셔너리로 가져오기
         character_data = list(novel.novel_character.values(*character_fields))
         novel_story_data = list(novel.novel_story.values(*novel_story_fields))
         background_data = list(novel.novel_background.values(*background_fields))
 
-        # 필드 리스트를 포함하여 직렬화된 데이터 생성
         serialized_data = {
             "novel": serializers.serialize("python", [novel]),
             "characters": character_data,
@@ -72,9 +107,8 @@ def mynovels(request, novel_id):
             "backgrounds": background_data,
         }
 
-        # JSON으로 변환
         return Response(serialized_data, status=status.HTTP_200_OK)
-    if request.method == "DELETE":
+    elif request.method == "DELETE":
         try:
             novel = Novel.objects.get(pk=novel_id)
             if request.META.get("HTTP_ID") != str(novel.user.id):
