@@ -1,3 +1,5 @@
+# 개발용 docker-compose 파일
+# 실행 방법: sudo docker compose up -d --build
 version: "3"
 
 services:
@@ -10,6 +12,7 @@ services:
       - 5173:5173
     stdin_open: true
     volumes:
+        # :을 기준으로 왼쪽은 빌드 이전의 로컬 폴더 오른쪽은 컨테이너 내부의 폴더
       - ./frontend/:/frontend
       - /frontend/node_modules
     tty: true
