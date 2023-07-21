@@ -80,7 +80,7 @@ export default function SettingPage() {
 
               {/* 캐릭터 추가버튼 */}
               {inputs.length < 5 && (
-                  <div className="flex justify-center mt-2">
+                  <div className="flex justify-center items-center mt-2">
                       <button
                           className="cursor-pointer w-7 h-7"
                           onClick={handleAddInput}
