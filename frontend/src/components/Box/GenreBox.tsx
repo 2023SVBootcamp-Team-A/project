@@ -9,7 +9,7 @@ interface GenreBoxProps {
 
 const GenreBox: React.FC<GenreBoxProps> = ({ selectedGenres, onGenreClick, onGenreSubmit }) => {
  
-  const predefinedGenres = ['공포', 'SF', '로맨스', '판타지', '코미디', '아몰랑']; 
+  const predefinedGenres = ['공포', 'SF', '로맨스', '판타지', '코미디', '액션','스포츠','성장','청춘','드라마','스릴러','타임루프','재난']; 
   
   const [newGenre, setNewGenre] = useState('');
   const [enterPressed, setEnterPressed] = useState(false);

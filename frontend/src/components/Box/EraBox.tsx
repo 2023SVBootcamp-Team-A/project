@@ -9,7 +9,7 @@ interface EraBoxProps {
 
 const EraBox: React.FC<EraBoxProps> = ({ selectedEras, onEraClick, onEraSubmit }) => {
  
-  const predefinedEras = ['현대', '근대', '미래', '조선', 'ㅇㅇ', '아몰랑']; 
+  const predefinedEras = ['현대', '근대', '미래', '중세', '르네상스', '고대','조선','고려',]; 
   
   const [newEra, setNewEra] = useState('');
   const [enterPressed, setEnterPressed] = useState(false);

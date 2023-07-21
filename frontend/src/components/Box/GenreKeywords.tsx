@@ -25,7 +25,7 @@ const GenreKeywords: React.FC<GenreKeywordsProps> = ({ selectedKeywords, onKeywo
     <div
       style={{
         width: '100%',
-        height: '450px',
+        height: '350px',
         backgroundColor: '#FFFFFF',
         overflow: 'auto',
         boxShadow: '0px 5px 5px 0px rgba(0, 0, 0, 0.25)',

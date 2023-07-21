@@ -9,7 +9,7 @@ interface BackgroundBoxProps {
 
 const BackgroundBox: React.FC<BackgroundBoxProps> = ({ selectedBackgrounds, onBackgroundClick, onBackgroundSubmit }) => {
  
-  const predefinedBackgrounds = ['한국', '배경', '어려워', '집단', '지성', '플리']; 
+  const predefinedBackgrounds = ['한국', '미국', '영국','독일', '로마', '일본','회사','고등학교','대학교','길거리','집','숲 속','내 마음속']; 
   
   const [newBackground, setNewBackground] = useState('');
   const [enterPressed, setEnterPressed] = useState(false);
