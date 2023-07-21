@@ -1,3 +1,4 @@
+# 실행 방법: sudo docker compose -f docker-compose.prod.yml up -d --build
 version: '3'
 
 services:
@@ -57,11 +58,15 @@ services:
       context: ./nginx
     ports:
       - "80:80"
+      # - "443:443" # 추후 SSL 적용시 사용할 것.
     expose:
       - 80
+      # - 443 # 추후 SSL 적용시 사용할 것.
     volumes:
       - build_folder:/var/www/frontend # 하단 volumes에서 정의한 build_folder를 nginx 컨테이너의 /var/www/frontend/로 한다.
       - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+      # - ./certbot/conf:/etc/letsencrypt # 추후 SSL 적용시 사용할 것
+      # - ./certbot/www:/var/www/certbot # 추후 SSL 적용시 사용할 것
     depends_on:
       - frontend # frontend 컨테이너에 의존관계를 설정한다. 따라서 nginx 컨테이너는 frontend 컨테이너가 실행된 이후에 실행된다.
 
