@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import ChoicePage from "./pages/ChoicePage";
 import NavigationBar from "./components/NavigationBar";

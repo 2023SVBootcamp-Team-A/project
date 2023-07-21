@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
 from users.forms import UserCreationForm
+
 from users.serializers import LoginSerializer, RegistrationSerializer
 from rest_framework import status
 from rest_framework.response import Response
