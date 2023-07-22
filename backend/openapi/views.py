@@ -18,6 +18,8 @@ from openapi.serializers import (
     BackgroundSerializer,
     CharacterSerializer,
     NovelSerializer,
+    BackgroundResponseSerializer,
+    NovelBackgroundRequestSerializer
 )
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -32,7 +34,8 @@ from PIL import Image
 from io import BytesIO
 import boto3
 from django.conf import settings
-
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 class NovelSerializer(serializers.ModelSerializer):
     class Meta:
@@ -220,15 +223,17 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
 
 
 class init_setting_APIView(APIView):
+    @swagger_auto_schema(
+        request_body=NovelBackgroundRequestSerializer,
+        responses={status.HTTP_201_CREATED: BackgroundResponseSerializer}
+    )
     def post(self, request):
         # 요청할 때 입력한 정보들로 serializer를 생성한다
         data = request.data.copy()
         data["user"] = MyUser.objects.get(id=1).id
         novel_serializer = NovelSerializer(data=data)
         background_serializer = BackgroundSerializer(data=data)
-        print(background_serializer)
         character_array = request.data["character"]
-        print(character_array)
         if novel_serializer.is_valid():
             novel_instance = novel_serializer.save()
             if background_serializer.is_valid():
