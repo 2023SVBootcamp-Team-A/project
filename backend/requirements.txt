@@ -6,8 +6,8 @@ boto3
 django-storages
 djangorestframework==3.14.0
 requests==2.31.0
+gunicorn
 django-cors-headers
 drf_yasg
 django-prometheus
-django-storages
 Pillow
