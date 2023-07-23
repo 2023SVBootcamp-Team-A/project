@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import ChoicePage from "./pages/ChoicePage";
 import NavigationBar from "./components/NavigationBar";
@@ -17,13 +17,13 @@ function App() {
       <div className="App">
         <Background>
           <Routes>
+            <Route path="" element={<MainPage />} />
             <Route path="/choice" element={<ChoicePage />} />
             <Route path="/setting" element={<SettingPage />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/mainpage" element={<MainPage />} />
             <Route path="/bookshelf" element={<Bookshelf />} />
-            <Route path="/settingfirst" element={<SettingPageFirst/>}/>
+            <Route path="/settingfirst" element={<SettingPageFirst />} />
           </Routes>
         </Background>
       </div>

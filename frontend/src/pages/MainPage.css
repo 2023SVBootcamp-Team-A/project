@@ -3,10 +3,7 @@
 @tailwind utilities;
 
 @layer components {
-  /* .carousel {
-    @apply px-4 py-8 bg-gray-300 rounded-lg relative mb-20;
-  }
-
+  /* 
   .swiper-button-prev {
     @apply swiper-button-white;
   }
@@ -35,8 +32,16 @@
     @apply absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 text-white text-2xl font-bold pt-4 pb-4 pr-2 pl-2 border-2 border-white;
   } */
 
+  .mainPage {
+    @apply my-10;
+  }
+
+  .carousel {
+    @apply w-[80%] px-4 py-8 bg-[#e2e1e0] rounded-lg relative mb-10 ml-[10%] mt-[5rem];
+  }
+
   .startButton {
-    @apply w-80 h-20 flex-shrink-0 rounded-full bg-mainpagegray mx-auto flex justify-center mb-20;
+    @apply w-80 h-20 flex-shrink-0 rounded-full bg-mainpagegray mx-auto flex justify-center mb-10;
   }
 
   .startButton p {
@@ -48,7 +53,7 @@
   }
 
   .button {
-    @apply flex justify-start ml-10 mr-10;
+    @apply flex justify-start ml-10 mr-10 hover:cursor-pointer;
   }
 
   .button p {
@@ -64,30 +69,22 @@
   }
 }
 
-.carousel {
-  padding: 1rem;
-  background-color: #e2e1e0;
-  border-radius: 20px;
-  position: relative;
-  margin-bottom: 5rem;
-}
-
 .swiper-button-prev,
 .swiper-button-next {
   color: #ffffff;
 }
 
-.swiper-button-prev:hover,
+/* .swiper-button-prev:hover,
 .swiper-button-next:hover {
   color: #00ff00;
-}
+} */
 
 .swiper-pagination-bullet-active {
   background-color: #ffffff;
 }
 
 .mySwiper {
-  width: 45rem;
+  width: 80%;
   height: 20rem;
   margin-top: 2rem;
   margin-bottom: 2rem;
@@ -131,7 +128,16 @@
   border: 2px solid white;
 }
 
-/* .startButton {
+/* 
+.carousel {
+  padding: 1rem;
+  background-color: #e2e1e0;
+  border-radius: 20px;
+  position: relative;
+  margin-bottom: 5rem;
+}
+
+.startButton {
   width: 20rem;
   height: 5rem;
   flex-shrink: 0;

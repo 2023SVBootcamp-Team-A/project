@@ -15,7 +15,7 @@
 
 @layer components {
   .title {
-    @apply mt-8 text-4xl font-bold text-[#612d08];
+    @apply mt-[6rem] text-4xl font-bold text-[#612d08];
   }
 
   .books-container {

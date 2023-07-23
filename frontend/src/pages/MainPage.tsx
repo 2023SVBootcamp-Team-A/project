@@ -3,6 +3,7 @@ import icon_door from ".././assets/icon_door.png";
 import icon_book from ".././assets/icon_book.png";
 import icon_user from ".././assets/icon_user.png";
 import icon_next from ".././assets/icon_next.png";
+import { useNavigate } from "react-router";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 // import required modules
@@ -14,6 +15,7 @@ import "swiper/css/navigation";
 import "./MainPage.css";
 
 export default function MainPage() {
+  const navigate = useNavigate();
   const [slides, setSlides] = useState([
     {
       image:
@@ -72,7 +74,7 @@ export default function MainPage() {
   // }, []);
 
   return (
-    <>
+    <div className="mainPage">
       {/* 캐루셀 */}
       {/* <!-- Slider main container --> */}
       <div className="carousel">
@@ -101,13 +103,23 @@ export default function MainPage() {
         </Swiper>
       </div>
       {/* 시작 버튼 */}
-      <div className="startButton">
+      <button
+        className="startButton"
+        onClick={() => {
+          navigate("/settingfirst");
+        }}
+      >
         <p>Click to Start</p>
-      </div>
+      </button>
       {/* 로그인 회원가입 마이페이지 */}
       <div className="btnGroup">
         {/* 로그인 */}
-        <div className="button">
+        <div
+          className="button"
+          onClick={() => {
+            navigate("/login");
+          }}
+        >
           <img
             src={icon_user}
             id="userIcon"
@@ -118,7 +130,12 @@ export default function MainPage() {
           <img src={icon_next} className="iconNext" />
         </div>
         {/* 회원가입 */}
-        <div className="button">
+        <div
+          className="button"
+          onClick={() => {
+            navigate("/signup");
+          }}
+        >
           <img
             src={icon_book}
             id="joinIcon"
@@ -129,7 +146,12 @@ export default function MainPage() {
           <img src={icon_next} className="iconNext" />
         </div>
         {/* 마이페이지 */}
-        <div className="button">
+        <div
+          className="button"
+          onClick={() => {
+            navigate("/bookshelf");
+          }}
+        >
           <img
             src={icon_door}
             id="bookshelfIcon"
@@ -140,6 +162,6 @@ export default function MainPage() {
           <img src={icon_next} className="iconNext" />
         </div>
       </div>
-    </>
+    </div>
   );
 }
