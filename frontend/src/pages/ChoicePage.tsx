@@ -16,7 +16,7 @@ export default function ChociePage() {
 
     const GetData = async () => {
         try {
-          const response = await axios.get<StoryResponse>('http://localhost:8000/api/v1/novels/8', {
+          const response = await axios.get<StoryResponse>('http://localhost:8000/api/v1/novels/1', {
                 headers: {
                     "Content-Type": "application/json",
                     "Accept": "application/json",

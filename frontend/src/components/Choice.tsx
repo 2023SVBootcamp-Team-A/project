@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SelectBox from './SelectBox';
 import Loading from '../components/Loading'
 
@@ -9,6 +9,7 @@ interface ChoiceProps {
 }
 
 export default function Choice({ story, question, choices }: ChoiceProps) {
+    const selectArray = ["A", "B", "C", "D"]
     return (
       <div className="w-screen h-screen bg-white/60 absolute top-0 left-0 overflow-scroll pt-32">
         <div className="flex flex-col items-center justify-center h-full">
@@ -39,9 +40,12 @@ export default function Choice({ story, question, choices }: ChoiceProps) {
             </div>
           </div>
           <div className="lg:w-7/12 md:w-9/12 w-full px-6 flex flex-col space-y-2">
-            {choices.map((choice) => (
-              <SelectBox seq={choice.id} question={choice.choice} />
-            ))}
+            {
+              choices.map((choice, item) => (
+                <SelectBox seq={selectArray[item]} question={choice.choice} />
+              ))
+              
+            }
           </div>
         </div>
       </div>

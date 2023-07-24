@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import Loading from './Loading';
 import axios from 'axios';
-import { Link } from "react-router-dom";
+import { Link , useLocation } from "react-router-dom";
 
 interface SelectBoxProps {
     seq: string;
@@ -14,24 +14,17 @@ interface PostResponse {
 
 export default function SelectBox({seq, question}: SelectBoxProps) {
 
+    let location = useLocation();
     const [loading, setLoading] = useState(false);
     const PostResponse = async () => {
         setLoading(true);
         await axios
             .post(
-                "http://localhost:8000/api/v1/novels/8",
-                {
-                    input_form: seq,
-                },
-                {
-                    headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                    },
-                }
+                "http://localhost:8000/api/v1/novels/1",
+                {"input_form": seq}
             )
         setLoading(false);
-        <Link to="/choice" />
+        window.location.reload();
     };
     return (
         <div>
