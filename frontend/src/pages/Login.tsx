@@ -25,25 +25,24 @@ function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    try {
-      const response = await axios.post(
-        "http://localhost:8000/user/login/",
-        formData
-      );
-
-      if (response.status === 200) {
-        const token = response.data.token;
-        localStorage.setItem("token", token);
-        console.log("로그인 성공!");
-        navigate("/mainpage");
-      } else {
+    const response = await axios
+      .post("http://localhost:8000/api/v1/user/login/", formData)
+      .then((response) => {
         console.log(response);
-        console.log("로그인 실패");
-      }
-    } catch (error) {
-      console.error("API 요청 중 오류가 발생하였습니다.", error);
-      console.log(formData);
-    }
+        if (response.status === 200) {
+          const token = response.data;
+          localStorage.setItem("id", token);
+          console.log("로그인 성공!");
+          navigate("/");
+        } else {
+          console.log(response);
+          console.log("로그인 실패");
+        }
+      })
+      .catch((error) => {
+        console.error("API 요청 중 오류가 발생하였습니다.", error);
+        console.log(formData);
+      });
   };
 
   return (
@@ -94,16 +93,16 @@ function Login() {
             >
               로그인
             </button>
-            <div
-              className="text-mainpagegray mt-3 text-center hover:cursor-pointer"
-              onClick={() => {
-                navigate("/signup");
-              }}
-            >
-              회원가입
-            </div>
           </div>
         </form>
+        <div
+          className="text-mainpagegray mt-3 text-center hover:cursor-pointer"
+          onClick={() => {
+            navigate("/signup");
+          }}
+        >
+          회원가입
+        </div>
       </div>
     </div>
   );
