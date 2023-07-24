@@ -5,7 +5,7 @@ import Loading from '../components/Loading'
 interface ChoiceProps {
     story: string;
     question: string;
-    choices: { id: string, choice: string }[];
+    choices: { choice: string }[];
 }
 
 export default function Choice({ story, question, choices }: ChoiceProps) {
@@ -24,8 +24,8 @@ export default function Choice({ story, question, choices }: ChoiceProps) {
                 }}
               >
                 <span className="h-4/6 text-xl">
-                  {story.split("\n").map((line) => (
-                    <span>{line}<br/></span>
+                  {story.split("\n").map((line, index) => (
+                    <span key={index}>{line}<br/></span>
                   ))}
                 </span>
               </div>
@@ -41,8 +41,8 @@ export default function Choice({ story, question, choices }: ChoiceProps) {
           </div>
           <div className="lg:w-7/12 md:w-9/12 w-full px-6 flex flex-col space-y-2">
             {
-              choices.map((choice, item) => (
-                <SelectBox seq={selectArray[item]} question={choice.choice} />
+              choices.map((choice, index) => (
+                <SelectBox key={index} seq={selectArray[index]} question={choice.choice} />
               ))
               
             }
