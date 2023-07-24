@@ -14,7 +14,7 @@ const login = async (formData: FormData) => {
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
-          const token = response.data.email;
+          const token = response.data;
           localStorage.setItem("id", token);
           console.log("로그인 성공!");
         } else {
