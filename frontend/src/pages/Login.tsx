@@ -7,6 +7,30 @@ interface FormData {
   password: string;
 }
 
+const login = async (formData: FormData) => {
+  try {
+    const res = await axios
+      .post("http://localhost:8000/api/v1/user/login/", formData)
+      .then(function (response) {
+        console.log(response);
+        if (response.status === 200) {
+          const token = response.data.token;
+          localStorage.setItem("token", token);
+          console.log("로그인 성공!");
+        } else {
+          console.log(response);
+          console.log("로그인 실패");
+        }
+      })
+      .catch((error) => {
+        console.error("API 요청 중 오류가 발생하였습니다.", error);
+        console.log(formData);
+      });
+  } catch {
+    console.log("로그인 오류!");
+  }
+};
+
 function Login() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
@@ -24,26 +48,8 @@ function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    try {
-      const response = await axios.post(
-        "http://localhost:8000/user/login/",
-        formData
-      );
-
-      if (response.status === 200) {
-        const token = response.data.token;
-        localStorage.setItem("token", token);
-        console.log("로그인 성공!");
-        navigate("/mainpage");
-      } else {
-        console.log(response);
-        console.log("로그인 실패");
-      }
-    } catch (error) {
-      console.error("API 요청 중 오류가 발생하였습니다.", error);
-      console.log(formData);
-    }
+    void login(formData);
+    navigate("/");
   };
 
   return (
@@ -94,16 +100,16 @@ function Login() {
             >
               로그인
             </button>
-            <div
-              className="text-mainpagegray mt-3 text-center hover:cursor-pointer"
-              onClick={() => {
-                navigate("/signup");
-              }}
-            >
-              회원가입
-            </div>
           </div>
         </form>
+        <div
+          className="text-mainpagegray mt-3 text-center hover:cursor-pointer"
+          onClick={() => {
+            navigate("/signup");
+          }}
+        >
+          회원가입
+        </div>
       </div>
     </div>
   );
