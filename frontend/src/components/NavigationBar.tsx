@@ -37,12 +37,16 @@ export default function NavigationBar() {
               </div>
             </div>
             <div className="hidden md:flex w-4/6 h-16 bg-[#BCBAB8] flex-row items-center">
-              <div className="flex-1 flex flex-col items-center">
+              {/* <div className="flex-1 flex flex-col items-center">
                 <NavigationBarBtn link="/">Home</NavigationBarBtn>
-              </div>
-              <div className="hidden md:flex flex-1 flex-col items-center">
-                <NavigationBarBtn link="/mypage">My page</NavigationBarBtn>
-              </div>
+              </div> */}
+              {authState.isLoggedIn ? (
+                <div className="hidden md:flex flex-1 flex-col items-center">
+                  <NavigationBarBtn link="/mypage">My page</NavigationBarBtn>
+                </div>
+              ) : (
+                <></>
+              )}
               <div className="hidden md:flex flex-1 flex-col items-center">
                 <NavigationBarBtn link="/bookshelf">Bookshelf</NavigationBarBtn>
               </div>
@@ -127,14 +131,18 @@ export default function NavigationBar() {
           </div>
           <div className="w-full bg-[#BCBAB8]">
             <div className={classNames("md:hidden", { hidden: !menuToggle })}>
-              <a
-                className="block py-2 px-4 text-sm hover:bg-gray-200 hover:cursor-pointer"
-                onClick={() => {
-                  navigate("/mypage");
-                }}
-              >
-                my page
-              </a>
+              {authState.isLoggedIn ? (
+                <a
+                  className="block py-2 px-4 text-sm hover:bg-gray-200 hover:cursor-pointer"
+                  onClick={() => {
+                    navigate("/mypage");
+                  }}
+                >
+                  my page
+                </a>
+              ) : (
+                <></>
+              )}
               <a
                 className="block py-2 px-4 text-sm hover:bg-gray-200 hover:cursor-pointer"
                 onClick={() => {
