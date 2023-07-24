@@ -1,10 +1,40 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Choice from '../components/Choice';
 import data from '../data/choice-data.json';
+import axios from "axios";
+
+interface StoryResponse {
+    "response_content": string,
+    "response_message": string,
+    choices: string[]
+}
 
 export default function ChociePage() {
     
     const [visible, setVisible] = useState(false);
+    const [resposeData, setResponseData] = useState<StoryResponse>();
+
+    const GetData = async () => {
+        try {
+            const response = await axios.get<StoryResponse>('http://localhost:8000/api/v1/novels/1', {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "Authorization": `` // 추후 관리하는 Token 삽입 할 것
+                    }
+                }
+            );
+            setResponseData(response.data);
+        } catch(err) {
+          console.log(err);
+        }
+    }
+    
+      useEffect(() => {
+        GetData(); 
+      }, []);
+
+
     return(
         <div className="w-screen h-screen min-h-screen relative overflow-scroll">
             <div
@@ -24,12 +54,12 @@ export default function ChociePage() {
                 </button>             
                 {!visible && (
                     <>
-                        <div className="w-full h-16 absolute left-0 top-3.5 bg-white/60" />
+                        <div className="w-full h-16 absolute left-0 top-3.5 md:bg-white/60" />
                         <div className="w-full h-16 absolute left-0 bottom-0 bg-white/60" />
                     </>
                 )}
             </div>
-            {visible && <Choice story={data.story} question={data.question} choices={data.choices} />}
+            {!(resposeData == null) && visible && <Choice story={resposeData.response_content} question={data.question} choices={data.choices} />}
         </div>
     );
 }
