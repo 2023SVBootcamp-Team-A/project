@@ -7,29 +7,6 @@ interface FormData {
   password: string;
 }
 
-const login = async (formData: FormData) => {
-  try {
-    const response = await axios
-      .post("http://localhost:8000/api/v1/user/login/", formData)
-      .then((response) => {
-        console.log(response);
-        if (response.status === 200) {
-          const token = response.data;
-          localStorage.setItem("id", token);
-          console.log("로그인 성공!");
-        } else {
-          console.log("로그인 실패");
-        }
-      })
-      .catch((error) => {
-        console.error("API 요청 중 오류가 발생하였습니다.", error);
-        console.log(formData);
-      });
-  } catch {
-    console.log("로그인 오류!");
-  }
-};
-
 function Login() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
@@ -47,10 +24,25 @@ function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    void login(formData);
-    console.log(localStorage.getItem("id"));
-    // if (localStorage.)
-    navigate("/");
+
+    const response = await axios
+      .post("http://localhost:8000/api/v1/user/login/", formData)
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          const token = response.data;
+          localStorage.setItem("id", token);
+          console.log("로그인 성공!");
+          navigate("/");
+        } else {
+          console.log(response);
+          console.log("로그인 실패");
+        }
+      })
+      .catch((error) => {
+        console.error("API 요청 중 오류가 발생하였습니다.", error);
+        console.log(formData);
+      });
   };
 
   return (
