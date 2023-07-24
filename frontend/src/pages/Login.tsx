@@ -9,16 +9,15 @@ interface FormData {
 
 const login = async (formData: FormData) => {
   try {
-    const res = await axios
+    const response = await axios
       .post("http://localhost:8000/api/v1/user/login/", formData)
-      .then(function (response) {
+      .then((response) => {
         console.log(response);
         if (response.status === 200) {
-          const token = response.data.token;
-          localStorage.setItem("token", token);
+          const token = response.data.email;
+          localStorage.setItem("id", token);
           console.log("로그인 성공!");
         } else {
-          console.log(response);
           console.log("로그인 실패");
         }
       })
