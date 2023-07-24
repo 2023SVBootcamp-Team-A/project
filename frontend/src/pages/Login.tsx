@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../redux/authActions";
 
 interface FormData {
   email: string;
@@ -9,6 +11,7 @@ interface FormData {
 
 function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
@@ -32,6 +35,7 @@ function Login() {
         if (response.status === 200) {
           const token = response.data;
           localStorage.setItem("id", token);
+          dispatch(loginSuccess());
           console.log("로그인 성공!");
           navigate("/");
         } else {
