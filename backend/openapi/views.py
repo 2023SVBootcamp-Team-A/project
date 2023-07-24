@@ -1,52 +1,48 @@
 import os
+import random
 import requests
-import openai
-from django.http import HttpResponse
-from .models import Novel
+import datetime
+from io import BytesIO
+
+import boto3
+from PIL import Image
+
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
-from django.http import JsonResponse
-from .models import ChatLog
-from rest_framework import serializers
+from django.core.paginator import Paginator, EmptyPage
+from django.conf import settings
+
+from rest_framework import serializers, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status
-from .QuestionList import getFirstQuestion
+from rest_framework.views import APIView
 
+from users.models import MyUser
+from .models import Novel, ChatLog
+from .QuestionList import getFirstQuestion
 from openapi.serializers import (
     BackgroundSerializer,
     CharacterSerializer,
     NovelSerializer,
     BackgroundResponseSerializer,
-    NovelBackgroundRequestSerializer
+    NovelBackgroundRequestSerializer,
 )
-from rest_framework.response import Response
-from rest_framework.views import APIView
 
-from rest_framework import serializers
-from rest_framework.decorators import api_view
-from rest_framework import status
-from users.models import MyUser
-import datetime
-import random
-from PIL import Image
-from io import BytesIO
-import boto3
-from django.conf import settings
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
-class NovelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Novel
-        fields = "__all__"
+import openai
+
+
 
 @swagger_auto_schema(method='get', manual_parameters=[
-    openapi.Parameter('HTTP_ID', openapi.IN_HEADER, description="ID of the user who owns the novels", type=openapi.TYPE_STRING)
+    openapi.Parameter('id', openapi.IN_HEADER, description="ID of the user who owns the novels", type=openapi.TYPE_STRING),
+    openapi.Parameter('page', openapi.IN_QUERY, description="novel list page", type=openapi.TYPE_INTEGER),
 ])
 @api_view(["GET"])
-def novel_list(request):
+def mynovel_list(request):
     """
     list all the novels
     ---
@@ -60,12 +56,83 @@ def novel_list(request):
           paramType: header
     """
     if request.method == "GET":
+        per_page = 12  # 페이지당 노벨 수
         id_param = request.META.get("HTTP_ID")
         novels = Novel.objects.filter(user_id=id_param).order_by("-create_at")
-        serializer = NovelSerializer(novels, many=True)
-        data = serializer.data
-        return Response(data, status=status.HTTP_200_OK)
-    
+
+        paginator = Paginator(novels, per_page)
+        page_number = request.GET.get("page", "1")  # 요청한 페이지 번호를 가져옴
+
+        try:
+            page_obj = paginator.page(page_number)
+            serializer = NovelSerializer(page_obj, many=True)
+
+            data = {
+                "novel": serializer.data,
+                "meta": {
+                    "page": page_obj.number,
+                    "pages": paginator.num_pages,
+                    "prev_page": page_obj.previous_page_number() if page_obj.has_previous() else None,
+                    "next_page": page_obj.next_page_number() if page_obj.has_next() else None,
+                    "has_next": page_obj.has_next(),
+                    "has_prev": page_obj.has_previous(),
+                }
+            }
+
+            return Response(data, status=status.HTTP_200_OK)
+
+        except EmptyPage:
+            return Response({"error": "Invalid page number"}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+@swagger_auto_schema(
+    method='get',
+    manual_parameters=[
+        openapi.Parameter('page', openapi.IN_QUERY, description="novel list page", type=openapi.TYPE_INTEGER),
+    ]
+)        
+@api_view(["GET"])
+def novel_list(request):
+    """
+    list all the novels
+    ---
+    security:
+        - api_key: []
+    parameters:
+        - name: page
+          description: novel list page
+          required: false
+          type: integer
+          paramType: query
+    """
+    if request.method == "GET":
+        per_page = 12  # 페이지당 노벨 수
+        novels = Novel.objects.filter().order_by("-create_at")
+
+        paginator = Paginator(novels, per_page)
+        page_number = request.GET.get("page", "1")  # 요청한 페이지 번호를 가져옴
+
+        try:
+            page_obj = paginator.page(page_number)
+            serializer = NovelSerializer(page_obj, many=True)
+
+            data = {
+                "novel": serializer.data,
+                "meta": {
+                    "page": page_obj.number,
+                    "pages": paginator.num_pages,
+                    "prev_page": page_obj.previous_page_number() if page_obj.has_previous() else None,
+                    "next_page": page_obj.next_page_number() if page_obj.has_next() else None,
+                    "has_next": page_obj.has_next(),
+                    "has_prev": page_obj.has_previous(),
+                }
+            }
+
+            return Response(data, status=status.HTTP_200_OK)
+
+        except EmptyPage:
+            return Response({"error": "Invalid page number"}, status=status.HTTP_400_BAD_REQUEST)
+        
 
 @swagger_auto_schema(
     methods=["GET", "DELETE"],
