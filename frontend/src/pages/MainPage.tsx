@@ -162,6 +162,7 @@ export default function MainPage() {
           <img src={icon_next} className="iconNext" />
         </div>
       </div>
+      <div>설마 진짜 되나?</div>
     </div>
   );
 }

@@ -48,6 +48,8 @@ function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     void login(formData);
+    console.log(localStorage.getItem("id"));
+    // if (localStorage.)
     navigate("/");
   };
 
