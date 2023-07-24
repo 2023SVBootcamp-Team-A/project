@@ -228,6 +228,8 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
     chat_logs = load_chat_logs(novel_id)
     for log in chat_logs:
         messages.append({'role': log.role, 'content': log.chat_log})
+    if len(messages) == 1:
+        messages.append({'role': 'user', 'content': message})
     print(messages)
     # Send message to GPT API
     data = {
@@ -244,7 +246,7 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
 
         chat_log = ChatLog(novel_id=novel_id, role='assistant', chat_log=answer)
         chat_log.save()
-
+        print(answer)
         return {
             'response_message': answer
         }
