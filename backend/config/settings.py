@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import environ
 from pathlib import Path
 import os
+from datetime import timedelta
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -27,13 +28,13 @@ environ.Env.read_env()
 # SECURITY WARNING: keep the secret key used in production secret!
 
 
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = env("SECRET_KEY")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['backend','localhost']
+ALLOWED_HOSTS = ["backend", "localhost"]
 
 
 # Application definition
@@ -49,8 +50,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'corsheaders',
+    "corsheaders",
     "django_prometheus",
+    "rest_framework_simplejwt",
 ]
 
 MIDDLEWARE = [
@@ -62,7 +64,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'corsheaders.middleware.CorsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     "django_prometheus.middleware.PrometheusAfterMiddleware",
 ]
 
@@ -155,10 +157,11 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
 
-CORS_ORIGIN_WHITELIST = ['http://127.0.0.1:5173'
-                         ,'http://localhost:5173'
-                         ,'http://frontend:5173'
-                         ]
+CORS_ORIGIN_WHITELIST = [
+    "http://127.0.0.1:5173",
+    "http://localhost:5173",
+    "http://frontend:5173",
+]
 CORS_ALLOW_CREDENTIALS = True
 # AWS S3 관련 설정 추가
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
@@ -180,19 +183,22 @@ AWS_S3_ENDPOINT_URL = AWS_S3_ENDPOINT_URL
 # STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
 REST_FRAMEWORK = {
-    "DEFAULT_RENDERER_CLASSES": [
+    "DEFAULT_REND`ERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",
         "rest_framework.renderers.BrowsableAPIRenderer",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
+}
+
+JWT_Key = env("JWT_KEY")
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(seconds=10),  # 원하는 만료 시간 설정 (예: 15분)
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),  # refresh 토큰 만료 시간 (예: 1일)
 }
 
 
 SWAGGER_SETTINGS = {
-    'SECURITY_DEFINITIONS': {
-        'api_key': {
-            'type': 'apiKey',
-            'in': 'header',
-            'name': 'HTTP_ID'
-        }
+    "SECURITY_DEFINITIONS": {
+        "api_key": {"type": "apiKey", "in": "header", "name": "HTTP_ID"}
     },
 }

@@ -36,11 +36,23 @@ from drf_yasg import openapi
 import openai
 
 
-
-@swagger_auto_schema(method='get', manual_parameters=[
-    openapi.Parameter('id', openapi.IN_HEADER, description="ID of the user who owns the novels", type=openapi.TYPE_STRING),
-    openapi.Parameter('page', openapi.IN_QUERY, description="novel list page", type=openapi.TYPE_INTEGER),
-])
+@swagger_auto_schema(
+    method="get",
+    manual_parameters=[
+        openapi.Parameter(
+            "id",
+            openapi.IN_HEADER,
+            description="ID of the user who owns the novels",
+            type=openapi.TYPE_STRING,
+        ),
+        openapi.Parameter(
+            "page",
+            openapi.IN_QUERY,
+            description="novel list page",
+            type=openapi.TYPE_INTEGER,
+        ),
+    ],
+)
 @api_view(["GET"])
 def mynovel_list(request):
     """
@@ -72,25 +84,36 @@ def mynovel_list(request):
                 "meta": {
                     "page": page_obj.number,
                     "pages": paginator.num_pages,
-                    "prev_page": page_obj.previous_page_number() if page_obj.has_previous() else None,
-                    "next_page": page_obj.next_page_number() if page_obj.has_next() else None,
+                    "prev_page": page_obj.previous_page_number()
+                    if page_obj.has_previous()
+                    else None,
+                    "next_page": page_obj.next_page_number()
+                    if page_obj.has_next()
+                    else None,
                     "has_next": page_obj.has_next(),
                     "has_prev": page_obj.has_previous(),
-                }
+                },
             }
 
             return Response(data, status=status.HTTP_200_OK)
 
         except EmptyPage:
-            return Response({"error": "Invalid page number"}, status=status.HTTP_400_BAD_REQUEST)
-        
+            return Response(
+                {"error": "Invalid page number"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
 
 @swagger_auto_schema(
-    method='get',
+    method="get",
     manual_parameters=[
-        openapi.Parameter('page', openapi.IN_QUERY, description="novel list page", type=openapi.TYPE_INTEGER),
-    ]
-)        
+        openapi.Parameter(
+            "page",
+            openapi.IN_QUERY,
+            description="novel list page",
+            type=openapi.TYPE_INTEGER,
+        ),
+    ],
+)
 @api_view(["GET"])
 def novel_list(request):
     """
@@ -121,24 +144,35 @@ def novel_list(request):
                 "meta": {
                     "page": page_obj.number,
                     "pages": paginator.num_pages,
-                    "prev_page": page_obj.previous_page_number() if page_obj.has_previous() else None,
-                    "next_page": page_obj.next_page_number() if page_obj.has_next() else None,
+                    "prev_page": page_obj.previous_page_number()
+                    if page_obj.has_previous()
+                    else None,
+                    "next_page": page_obj.next_page_number()
+                    if page_obj.has_next()
+                    else None,
                     "has_next": page_obj.has_next(),
                     "has_prev": page_obj.has_previous(),
-                }
+                },
             }
 
             return Response(data, status=status.HTTP_200_OK)
 
         except EmptyPage:
-            return Response({"error": "Invalid page number"}, status=status.HTTP_400_BAD_REQUEST)
-        
+            return Response(
+                {"error": "Invalid page number"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
 
 @swagger_auto_schema(
     methods=["GET", "DELETE"],
     manual_parameters=[
-        openapi.Parameter('HTTP_ID', openapi.IN_HEADER, description="ID of the user who owns the novels", type=openapi.TYPE_STRING)
-    ]
+        openapi.Parameter(
+            "HTTP_ID",
+            openapi.IN_HEADER,
+            description="ID of the user who owns the novels",
+            type=openapi.TYPE_STRING,
+        )
+    ],
 )
 @api_view(["GET", "DELETE"])
 def mynovels(request, novel_id):
@@ -149,15 +183,15 @@ def mynovels(request, novel_id):
         - api_key: []
     parameters:
         - name: novel_id
-          description: ID of the novel to be retrieved or deleted
-          required: true
-          type: integer
-          paramType: path
+        description: ID of the novel to be retrieved or deleted
+        required: true
+        type: integer
+        paramType: path
         - name: id
-          description: ID of the user who owns the novel
-          required: true
-          type: string
-          paramType: header
+        description: ID of the user who owns the novel
+        required: true
+        type: string
+        paramType: header
     """
     if request.method == "GET":
         novel = get_object_or_404(Novel, pk=novel_id)
@@ -189,45 +223,50 @@ def mynovels(request, novel_id):
     else:
         return JsonResponse({"error": "이 메소드는 허용되지 않습니다."}, status=405)
 
+
 class NovelView(APIView):
     def get(self, request, novel_id):
         chat_logs = load_chat_logs(novel_id)
         # Retrieve the parsed result from the latest assistant's response
         for log in reversed(chat_logs):
-            if log.role == 'assistant':
+            if log.role == "assistant":
                 answer = log.chat_log
-                novel_content = ''
+                novel_content = ""
                 choices = []
                 parsing_choices = False
 
-                for line in answer.split('\n'):
+                for line in answer.split("\n"):
                     line = line.strip()
-                    if line.startswith('A'):
+                    if line.startswith("A"):
                         parsing_choices = True
                         choices.append(line)
                     elif parsing_choices:
                         choices.append(line)
                     else:
-                        novel_content += line + '\n'
-                return JsonResponse({
-                    'response_message': answer,
-                    'response_content': novel_content,
-                    'choices': choices
-                })
-        return JsonResponse({
-            'message': 'No parsed result found for the given novel_id.'
-        })
+                        novel_content += line + "\n"
+                return JsonResponse(
+                    {
+                        "response_message": answer,
+                        "response_content": novel_content,
+                        "choices": choices,
+                    }
+                )
+        return JsonResponse(
+            {"message": "No parsed result found for the given novel_id."}
+        )
+
     def post(self, request, novel_id):
-        input_data = request.POST.get('input_field', '')
-        chat_log = ChatLog(novel_id=novel_id, role='user', chat_log=input_data)
+        input_data = request.POST.get("input_field", "")
+        chat_log = ChatLog(novel_id=novel_id, role="user", chat_log=input_data)
         chat_log.save()
         response_message = send_message(input_data, novel_id)
         # 응답 본문에 챗봇의 응답 포함
         response_data = {
-            'input': input_data,
-            'response': response_message['response_message']
+            "input": input_data,
+            "response": response_message["response_message"],
         }
         return JsonResponse(response_data)
+
 
 # 함수 설명: 사용자가 전달한 메시지를 받아와 send_message 함수로 전달한 후, 챗봇의 응답을 HTTP 응답으로 반환
 # chat 함수
@@ -239,45 +278,51 @@ def chat(request):
 
 
 @csrf_exempt
-
 def load_chat_logs(novel_id):
-    chat_logs = ChatLog.objects.filter(novel_id=novel_id, role='assistant').last()
+    chat_logs = ChatLog.objects.filter(novel_id=novel_id, role="assistant").last()
     print(chat_logs)
     return chat_logs
 
 
 @csrf_exempt
 def chat_with_history(request, novel_id):
-    message = request.POST.get('message', '')
+    message = request.POST.get("message", "")
 
     chat_logs = load_chat_logs(novel_id)
     messages = [
-        {'role': 'system', 'content': 'You are a helpful assistant.'},
+        {"role": "system", "content": "You are a helpful assistant."},
     ]
     for log in chat_logs:
-        if log.role == 'user':
-            messages.append({'role': 'user', 'content': log.chat_log})
-        elif log.role == 'assistant':
-            messages.append({'role': 'assistant', 'content': log.chat_log})
+        if log.role == "user":
+            messages.append({"role": "user", "content": log.chat_log})
+        elif log.role == "assistant":
+            messages.append({"role": "assistant", "content": log.chat_log})
 
-    messages.append({'role': 'user', 'content': message})
+    messages.append({"role": "user", "content": message})
 
     response_message = send_message(messages, novel_id)  # novel_id를 send_message 함수로 전달
-    message_content = response_message['response_message']  # 챗봇의 응답 메시지 가져오기
+    message_content = response_message["response_message"]  # 챗봇의 응답 메시지 가져오기
 
     for log in messages:
-        if log['role'] == 'user':
-            chat_log = ChatLog(novel_id=novel_id, role='user', chat_log=log['content'])
-        elif log['role'] == 'assistant':
-            chat_log = ChatLog(novel_id=novel_id, role='assistant', chat_log=log['content'])
+        if log["role"] == "user":
+            chat_log = ChatLog(novel_id=novel_id, role="user", chat_log=log["content"])
+        elif log["role"] == "assistant":
+            chat_log = ChatLog(
+                novel_id=novel_id, role="assistant", chat_log=log["content"]
+            )
         chat_log.save()
 
     processed_data = process_data(message_content)
-    return render(request, 'chat_with_history.html', {'result': processed_data, 'response_message': message_content})
-  
+    return render(
+        request,
+        "chat_with_history.html",
+        {"result": processed_data, "response_message": message_content},
+    )
+
+
 @csrf_exempt
 def load_chat_logs(novel_id):
-    chat_logs = ChatLog.objects.filter(novel_id=novel_id).order_by('create_at')
+    chat_logs = ChatLog.objects.filter(novel_id=novel_id).order_by("create_at")
     return chat_logs
 
 
@@ -289,21 +334,15 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
         "Authorization": f'Bearer {os.getenv("OPENAI_SECRET_KEY")}',
         "Content-Type": "application/json",
     }
-    messages = [
-        {'role': 'system', 'content': 'You are a helpful assistant.'}
-    ]
+    messages = [{"role": "system", "content": "You are a helpful assistant."}]
     chat_logs = load_chat_logs(novel_id)
     for log in chat_logs:
-        messages.append({'role': log.role, 'content': log.chat_log})
+        messages.append({"role": log.role, "content": log.chat_log})
     if len(messages) == 1:
-        messages.append({'role': 'user', 'content': message})
+        messages.append({"role": "user", "content": message})
     print(messages)
     # Send message to GPT API
-    data = {
-        'model': 'gpt-3.5-turbo',
-        'messages': messages,
-        'temperature': 1.0
-    }
+    data = {"model": "gpt-3.5-turbo", "messages": messages, "temperature": 1.0}
     try:
         response = requests.post(url, headers=headers, json=data)
         response.raise_for_status()  # 4xx 또는 5xx 상태 코드에 대한 예외 발생
@@ -311,22 +350,20 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
         # 챗봇의 응답을 가져와서 messages 리스트에 추가합니다
         answer = response_json["choices"][0]["message"]["content"]
 
-        chat_log = ChatLog(novel_id=novel_id, role='assistant', chat_log=answer)
+        chat_log = ChatLog(novel_id=novel_id, role="assistant", chat_log=answer)
         chat_log.save()
         print(answer)
-        return {
-            'response_message': answer
-        }
+        return {"response_message": answer}
     except requests.exceptions.RequestException as e:
-        print('An error occurred while sending the request:', str(e))
-     
+        print("An error occurred while sending the request:", str(e))
+
         return answer
 
 
 class init_setting_APIView(APIView):
     @swagger_auto_schema(
         request_body=NovelBackgroundRequestSerializer,
-        responses={status.HTTP_201_CREATED: BackgroundResponseSerializer}
+        responses={status.HTTP_201_CREATED: BackgroundResponseSerializer},
     )
     def post(self, request):
         # 요청할 때 입력한 정보들로 serializer를 생성한다
@@ -355,76 +392,64 @@ class init_setting_APIView(APIView):
                         status=400,
                     )
             response_data = {"novel": novel_instance.id}
-            message = getFirstQuestion(data["genre"], data["time_period"], data["time_projection"], data["summary"], data["character"])
+            message = getFirstQuestion(
+                data["genre"],
+                data["time_period"],
+                data["time_projection"],
+                data["summary"],
+                data["character"],
+            )
             send_message(message, novel_instance.id)
             return Response(response_data, status=201)
         else:
             return Response({"error": novel_serializer.errors}, status=400)
 
+
 def dalleIMG(query):
     OPENAI_API_KEY = os.getenv("OPENAI_SECRET_KEY")
-  
+
     # openai API 키 인증
     openai.api_key = OPENAI_API_KEY
 
     # 모델 - GPT 3.5 Turbo 선택
     model = "gpt-3.5-turbo"
 
-
-
     messages = [
         {
             "role": "system",
-            "content": "You are a helpful assistant who is good at translating."
+            "content": "You are a helpful assistant who is good at translating.",
         },
-        {
-            "role": "assistant",
-            "content": query
-        }
+        {"role": "assistant", "content": query},
     ]
 
     # 사용자 메시지 추가
-    messages.append(
-        {
-            "role": "user", 
-            "content": "영어로 번역해주세요."
-        }
-    )
+    messages.append({"role": "user", "content": "영어로 번역해주세요."})
 
     # ChatGPT API 호출하기
-    response = openai.ChatCompletion.create(
-        model=model,
-        messages=messages
-    )
-    answer3 = response['choices'][0]['message']['content']
+    response = openai.ChatCompletion.create(model=model, messages=messages)
+    answer3 = response["choices"][0]["message"]["content"]
     print(answer3)
 
     # 새 메시지 구성
     messages = [
         {
             "role": "system",
-            "content": "You are an assistant who is good at creating prompts for image creation."
+            "content": "You are an assistant who is good at creating prompts for image creation.",
         },
-        {
-            "role": "assistant",
-            "content": answer3
-        }
+        {"role": "assistant", "content": answer3},
     ]
 
     # 사용자 메시지 추가
     messages.append(
         {
-            "role": "user", 
-            "content": "Condense up to 4 outward description to focus on nouns and adjectives separated by ,"
+            "role": "user",
+            "content": "Condense up to 4 outward description to focus on nouns and adjectives separated by ,",
         }
     )
 
     # ChatGPT API 호출하기
-    response = openai.ChatCompletion.create(
-        model=model,
-        messages=messages
-    )
-    answer4 = response['choices'][0]['message']['content']
+    response = openai.ChatCompletion.create(model=model, messages=messages)
+    answer4 = response["choices"][0]["message"]["content"]
     print(answer4)
 
     # 이미지 생성을 위한 프롬프트
@@ -432,20 +457,15 @@ def dalleIMG(query):
     prompt = f"{answer4}{params}"
     print(prompt)
 
-    response = openai.Image.create(
-    prompt=prompt,
-    n=1,
-    size="512x512"
-    )
-    image_url = response['data'][0]['url']
+    response = openai.Image.create(prompt=prompt, n=1, size="512x512")
+    image_url = response["data"][0]["url"]
     print(image_url)
-
 
     # 이미지 다운로드
     res = requests.get(image_url)
     if res.status_code != 200:
-        return JsonResponse({'error': 'Failed to download image'}, status=400)
-    
+        return JsonResponse({"error": "Failed to download image"}, status=400)
+
     # 이미지 열기
     img = Image.open(BytesIO(res.content))
 
@@ -454,32 +474,35 @@ def dalleIMG(query):
     now = datetime.datetime.now()
     random_suffix = random.randint(1000, 9999)
     s3_filename = f'images/{now.strftime("%Y-%m-%d-%H-%M-%S")}_{random_suffix}.png'
-    
-    s3_bucket = 'team-a-s3-bucket'
-    
+
+    s3_bucket = "team-a-s3-bucket"
+
     save_image_to_s3(img, s3_bucket, s3_filename)
 
     # 저장된 이미지의 URL 생성
-    image_s3_url = f'{settings.AWS_S3_ENDPOINT_URL}/{s3_bucket}/{s3_filename}'
+    image_s3_url = f"{settings.AWS_S3_ENDPOINT_URL}/{s3_bucket}/{s3_filename}"
 
     # JSON 형식으로 응답 반환
-    return JsonResponse({'image_url': image_s3_url})
+    return JsonResponse({"image_url": image_s3_url})
+
 
 def save_image_to_s3(image, bucket_name, file_name):
     try:
         # S3에 이미지 업로드
         s3 = boto3.client(
-            's3',
+            "s3",
             aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
             aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
             region_name=settings.AWS_S3_REGION_NAME,
-            endpoint_url=settings.AWS_S3_ENDPOINT_URL
+            endpoint_url=settings.AWS_S3_ENDPOINT_URL,
         )
         with BytesIO() as output:
-            image.save(output, format='PNG')
+            image.save(output, format="PNG")
             output.seek(0)
             s3.upload_fileobj(output, bucket_name, file_name)
-        print(f"Image saved successfully to S3 bucket: {bucket_name}, with file name: {file_name}")
+        print(
+            f"Image saved successfully to S3 bucket: {bucket_name}, with file name: {file_name}"
+        )
         return True
     except Exception as e:
         print(f"Failed to save image to S3: {str(e)}")
