@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SelectBox from './SelectBox';
 import Loading from '../components/Loading'
 
 interface ChoiceProps {
     story: string;
     question: string;
-    choices: { id: string, choice: string }[];
+    choices: { choice: string }[];
 }
 
 export default function Choice({ story, question, choices }: ChoiceProps) {
+    const selectArray = ["A", "B", "C", "D"]
     return (
       <div className="w-screen h-screen bg-white/60 absolute top-0 left-0 overflow-scroll pt-32">
         <div className="flex flex-col items-center justify-center h-full">
@@ -23,8 +24,8 @@ export default function Choice({ story, question, choices }: ChoiceProps) {
                 }}
               >
                 <span className="h-4/6 text-xl">
-                  {story.split("\n").map((line) => (
-                    <span>{line}<br/></span>
+                  {story.split("\n").map((line, index) => (
+                    <span key={index}>{line}<br/></span>
                   ))}
                 </span>
               </div>
@@ -39,9 +40,12 @@ export default function Choice({ story, question, choices }: ChoiceProps) {
             </div>
           </div>
           <div className="lg:w-7/12 md:w-9/12 w-full px-6 flex flex-col space-y-2">
-            {choices.map((choice) => (
-              <SelectBox seq={choice.id} question={choice.choice} />
-            ))}
+            {
+              choices.map((choice, index) => (
+                <SelectBox key={index} seq={selectArray[index]} question={choice.choice} />
+              ))
+              
+            }
           </div>
         </div>
       </div>
