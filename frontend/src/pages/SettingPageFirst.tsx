@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import GenreBox from '../components/Box/GenreBox';
 import GenreKeywords from '../components/Box/GenreKeywords';
 import BackgroundBox from '../components/Box/BackgroundBox';
@@ -7,9 +8,14 @@ import BackgroundKeywords from '../components/Box/BackgroundKeywords';
 import EraBox from '../components/Box/EraBox';
 import EraKeywords from '../components/Box/EraKeywords.tsx';
 
+interface NovelData {
+  novel_id: string;
+}
 
 const SettingPageFirst: React.FC = () => {
     const navigate = useNavigate();
+
+    const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]); //선택한 키워드들 값 저장하는 상태변수
 
     const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
     const [selectedGenreKeywords, setSelectedGenreKeywords] = useState<string[]>([]);
@@ -20,7 +26,9 @@ const SettingPageFirst: React.FC = () => {
     const [selectedEras, setSelectedEras] = useState<string[]>([]);
     const [selectedEraKeywords, setSelectedEraKeywords] = useState<string[]>([]);
 
-
+    // const handleKeywordsUpdate=(keywords: string[]) => {  //선택한 키워드들 업데이트하는 함수?
+    //   setSelectedKeywords(keywords);
+    // };
 
     const handleGenreClick = (genre: string) => {
       setSelectedGenres((prevGenres) => {
@@ -98,8 +106,23 @@ const handleEraKeywordSubmit = (keyword: string) => {
 
 };
     
-  const handleNextPageClick = () => {
-    navigate('/setting');
+  const handleNextPageClick = async () => {
+    try {
+      const apiUrl = 'http://localhost:8000/api/v1/novels/';
+      const requestData: NovelData = {
+        novel_id: selectedKeywords.join(','),
+      };
+      const response = await axios.post(apiUrl, requestData);
+
+      if (response.status === 201) {
+        console.log('API 응답 데이터:', response.data);
+        navigate('/setting',{state: {selectedKeywords}});
+      } else {
+        console.log('API 요청 실패');
+      }
+    } catch (error) {
+      console.error('API 요청 중 오류가 발생했습니다', error);
+    }
 };
 
 
