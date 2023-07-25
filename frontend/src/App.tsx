@@ -14,6 +14,7 @@ import Bookshelf from "./pages/Bookshelf";
 import ResultPage from "./pages/ResultPage";
 import SettingPageFirst from "./pages/SettingPageFirst";
 import Logout from "./pages/Logout";
+import MyPage from "./pages/MyPage";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
             <Route path="/bookshelf" element={<Bookshelf />} />
             <Route path="/result" element={<ResultPage />} />
             <Route path="/settingfirst" element={<SettingPageFirst />} />
+            <Route path="/mypage" element={<MyPage />} />
           </Routes>
         </Background>
       </div>
