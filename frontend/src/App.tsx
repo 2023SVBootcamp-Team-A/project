@@ -11,8 +11,9 @@ import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import MainPage from "./pages/MainPage";
 import Bookshelf from "./pages/Bookshelf";
-import ResultPage from './pages/ResultPage';
+import ResultPage from "./pages/ResultPage";
 import SettingPageFirst from "./pages/SettingPageFirst";
+import Logout from "./pages/Logout";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/setting" element={<SettingPage />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/logout" element={<Logout />} />
             <Route path="/bookshelf" element={<Bookshelf />} />
             <Route path="/result" element={<ResultPage />} />
             <Route path="/settingfirst" element={<SettingPageFirst />} />
