@@ -156,9 +156,10 @@ LOGOUT_REDIRECT_URL = "/"
 
 
 CORS_ORIGIN_WHITELIST = ['http://127.0.0.1:5173'
-                         ,'http://localhost:5173'
-                         ,'http://frontend:5173'
-                         ]
+                        ,'http://localhost:5173'
+                        ,'http://frontend:5173'
+                        ,'http://localhost'
+                        ]
 CORS_ALLOW_CREDENTIALS = True
 # AWS S3 관련 설정 추가
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
