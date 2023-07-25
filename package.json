@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "react-hook-form": "^7.45.1",
-    "tailwindcss": "^3.3.2"
+    "axios": "^1.4.0"
   }
 }

@@ -1,0 +1,198 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  /* 
+  .swiper-button-prev {
+    @apply swiper-button-white;
+  }
+
+  .swiper-button-next {
+    @apply swiper-button-white;
+  }
+
+  .swiper-pagination-bullet-active {
+    @apply bg-white;
+  }
+
+  .mySwiper {
+    @apply w-80 h-40 mt-8 mb-8 relative opacity-75;
+  }
+
+  .swiper-slide {
+    @apply text-center text-base bg-white shadow-md rounded-md inline-flex justify-center items-center;
+  }
+
+  .swiper-slide img {
+    @apply block w-full h-full object-cover;
+  }
+
+  .swiper-text {
+    @apply absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 text-white text-2xl font-bold pt-4 pb-4 pr-2 pl-2 border-2 border-white;
+  } */
+
+  .mainPage {
+    @apply my-10;
+  }
+
+  .carousel {
+    @apply w-[80%] px-4 py-8 bg-[#e2e1e0] rounded-lg relative mb-10 ml-[10%] mt-[5rem];
+  }
+
+  .startButton {
+    @apply w-80 h-20 flex-shrink-0 rounded-full bg-mainpagegray mx-auto flex justify-center mb-10;
+  }
+
+  .startButton p {
+    @apply text-white text-3xl font-normal leading-normal mt-4;
+  }
+
+  .btnGroup {
+    @apply flex justify-center mx-auto;
+  }
+
+  .button {
+    @apply flex justify-start ml-10 mr-10 hover:cursor-pointer;
+  }
+
+  .button p {
+    @apply ml-3;
+  }
+
+  .btnIcon {
+    @apply flex rounded-full items-start gap-2 flex-shrink-0 bg-mainpagegray w-6 h-6 left-3 top-3;
+  }
+
+  .iconNext {
+    @apply w-3 h-4 mt-1 ml-2;
+  }
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  color: #ffffff;
+}
+
+/* .swiper-button-prev:hover,
+.swiper-button-next:hover {
+  color: #00ff00;
+} */
+
+.swiper-pagination-bullet-active {
+  background-color: #ffffff;
+}
+
+.mySwiper {
+  width: 80%;
+  height: 20rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  position: relative;
+  opacity: 0.75;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  border-radius: 2px;
+  display: inline-block;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.swiper-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  color: white;
+  font-size: 25px;
+  font-weight: bold;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  border: 2px solid white;
+}
+
+/* 
+.carousel {
+  padding: 1rem;
+  background-color: #e2e1e0;
+  border-radius: 20px;
+  position: relative;
+  margin-bottom: 5rem;
+}
+
+.startButton {
+  width: 20rem;
+  height: 5rem;
+  flex-shrink: 0;
+  border-radius: 40px;
+  background: #a59c9b;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5rem;
+}
+
+.startButton p {
+  color: #fff;
+  font-size: 2rem;
+  font-family: IBM Plex Sans KR;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: 1rem;
+}
+
+.btnGroup {
+  display: flex;
+  justify-content: center;
+  margin: auto;
+}
+
+.button {
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 2.5rem;
+  margin-right: 2.5rem;
+}
+
+.button p {
+  margin-top: 0.1rem;
+  margin-left: 0.4rem;
+}
+
+.btnIcon {
+  display: flex;
+  border-radius: 50%;
+  align-items: flex-start;
+  gap: 10px;
+  flex-shrink: 0;
+  background: #a59c9b;
+  width: 1.5rem;
+  height: 1.5rem;
+  left: 0.75rem;
+  top: 0.75rem;
+}
+
+.iconNext {
+  width: 0.75rem;
+  height: 1.2rem;
+  margin-top: 0.3rem;
+  margin-left: 0.5rem;
+} */

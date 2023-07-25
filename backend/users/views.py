@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
 from users.forms import UserCreationForm
+
 from users.serializers import LoginSerializer, RegistrationSerializer
 from rest_framework import status
 from rest_framework.response import Response
@@ -9,7 +10,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
-
+from .models import MyUser
 
 def index(request):
     return HttpResponse("안녕하세요 pybo에 오신것을 환영합니다.")
@@ -78,4 +79,5 @@ class LoginAPIView(APIView):
         user = request.data
         serializer = self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        userData = MyUser.objects.get(email=user['email'])
+        return Response(userData.id, status=status.HTTP_200_OK)

@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../redux/authActions";
 
 interface FormData {
-  id: string;
+  email: string;
   password: string;
 }
 
 function Login() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState<FormData>({
-    id: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,33 +25,60 @@ function Login() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
+
+    const response = await axios
+      .post("http://localhost:8000/api/v1/user/login/", formData)
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          const token = response.data;
+          localStorage.setItem("id", token);
+          dispatch(loginSuccess());
+          console.log("로그인 성공!");
+          navigate("/");
+        } else {
+          console.log(response);
+          console.log("로그인 실패");
+        }
+      })
+      .catch((error) => {
+        console.error("API 요청 중 오류가 발생하였습니다.", error);
+        console.log(formData);
+      });
   };
 
   return (
     <div className="min-h-screen flex flex-col justify-center">
       <div className="max-w-md w-full mx-auto">
-        <div className="text-3xl font-bold text-[#612D08] mt-2 text-center">로그인</div>
+        <div className="text-3xl font-bold text-[#612D08] mt-2 text-center">
+          로그인
+        </div>
       </div>
       <div className="max-w-md w-full mx-auto mt-4">
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="id" className="text-sm text-left font-normal text-black block">
+            <label
+              htmlFor="email"
+              className="text-sm text-left font-normal text-black block"
+            >
               로그인
             </label>
             <input
-              id="id"
-              name="id"
-              type="text"
-              value={formData.id}
+              id="email"
+              name="email"
+              type="email"
+              value={formData.email}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300"
             />
           </div>
           <div>
-            <label htmlFor="password" className="text-sm text-left font-normal text-black block">
+            <label
+              htmlFor="password"
+              className="text-sm text-left font-normal text-black block"
+            >
               비밀번호
             </label>
             <input
@@ -58,75 +91,25 @@ function Login() {
             />
           </div>
           <div>
-              <button
-                type="submit"
-                className="w-full p-3 bg-[#9B8F8F] hover:bg-[#A59C9B] text-white font-bold">
-                로그인
-              </button>
-            </div>
+            <button
+              type="submit"
+              className="w-full p-3 bg-[#9B8F8F] hover:bg-[#A59C9B] text-white font-bold"
+            >
+              로그인
+            </button>
+          </div>
         </form>
+        <div
+          className="text-mainpagegray mt-3 text-center hover:cursor-pointer"
+          onClick={() => {
+            navigate("/signup");
+          }}
+        >
+          회원가입
+        </div>
       </div>
     </div>
   );
 }
 
 export default Login;
-
-
-// import React, { useState, useRef } from 'react';
-// import { useForm, UseFormRegister } from 'react-hook-form';
-
-// interface FormData {
-//   id: string;
-//   password: string;
-// }
-
-// function Login() {
-//   const [name, setName] = useState('Haeun Kim');
-//   const { register, handleSubmit } = useForm<FormData>();
-//   const idRef = useRef<HTMLInputElement | null>(null);
-//   const passwordRef = useRef<HTMLInputElement | null>(null);
-  
-//   const onSubmit = handleSubmit(({id, password}) => {
-//     console.log(id, password);
-//   })
-
-
-//   return (
-//     <div className="min-h-screen bg-gray-50 flex flex-col justify-center">
-//       <div className="max-w-md w-full mx-auto">
-//         <div className="text-3xl font-bold text-gray-900 mt-2 text-center">로그인</div>
-//       </div>
-//       <div className="max-w-md w-full mx-auto mt-4">
-//         <form action="" className="space-y-6" onSubmit={onSubmit}>
-//           <div>
-//             <label htmlFor="" className="text-sm font-bold text-gray-600 block">로그인</label>
-//             <input 
-//             ref={(e) => {
-//               register('id', { value: e?.value });
-//               idRef.current = e;
-//             }}
-//             name="id" type="text" className="w-full p-2  border border-gray-300 rounded mt-1" />
-//           </div>
-//           <div>
-//             <label htmlFor="" className="text-sm font-bold text-gray-600 block">비밀번호</label>
-//             <input 
-//             ref={(e) => {
-//               register('password', { value: e?.value });
-//               passwordRef.current = e;
-//             }}
-//             name="password" type="password" className="w-full p-2 border border-gray-300 rounded mt-1" />  
-//           </div>
-//          <div className="flex items-center justify-between">
-//           <div>
-//             <button className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 rounded-md text-white text-sm">로그인</button> 
-//           </div>
-//          </div>
-//         </form>
-//       </div>
-//     </div>
-//   );
-// }
-
-
-// export default Login;

@@ -1,19 +1,20 @@
-version: '3'
+# 개발용 docker-compose 파일
+# 실행 방법: sudo docker compose up -d --build
+version: "3"
 
 services:
-
   frontend:
     container_name: frontend
     build:
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     ports:
       - 5173:5173
     stdin_open: true
     volumes:
+        # :을 기준으로 왼쪽은 빌드 이전의 로컬 폴더 오른쪽은 컨테이너 내부의 폴더
       - ./frontend/:/frontend
       - /frontend/node_modules
-      # - ./frontend/node_modules/:/frontend/node_modules
     tty: true
     environment:
       - NODE_ENV=development
@@ -32,16 +33,18 @@ services:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
       - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
     ports:
-      - '8080:80'
+      - "8080:80"
 
   web:
     build:
       context: ./backend
       dockerfile: Dockerfile
     volumes:
-      - ./backend:/app/backend
+      - ./backend:/backend/
     ports:
-      - '8000:8000'
+      - "8000:8000"
     depends_on:
       - db
     container_name: backend
+    environment:
+      - DJANGO_DEBUG=True
