@@ -1,16 +1,18 @@
+# base 이미지 설정
 FROM node:18.4.0-alpine
 
+# 작업 디렉토리 설정
 WORKDIR /frontend
 
+# 소스 코드 복사
 COPY . /frontend
 COPY package.json yarn.lock ./
+
+# 앱 종속성 설치
+# RUN yarn --ignore-platform
 RUN yarn
+
 COPY . .
 
-<<<<<<< HEAD
 # 앱 빌드
 RUN yarn build
-CMD ["yarn", "dev"]
-=======
-RUN yarn build
->>>>>>> 137d51463d596385ec0b3c1b5169617b64a1c1cb
