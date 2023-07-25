@@ -200,11 +200,29 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
         "Authorization": f'Bearer {os.getenv("OPENAI_SECRET_KEY")}',
         "Content-Type": "application/json",
     }
-    chat_logs = load_chat_logs(novel_id)
-    messages = [
-        {'role': 'system', 'content': 'You are a helpful assistant.'},
-        {'role': 'user', 'content': message},
+
+    system_instructions = [
+        'You are a helpful assistant.',
+        'Please write a novel in Korean'
+        'You write a novel, and you give the user a choice in the middle of the novel',#소설을 써내려가다 소설 중간에 사용자에게 선택지를 줘
+        'Give me a choice and stop the novel you were you were writing',#선택지를 주면 너가쓰던 소설을 멈춰
+        'When a user chooses a choice, he or she writes a novel based on the choice', #사용자가 선택지를 선택하면 그 선택지를 바탕으로 소설을 이어써줘
+        'Use English capital letters instead of numbers for the options.', #옵션에는 숫자 대신 영문 대문자를 사용합니다. -
+        'Please add a space before the English capitalization of each option.', #각 옵션의 영문 대문자 앞에 공백을 추가하십시오. 
+        'When a choice comes out, make sure that the English capital letter corresponding to the choice comes out immediately after the line change comes out' #-선택지가 나오면, 선택지에 해당하는 영문 대문자가 라인변경이 나온 직후에 나오도록 한다
+        'After the user makes a choice, do not reveal their selection again.', #사용자가 선택한 후에는 선택한 항목을 다시 표시하지 않습니다
+        'If the user selects a choice, continue the novel based on the selected option.', #사용자가 선택한 항목을 선택한 경우 선택한 옵션을 기준으로 소설을 계속합니다.
+        'The maximum number of times a user can choose a choice is three', #사용자에게 선택지를 고르는 횟수는 최대 3번으로 하자. -
+        'If the user chooses three choices, the novel is finished'
+        "When writing a novel, please include a description of the character's conversation or situation"
     ]
+
+    chat_logs = load_chat_logs(novel_id)
+    messages = [{'role': 'system', 'content': instruction} for instruction in system_instructions]
+
+    user_message = {'role': 'user', 'content': message}
+    messages.append(user_message)
+
     for log in chat_logs:
         messages.append({'role': log.role, 'content': log.chat_log})
 
@@ -223,15 +241,16 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
         answer = response_json["choices"][0]["message"]["content"]
 
         chat_log = ChatLog(novel_id=novel_id, role='assistant', chat_log=answer)
-        chat_log.save()
+        chat_log.save() 
 
         return {
             'response_message': answer
         }
     except requests.exceptions.RequestException as e:
         print('An error occurred while sending the request:', str(e))
-     
-        return answer
+        return {
+            'response_message': 'An error occurred while processing your request.'
+        }
 
 
 class init_setting_APIView(APIView):
