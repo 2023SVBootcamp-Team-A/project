@@ -11,6 +11,7 @@ import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import MainPage from "./pages/MainPage";
 import Bookshelf from "./pages/Bookshelf";
+import ResultPage from './pages/ResultPage';
 import SettingPageFirst from "./pages/SettingPageFirst";
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
             <Route path="/bookshelf" element={<Bookshelf />} />
+            <Route path="/result" element={<ResultPage />} />
             <Route path="/settingfirst" element={<SettingPageFirst />} />
           </Routes>
         </Background>       

@@ -22,6 +22,23 @@
 }
 
 @font-face {
-  font-family: "IBMPlexSansKR";
-  src: url("./assets/fonts/IBMPlexSansKR-SemiBold.ttf") format("ttf");
+  font-family: 'IBMPlexSansKR';
+  src: url('./assets/fonts/IBMPlexSansKR-SemiBold.ttf') format('ttf');
+}
+
+.flip-animation {
+  animation: flipAnimation 4s linear infinite;
+}
+
+@keyframes flipAnimation {
+  0% {
+    transform: perspective(800px) rotateY(0deg);
+  }
+  50% {
+    transform: perspective(800px) rotateY(180deg);
+    z-index: -1;
+  }
+  100% {
+    transform: perspective(800px) rotateY(360deg);
+  }
 }

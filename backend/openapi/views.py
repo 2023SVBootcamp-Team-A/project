@@ -14,6 +14,7 @@ from django.core import serializers
 from django.core.paginator import Paginator, EmptyPage
 from django.conf import settings
 
+from rest_framework import serializers as serial
 from rest_framework import serializers, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -142,23 +143,6 @@ def novel_list(request):
 )
 @api_view(["GET", "DELETE"])
 def mynovels(request, novel_id):
-    """
-    Retrieve or delete a novel
-    ---
-    security:
-        - api_key: []
-    parameters:
-        - name: novel_id
-          description: ID of the novel to be retrieved or deleted
-          required: true
-          type: integer
-          paramType: path
-        - name: id
-          description: ID of the user who owns the novel
-          required: true
-          type: string
-          paramType: header
-    """
     if request.method == "GET":
         novel = get_object_or_404(Novel, pk=novel_id)
         character_fields = ["name", "personality"]
@@ -170,7 +154,7 @@ def mynovels(request, novel_id):
         background_data = list(novel.novel_background.values(*background_fields))
 
         serialized_data = {
-            "novel": serializers.serialize("python", [novel]),
+            # "novel": serial.serialize("python", [novel]),
             "characters": character_data,
             "novel_stories": novel_story_data,
             "backgrounds": background_data,

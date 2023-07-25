@@ -11,6 +11,15 @@ const px0_200 = { ...Array.from(Array(201)).map((_, i) => `${i}px`) };
 export default {
   content: ["./index.html", "./src/**/*.{html,js,ts,jsx,tsx}"],
   theme: {
+    screens: {
+      'sm': '640px',
+      'md': '768px',
+      'lg': '1024px',
+      'xl': '1280px',
+      '2xl': '1536px',
+      'pot': '705px',
+      'lg-pot':'960px'
+    },
     extend: {
       backgroundImage: {
         'background-img' : "/images/background.png"
