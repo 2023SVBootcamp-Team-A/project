@@ -1,7 +1,6 @@
-version: '3'
+version: "3"
 
 services:
-
   frontend:
     container_name: frontend
     build:
@@ -24,9 +23,7 @@ services:
     volumes:
       - ./backend:/app/backend
     ports:
-      - '8000:8000'
-    depends_on:
-      - db
+      - "8000:8000"
     container_name: backend
 
   nginx:
