@@ -16,7 +16,6 @@ import SettingPageFirst from "./pages/SettingPageFirst";
 function App() {
   return (
     <Provider store={store}>
-    <BrowserRouter>
       <div className="App">
         <Background>
           <Routes>
@@ -28,10 +27,9 @@ function App() {
             <Route path="/bookshelf" element={<Bookshelf />} />
             <Route path="/settingfirst" element={<SettingPageFirst />} />
           </Routes>
-        </Background>       
+        </Background>
       </div>
       <NavigationBar />
-      </BrowserRouter>
     </Provider>
   );
 }

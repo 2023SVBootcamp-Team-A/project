@@ -8,6 +8,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile.prod
+    ports:
+      - 5173:5173
     stdin_open: true
     volumes:
     # :을 기준으로 왼쪽은 빌드 이전의 로컬 폴더 오른쪽은 컨테이너 내부의 폴더
@@ -17,6 +19,7 @@ services:
       # 즉, frontend 컨테이너의 /frontend/build의 내용이 build_folder로, 오른쪽에서 왼쪽으로 전달되는 것으로 이해하면 된다.
       - build_folder:/frontend/build # 하단 volume에서 정의한 build_folder을 frontend 컨테이너의 /frontend/build/로 한다.
       - ./frontend/node_modules/:/frontend/node_modules
+      - /frontend/node_modules
     tty: true
     environment:
       - NODE_ENV=development
