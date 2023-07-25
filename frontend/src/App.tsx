@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import "./App.css";
@@ -16,7 +16,6 @@ import SettingPageFirst from "./pages/SettingPageFirst";
 function App() {
   return (
     <Provider store={store}>
-    <BrowserRouter>
       <div className="App">
         <Background>
           <Routes>
@@ -31,7 +30,6 @@ function App() {
         </Background>       
       </div>
       <NavigationBar />
-      </BrowserRouter>
     </Provider>
   );
 }
