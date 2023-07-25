@@ -1,7 +1,7 @@
-
-
-import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Route, Routes } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 import "./App.css";
 import ChoicePage from "./pages/ChoicePage";
 import NavigationBar from "./components/NavigationBar";
@@ -12,25 +12,27 @@ import Login from "./pages/Login";
 import MainPage from "./pages/MainPage";
 import Bookshelf from "./pages/Bookshelf";
 import ResultPage from './pages/ResultPage';
+import SettingPageFirst from "./pages/SettingPageFirst";
 
 function App() {
   return (
-    <BrowserRouter>
+    <Provider store={store}>
       <div className="App">
         <Background>
           <Routes>
+            <Route path="" element={<MainPage />} />
             <Route path="/choice" element={<ChoicePage />} />
             <Route path="/setting" element={<SettingPage />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/login" element={<Login/>} />
-            <Route path="/mainpage" element={<MainPage />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/bookshelf" element={<Bookshelf />} />
             <Route path="/result" element={<ResultPage />} />
+            <Route path="/settingfirst" element={<SettingPageFirst />} />
           </Routes>
-        </Background>
-        <NavigationBar />
+        </Background>       
       </div>
-    </BrowserRouter>
+      <NavigationBar />
+    </Provider>
   );
 }
 

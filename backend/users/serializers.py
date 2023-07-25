@@ -12,10 +12,22 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MyUser
-        fields = ["email", "password", "nickname", "created_at", "updated_at"]
+        fields = [
+            "email",
+            "password",
+            "nickname",
+            "created_at",
+            "updated_at",
+            "is_admin",
+        ]
 
     def create(self, validated_data):
-        return MyUser.objects.create_user(**validated_data)
+        is_admin = validated_data.get("is_admin", False)
+
+        if is_admin is True:
+            return MyUser.objects.create_superuser(**validated_data)
+        else:
+            return MyUser.objects.create_user(**validated_data)
 
 
 class LoginSerializer(serializers.Serializer):

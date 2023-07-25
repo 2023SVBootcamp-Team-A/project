@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../redux/authActions";
 
 interface FormData {
   email: string;
@@ -8,10 +10,11 @@ interface FormData {
 }
 
 function Login() {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState<FormData>({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,35 +27,42 @@ function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    try {
-      const response = await axios.post("http://localhost:8000/user/login/",formData);
 
-      if (response.status===200) {
-        const token = response.data.token;
-        localStorage.setItem('token', token);
-        console.log('로그인 성공!');
-        navigate('/mainpage');
-      } else {
-        console.log(response)
-        console.log('로그인 실패');
-      }
-    } catch(error) {
-      console.error('API 요청 중 오류가 발생하였습니다.', error);
-      console.log(formData)
-    }
- 
+    const response = await axios
+      .post("http://localhost:8000/api/v1/user/login/", formData)
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          const token = response.data;
+          localStorage.setItem("id", token);
+          dispatch(loginSuccess());
+          console.log("로그인 성공!");
+          navigate("/");
+        } else {
+          console.log(response);
+          console.log("로그인 실패");
+        }
+      })
+      .catch((error) => {
+        console.error("API 요청 중 오류가 발생하였습니다.", error);
+        console.log(formData);
+      });
   };
 
   return (
     <div className="min-h-screen flex flex-col justify-center">
       <div className="max-w-md w-full mx-auto">
-        <div className="text-3xl font-bold text-[#612D08] mt-2 text-center">로그인</div>
+        <div className="text-3xl font-bold text-[#612D08] mt-2 text-center">
+          로그인
+        </div>
       </div>
       <div className="max-w-md w-full mx-auto mt-4">
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="email" className="text-sm text-left font-normal text-black block">
+            <label
+              htmlFor="email"
+              className="text-sm text-left font-normal text-black block"
+            >
               로그인
             </label>
             <input
@@ -65,7 +75,10 @@ function Login() {
             />
           </div>
           <div>
-            <label htmlFor="password" className="text-sm text-left font-normal text-black block">
+            <label
+              htmlFor="password"
+              className="text-sm text-left font-normal text-black block"
+            >
               비밀번호
             </label>
             <input
@@ -78,13 +91,22 @@ function Login() {
             />
           </div>
           <div>
-              <button
-                type="submit"
-                className="w-full p-3 bg-[#9B8F8F] hover:bg-[#A59C9B] text-white font-bold">
-                로그인
-              </button>
-            </div>
+            <button
+              type="submit"
+              className="w-full p-3 bg-[#9B8F8F] hover:bg-[#A59C9B] text-white font-bold"
+            >
+              로그인
+            </button>
+          </div>
         </form>
+        <div
+          className="text-mainpagegray mt-3 text-center hover:cursor-pointer"
+          onClick={() => {
+            navigate("/signup");
+          }}
+        >
+          회원가입
+        </div>
       </div>
     </div>
   );
