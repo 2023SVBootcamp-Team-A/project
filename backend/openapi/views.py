@@ -21,7 +21,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from users.models import MyUser
-from .models import Novel, ChatLog
+from .models import Novel, ChatLog, NovelStory
 from .QuestionList import getFirstQuestion
 from openapi.serializers import (
     BackgroundSerializer,
@@ -194,8 +194,7 @@ class NovelView(APIView):
                     else:
                         novel_content += line + '\n'
                 return JsonResponse({
-                    'response_message': answer,
-                    'response_content': novel_content,
+                    'story': novel_content,
                     'choices': choices
                 })
         return JsonResponse({
@@ -206,6 +205,7 @@ class NovelView(APIView):
         chat_log = ChatLog(novel_id=novel_id, role='user', chat_log=input_data)
         chat_log.save()
         response_message = send_message(input_data, novel_id)
+        print(send_message)
         # 응답 본문에 챗봇의 응답 포함
         response_data = {
             'input': input_data,
@@ -248,6 +248,8 @@ def chat_with_history(request, novel_id):
 
     response_message = send_message(messages, novel_id)  # novel_id를 send_message 함수로 전달
     message_content = response_message['response_message']  # 챗봇의 응답 메시지 가져오기
+    image_url = response_message['image_url']
+
 
     for log in messages:
         if log['role'] == 'user':
@@ -257,7 +259,7 @@ def chat_with_history(request, novel_id):
         chat_log.save()
 
     processed_data = process_data(message_content)
-    return render(request, 'chat_with_history.html', {'result': processed_data, 'response_message': message_content})
+    return render(request, 'chat_with_history.html', {'result': processed_data, 'response_message': message_content, 'image_url': image_url})
   
 @csrf_exempt
 def load_chat_logs(novel_id):
@@ -276,7 +278,7 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
 
     system_instructions = [
         'You are a helpful assistant.',
-        'Please write a novel in Korean'
+        'Please write a novel in Korean',
         'You write a novel, and you give the user a choice in the middle of the novel',#소설을 써내려가다 소설 중간에 사용자에게 선택지를 줘
         'Give me a choice and stop the novel you were you were writing',#선택지를 주면 너가쓰던 소설을 멈춰
         'When a user chooses a choice, he or she writes a novel based on the choice', #사용자가 선택지를 선택하면 그 선택지를 바탕으로 소설을 이어써줘
@@ -286,8 +288,8 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
         'After the user makes a choice, do not reveal their selection again.', #사용자가 선택한 후에는 선택한 항목을 다시 표시하지 않습니다
         'If the user selects a choice, continue the novel based on the selected option.', #사용자가 선택한 항목을 선택한 경우 선택한 옵션을 기준으로 소설을 계속합니다.
         'The maximum number of times a user can choose a choice is three', #사용자에게 선택지를 고르는 횟수는 최대 3번으로 하자. -
-        'If the user chooses three choices, the novel is finished'
-        "When writing a novel, please include a description of the character's conversation or situation"
+        'If the user chooses three choices, the novel is finished',
+        "When writing a novel, please include a description of the character's conversation or situation",
     ]
 
     chat_logs = load_chat_logs(novel_id)
@@ -300,6 +302,7 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
         messages.append({'role': log.role, 'content': log.chat_log})
     if len(messages) == 1:
         messages.append({'role': 'user', 'content': message})
+
     print(messages)
     # Send message to GPT API
     data = {
@@ -309,16 +312,23 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
     }
     try:
         response = requests.post(url, headers=headers, json=data)
-        response.raise_for_status()  # 4xx 또는 5xx 상태 코드에 대한 예외 발생
-        response_json = response.json()  # 서버로부터 받은 응답을 JSON 형식으로 파싱
-        # 챗봇의 응답을 가져와서 messages 리스트에 추가합니다
+        response.raise_for_status()
+        response_json = response.json()
         answer = response_json["choices"][0]["message"]["content"]
 
+        image_url = dalleIMG(answer)
+        
         chat_log = ChatLog(novel_id=novel_id, role='assistant', chat_log=answer)
         chat_log.save()
         
+        page_number = NovelStory.objects.filter(novel_id=novel_id).count()+1
+
+        novel_story = NovelStory.objects.create(novel_id=novel_id, page=page_number, content=answer, image=image_url)
+        novel_story.save()
+
         return {
-            'response_message': answer
+            'response_message': answer,
+            'image_url': image_url,
         }
     except requests.exceptions.RequestException as e:
         print('An error occurred while sending the request:', str(e))
@@ -464,10 +474,11 @@ def dalleIMG(query):
     save_image_to_s3(img, s3_bucket, s3_filename)
 
     # 저장된 이미지의 URL 생성
-    image_s3_url = f'{settings.AWS_S3_ENDPOINT_URL}/{s3_bucket}/{s3_filename}'
+    aws_s3_download_url = os.environ.get('AWS_S3_DOWNLOAD_URL', 'default_url')
+    image_s3_url = f'{aws_s3_download_url}/{s3_filename}'
 
-    # JSON 형식으로 응답 반환
-    return JsonResponse({'image_url': image_s3_url})
+
+    return image_s3_url
 
 def save_image_to_s3(image, bucket_name, file_name):
     try:

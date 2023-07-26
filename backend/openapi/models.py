@@ -54,7 +54,7 @@ class NovelStory(models.Model):
     )
     page = models.IntegerField()
     content = models.TextField()
-    image = models.CharField(max_length=100)
+    image = models.CharField(max_length=255)
     create_at = models.DateTimeField(auto_now_add=True)
     udate_at = models.DateTimeField(auto_now=True)
     delete_at = models.DateTimeField(null=True)
