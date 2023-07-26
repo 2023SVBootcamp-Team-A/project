@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { loginSuccess } from "../redux/authActions";
+import { loginSuccess, logout } from "../redux/authActions";
 import icon_door from ".././assets/icon_door.png";
 import icon_book from ".././assets/icon_book.png";
 import icon_user from ".././assets/icon_user.png";
@@ -135,6 +135,9 @@ export default function MainPage() {
             <div
               className="button"
               onClick={() => {
+                // localStorage.removeItem("id");
+                // dispatch(logout());
+                // alert("로그아웃되었습니다.");
                 navigate("/logout");
               }}
             >
