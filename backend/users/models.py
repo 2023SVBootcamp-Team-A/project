@@ -8,7 +8,7 @@ from django.contrib.auth.models import (
 class MyUserManager(BaseUserManager):
     use_in_migrations = True
 
-    def create_user(self, email, nickname, password):
+    def create_user(self, email, nickname, password, **extra_fields):
         if not email:
             raise ValueError("아이디를 이메일 형식으로 제출해주세요")
 
@@ -23,13 +23,15 @@ class MyUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, nickname, password, is_admin):
+    def create_superuser(self, email, nickname, password, **extra_fields):
+        extra_fields.setdefault("is_admin", True)
+
         user = self.create_user(
             email=email,
             nickname=nickname,
             password=password,
+            **extra_fields  # 추가 필드를 그대로 전달합니다.
         )
-        user.is_admin = is_admin
         user.save(using=self._db)
         return user
 
