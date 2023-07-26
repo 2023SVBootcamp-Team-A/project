@@ -29,7 +29,7 @@ function App() {
             <Route path="/result" element={<ResultPage />} />
             <Route path="/settingfirst" element={<SettingPageFirst />} />
           </Routes>
-        </Background>       
+        </Background>
       </div>
       <NavigationBar />
     </Provider>
