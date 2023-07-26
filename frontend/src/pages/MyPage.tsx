@@ -1,6 +1,56 @@
+import { useEffect } from "react";
+import axios from "axios";
 import "./MyPage.css";
 
+type MyNovels = {
+  novel: Novel[];
+  meta: Meta;
+};
+
+type Meta = {
+  page: number;
+  pages: number;
+  prev_page: null;
+  next_page: number;
+  has_next: boolean;
+  has_prev: boolean;
+};
+
+type Novel = {
+  id: number;
+  novel_name: string;
+  novel_image: null;
+};
+
+// 보낼 데이터
+const idValue = 26;
+
+// axios 요청 설정
+const config = {
+  headers: {
+    id: idValue.toString(), // number를 string으로 변환하여 전달
+  },
+};
+
+// GET 요청 보내기
+const getMyNovels = async () => {
+  const response = await axios
+    .get("http://localhost:8000/api/v1/mynovels/", config)
+    .then(function (response) {
+      // 성공적으로 응답 받았을 때 처리하는 로직
+      console.log(response);
+    })
+    .catch((error) => {
+      // 오류 발생 시 처리하는 로직
+      console.error("API 요청 중 오류가 발생하였습니다.", error);
+    });
+};
+
 export default function MyPage() {
+  useEffect(() => {
+    void getMyNovels();
+  }, []);
+
   return (
     <>
       <div className="title">
