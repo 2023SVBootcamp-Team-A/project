@@ -84,7 +84,7 @@ export default function MyPage() {
   }, [novelList1, novelList2, novelList3]);
 
   useEffect(() => {
-    console.log(metaData);
+    // console.log(metaData);
   }, [metaData]);
 
   const renderPagination = () => {
