@@ -31,7 +31,7 @@ export default function MyPage() {
   const [metaData, setMetaData] = useState<Meta>();
 
   // 보낼 데이터
-  const idValue = 1;
+  const idValue = localStorage.getItem("id");
 
   // axios 요청 설정
   const config = {
@@ -41,9 +41,11 @@ export default function MyPage() {
   };
 
   // GET 요청 보내기
-  const getMyNovels = async () => {
+  const getMyNovels = async (page: number) => {
+    const queryString = `?page=${page}`;
+
     const response = await axios
-      .get("http://localhost:8000/api/v1/mynovels", config)
+      .get(`http://localhost:8000/api/v1/mynovels${queryString}`, config)
       .then(function (response) {
         // 성공적으로 응답 받았을 때 처리하는 로직
         // console.log(response.data.meta);
@@ -71,7 +73,7 @@ export default function MyPage() {
   };
 
   useEffect(() => {
-    void getMyNovels();
+    void getMyNovels(1);
   }, []);
 
   // Add this useEffect to log the updated novelList whenever it changes
@@ -95,7 +97,12 @@ export default function MyPage() {
         // 예를 들어, 페이지 번호를 출력하는 단순한 컴포넌트를 생성한다고 가정해보겠습니다.
         if (i === metaData.page) {
           components.push(
-            <li key={i}>
+            <li
+              key={i}
+              onClick={() => {
+                void getMyNovels(i);
+              }}
+            >
               <a href="#" aria-current="page" className="navCurrentItem">
                 {i}
               </a>
@@ -103,7 +110,12 @@ export default function MyPage() {
           );
         } else {
           components.push(
-            <li key={i}>
+            <li
+              key={i}
+              onClick={() => {
+                void getMyNovels(i);
+              }}
+            >
               <a href="#" className="navItem">
                 {i}
               </a>
@@ -143,18 +155,18 @@ export default function MyPage() {
       </div>
       <nav aria-label="Page navigation example">
         <ul className="inline-flex -space-x-px text-base h-10 mt-12">
-          <li>
+          {/* <li>
             <a href="#" className="navLeftArrow">
               &lt;
             </a>
-          </li>
+          </li> */}
           {/* 페이지 수에 따라 컴포넌트를 렌더링합니다. */}
           {renderPagination()}
-          <li>
+          {/* <li>
             <a href="#" className="navRightArrow">
               &gt;
             </a>
-          </li>
+          </li> */}
         </ul>
       </nav>
     </>
