@@ -35,8 +35,9 @@ const SettingPageFirst: React.FC<SettingPageFirstProps> = () => {
   const handleGenreKeywordClick = (keyword: string) => {
     setSelectedGenreKeywords((prevKeywords) => {
       if (prevKeywords.includes(keyword)) {
-        return prevKeywords;
+        return prevKeywords.filter((kw) => kw ! == keyword);
       } else {
+       
         return [...prevKeywords, keyword];
       }
     });
@@ -70,7 +71,6 @@ const SettingPageFirst: React.FC<SettingPageFirstProps> = () => {
 
   const handleBackgroundKeywordSubmit = (keyword: string) => {
       setSelectedBackgroundKeywords((prevKeywords) => [...prevKeywords, keyword]);
-    
     };
 
   const handleEraClick = (era: string) => {
@@ -95,23 +95,32 @@ const SettingPageFirst: React.FC<SettingPageFirstProps> = () => {
 
 const handleEraKeywordSubmit = (keyword: string) => {
   setSelectedEraKeywords((prevKeywords) => [...prevKeywords, keyword]);
-
 };
     
   const handleNextPageClick = () => {
+    const queryString = `?genre=${JSON.stringify(selectedGenreKeywords)}&time_period=${JSON.stringify(
+      selectedEraKeywords
+    )}&time_projection=${JSON.stringify(selectedBackgroundKeywords)}`;
+
+    const genreKeywordsString = JSON.stringify(selectedGenreKeywords);
+    const eraKeywordsString = JSON.stringify(selectedEraKeywords);
+    const backgroundKeywordsString = JSON.stringify(selectedBackgroundKeywords);
   
-    console.log("선택된 장르 :", selectedGenreKeywords);
-    console.log("선택된 시대 :", selectedEraKeywords);
-    console.log("선택된 배경 :", selectedBackgroundKeywords);
-
-    navigate('/setting',{
+    console.log('선택된 장르 :', genreKeywordsString);
+    console.log('선택된 시대 :', eraKeywordsString);
+    console.log('선택된 배경 :', backgroundKeywordsString);
+    console.log('쿼리 스트링', queryString);
+  
+    // const queryString = `?genre=${genreKeywordsString}&time_period=${eraKeywordsString}&time_projection=${backgroundKeywordsString}`;
+  
+    navigate('/setting', {
       state: {
-        genre: selectedGenreKeywords,
-        time_period: selectedEraKeywords,
-        tiem_projection: selectedBackgroundKeywords
+        genre: selectedGenres,
+        time_period: selectedEras,
+        time_projection: selectedBackgrounds,
+        search: queryString
       }
-    })
-
+    }); 
 };
 
 

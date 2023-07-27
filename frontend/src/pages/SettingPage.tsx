@@ -30,6 +30,7 @@ const SettingPage: React.FC = () => {
 
   useEffect(() => {
     const { state } = location;
+
     const { genre = [], time_period = [], time_projection = [] } = state || {};
     setGenre(genre);
     setTimePeriod(time_period);
