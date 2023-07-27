@@ -38,10 +38,10 @@ const SettingPage: React.FC = () => {
   }, [location]);
 
 
-  const handleSubmit = async () => {
-    try {
-        const apiUrl = 'http://localhost:8000/api/v1/novels/';
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
+    try {
         const requestData: NovelData = {
             genre: genre,
             time_period: time_period,
@@ -50,22 +50,22 @@ const SettingPage: React.FC = () => {
             summary: summary
         };
 
-        const response = await axios.post(apiUrl, requestData);
+        const response = await axios.post('http://localhost:8000/api/v1/novels/', 
+        requestData);
         
         if (response.status === 201) {
+        const token = response.data.token;
+        localStorage.setItem("token",token);
         console.log('API 응답 데이터:', response.data);
         navigate('/choice');
     } else {
+        console.log(response);
         console.log('API 요청 실패');
     }
   } catch(error) {
     console.error('api 요청 중 오류가 발생했습니다', error);
   }
 }
-
-//   const [inputs, setInputs] = useState<{ name: string; personality: string; isCompleted: boolean }[]>([
-//     { name: '', personality: '', isCompleted: false }
-//   ]);
 
   const handleAddInput = () => {
     if (characterInputs.length < 5) {
@@ -85,13 +85,13 @@ const SettingPage: React.FC = () => {
     setCharacterInputs(updatedInputs);
   };
 
-  const handleNextPageClick = async () => {
-    try {
-        await handleSubmit();
-    } catch (error) {
-        console.error('다음 페이지 클릭시 오류 발생:' , error);
-    }
-  };
+  // const handleNextPageClick = async () => {
+  //   try {
+  //       await handleSubmit();
+  //   } catch (error) {
+  //       console.error('다음 페이지 클릭시 오류 발생:' , error);
+  //   }
+  // };
 
   return (
     <div className="h-fit flex flex-col items-center p-8">
