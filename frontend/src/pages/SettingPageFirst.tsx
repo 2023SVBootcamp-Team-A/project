@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import GenreBox from "../components/Box/GenreBox";
-import BackgroundBox from "../components/Box/BackgroundBox";
-import EraBox from "../components/Box/EraBox";
+import GenreBox from '../components/Box/GenreBox';
+import BackgroundBox from '../components/Box/BackgroundBox';
+import EraBox from '../components/Box/EraBox';
 
+
+interface SettingPageFirstProps {
+  genre: string;
+  time_period: string;
+  time_projection: string;
+}
+
+const SettingPageFirst: React.FC = () => {
+    const navigate = useNavigate();
 
 interface SettingPageFirstProps {
   genre: string;
@@ -32,6 +41,7 @@ const SettingPageFirst: React.FC<SettingPageFirstProps> = () => {
   const handleGenreSubmit = (keyword: string) => {
     setSelectedGenres((prevKeywords) => [...prevKeywords, keyword]);
   };
+
 
   //---//
   const handleBackgroundClick = (background: string) => {
@@ -64,6 +74,18 @@ const handleEraClick = (era: string) => {
 const handleEraSubmit = (keyword: string) => {
   setSelectedEras((prevKeywords) => [...prevKeywords, keyword]);
 };
+
+
+  const handleEraClick = (era: string) => {
+    setSelectedEras((prevEras) => {
+      if (prevEras.includes(era)) {
+        return prevEras.filter((g) => g !== era);
+      } else {
+        return [...prevEras, era];
+      }
+    });
+  };
+
 
 
   const handleNextPageClick = () => {
@@ -115,7 +137,7 @@ const handleEraSubmit = (keyword: string) => {
               selectedBackgrounds={selectedBackgrounds}
               onBackgroundClick={handleBackgroundClick}
               onBackgroundSubmit={handleBackgroundSubmit}
-            />
+            />      
           </div>
         </div>
         <div className="flex-1 mx-8">
@@ -125,6 +147,7 @@ const handleEraSubmit = (keyword: string) => {
               onEraClick={handleEraClick}
               onEraSubmit={handleEraSubmit}
             />
+
           </div>
         </div>
       </div>
