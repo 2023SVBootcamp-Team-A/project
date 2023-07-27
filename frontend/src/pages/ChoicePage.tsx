@@ -4,19 +4,19 @@ import data from '../data/choice-data.json';
 import axios from "axios";
 
 interface StoryResponse {
-    "response_content": string,
-    "response_message": string,
-    choices: string[]
+    "story": string,
+    "choices": string[],
+    "image": string
 }
 
 export default function ChociePage() {
     
     const [visible, setVisible] = useState(false);
     const [resposeData, setResponseData] = useState<StoryResponse>();
-
+    const url = 'http://localhost:8000/api/v1/novels/'+ 39
     const GetData = async () => {
         try {
-            const response = await axios.get<StoryResponse>('http://localhost:8000/api/v1/novels/1', {
+            const response = await axios.get<StoryResponse>(url, {
                     headers: {
                         "Content-Type": "application/json",
                         "Accept": "application/json",
@@ -25,6 +25,7 @@ export default function ChociePage() {
                 }
             );
             setResponseData(response.data);
+            console.log(response.data)
         } catch(err) {
           console.log(err);
         }
@@ -40,7 +41,7 @@ export default function ChociePage() {
             <div
                 className="w-screen h-screen min-h-screen relative overflow-scroll bg-scroll bg-no-repeat bg-top bg-cover hover:bg-fixed" 
                 style={{
-                    backgroundImage: `url(${data.url})`,
+                    backgroundImage: `url(${!(resposeData == null) && resposeData.image})`,
                     backgroundSize: "cover",
                 }}
             >
@@ -59,7 +60,7 @@ export default function ChociePage() {
                     </>
                 )}
             </div>
-            {!(resposeData == null) && visible && <Choice story={resposeData.response_content} question={data.question} choices={data.choices} />}
+            {!(resposeData == null) && visible && <Choice story={resposeData.story} question="어떤 선택을 하시겠습니까?" choices={resposeData.choices} novel_id={39} />}
         </div>
     );
 }
