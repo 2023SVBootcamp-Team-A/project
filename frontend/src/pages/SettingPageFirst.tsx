@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import GenreBox from '../components/Box/GenreBox';
 import GenreKeywords from '../components/Box/GenreKeywords';
 import BackgroundBox from '../components/Box/BackgroundBox';
@@ -13,15 +14,24 @@ interface SettingPageFirstProps {
   time_projection: string;
 }
 
-const SettingPageFirst: React.FC<SettingPageFirstProps> = () => {
+const SettingPageFirst: React.FC = () => {
     const navigate = useNavigate();
+
+    const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]); //선택한 키워드들 값 저장하는 상태변수
+
     const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
     const [selectedGenreKeywords, setSelectedGenreKeywords] = useState<string[]>([]);
+
     const [selectedBackgrounds, setSelectedBackgrounds] = useState<string[]>([]);
-    const [selectedBackgroundKeywords, setSelectedBackgroundKeywords] = useState<string[]>([]);  
+    const [selectedBackgroundKeywords, setSelectedBackgroundKeywords] = useState<string[]>([]);
+    
     const [selectedEras, setSelectedEras] = useState<string[]>([]);
     const [selectedEraKeywords, setSelectedEraKeywords] = useState<string[]>([]);
-    
+
+    // const handleKeywordsUpdate=(keywords: string[]) => {  //선택한 키워드들 업데이트하는 함수?
+    //   setSelectedKeywords(keywords);
+    // };
+
     const handleGenreClick = (genre: string) => {
       setSelectedGenres((prevGenres) => {
         if (prevGenres.includes(genre)) {
@@ -71,6 +81,7 @@ const SettingPageFirst: React.FC<SettingPageFirstProps> = () => {
 
   const handleBackgroundKeywordSubmit = (keyword: string) => {
       setSelectedBackgroundKeywords((prevKeywords) => [...prevKeywords, keyword]);
+    
     };
 
   const handleEraClick = (era: string) => {
@@ -95,33 +106,28 @@ const SettingPageFirst: React.FC<SettingPageFirstProps> = () => {
 
 const handleEraKeywordSubmit = (keyword: string) => {
   setSelectedEraKeywords((prevKeywords) => [...prevKeywords, keyword]);
+
 };
     
-  const handleNextPageClick = () => {
-    const queryString = `?genre=${JSON.stringify(selectedGenreKeywords)}&time_period=${JSON.stringify(
-      selectedEraKeywords
-    )}&time_projection=${JSON.stringify(selectedBackgroundKeywords)}`;
+  const handleNextPageClick = async () => {
+    try {
+      const apiUrl = 'http://localhost:8000/api/v1/novels/';
+      const requestData: NovelData = {
+        novel_id: selectedKeywords.join(','),
+      };
+      const response = await axios.post(apiUrl, requestData);
 
-    const genreKeywordsString = JSON.stringify(selectedGenreKeywords);
-    const eraKeywordsString = JSON.stringify(selectedEraKeywords);
-    const backgroundKeywordsString = JSON.stringify(selectedBackgroundKeywords);
-  
-    console.log('선택된 장르 :', genreKeywordsString);
-    console.log('선택된 시대 :', eraKeywordsString);
-    console.log('선택된 배경 :', backgroundKeywordsString);
-    console.log('쿼리 스트링', queryString);
-  
-    // const queryString = `?genre=${genreKeywordsString}&time_period=${eraKeywordsString}&time_projection=${backgroundKeywordsString}`;
-  
-    navigate('/setting', {
-      state: {
-        genre: selectedGenres,
-        time_period: selectedEras,
-        time_projection: selectedBackgrounds,
-        search: queryString
+      if (response.status === 201) {
+        console.log('API 응답 데이터:', response.data);
+        navigate('/setting',{state: {selectedKeywords}});
+      } else {
+        console.log('API 요청 실패');
       }
-    }); 
+    } catch (error) {
+      console.error('API 요청 중 오류가 발생했습니다', error);
+    }
 };
+
 
 
   return (  
