@@ -10,6 +10,7 @@ interface SettingPageFirstProps {
   genre: string;
   time_period: string;
   time_projection: string;
+  
 }
 
 const SettingPageFirst: React.FC = () => {
