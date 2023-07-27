@@ -31,7 +31,7 @@ export default function MyPage() {
   const [metaData, setMetaData] = useState<Meta>();
 
   // 보낼 데이터
-  const idValue = localStorage.getItem("id");
+  const idValue = localStorage.getItem("id") as string;
 
   // axios 요청 설정
   const config = {

@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import GenreBox from '../components/Box/GenreBox';
-import GenreKeywords from '../components/Box/GenreKeywords';
 import BackgroundBox from '../components/Box/BackgroundBox';
-import BackgroundKeywords from '../components/Box/BackgroundKeywords';
 import EraBox from '../components/Box/EraBox';
-import EraKeywords from '../components/Box/EraKeywords.tsx';
+
 
 interface SettingPageFirstProps {
   genre: string;
@@ -17,71 +14,67 @@ interface SettingPageFirstProps {
 const SettingPageFirst: React.FC = () => {
     const navigate = useNavigate();
 
-    const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]); //선택한 키워드들 값 저장하는 상태변수
+interface SettingPageFirstProps {
+  genre: string;
+  time_period: string;
+  time_projection: string;
+}
 
-    const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
-    const [selectedGenreKeywords, setSelectedGenreKeywords] = useState<string[]>([]);
+const SettingPageFirst: React.FC<SettingPageFirstProps> = () => {
+  const navigate = useNavigate();
+  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+  const [selectedBackgrounds, setSelectedBackgrounds] = useState<string[]>([]);
+  const [selectedEras, setSelectedEras] = useState<string[]>([]);
 
-    const [selectedBackgrounds, setSelectedBackgrounds] = useState<string[]>([]);
-    const [selectedBackgroundKeywords, setSelectedBackgroundKeywords] = useState<string[]>([]);
-    
-    const [selectedEras, setSelectedEras] = useState<string[]>([]);
-    const [selectedEraKeywords, setSelectedEraKeywords] = useState<string[]>([]);
 
-    // const handleKeywordsUpdate=(keywords: string[]) => {  //선택한 키워드들 업데이트하는 함수?
-    //   setSelectedKeywords(keywords);
-    // };
-
-    const handleGenreClick = (genre: string) => {
-      setSelectedGenres((prevGenres) => {
-        if (prevGenres.includes(genre)) {
-          return prevGenres.filter((g) => g !== genre);
+  const handleGenreClick = (genre: string) => {
+    setSelectedGenres((prevGenres) => {
+      if (prevGenres.includes(genre)) {
+        return prevGenres.filter((g) => g !== genre);
       } else {
         return [...prevGenres, genre];
       }
     });
+    console.log(genre);
   };
 
-  const handleGenreKeywordClick = (keyword: string) => {
-    setSelectedGenreKeywords((prevKeywords) => {
-      if (prevKeywords.includes(keyword)) {
-        return prevKeywords.filter((kw) => kw ! == keyword);
-      } else {
-       
-        return [...prevKeywords, keyword];
-      }
-    });
+  const handleGenreSubmit = (keyword: string) => {
+    setSelectedGenres((prevKeywords) => [...prevKeywords, keyword]);
   };
 
-  const handleGenreKeywordSubmit = (keyword: string) => {
-    setSelectedGenreKeywords((prevKeywords) => [...prevKeywords, keyword]);
-  };
 
   //---//
   const handleBackgroundClick = (background: string) => {
     setSelectedBackgrounds((prevBackgrounds) => {
       if (prevBackgrounds.includes(background)) {
-        return prevBackgrounds.filter((g) => g !== background);
+        return prevBackgrounds.filter((b) => b !== background);
       } else {
         return [...prevBackgrounds, background];
       }
     });
+    console.log(background);
   };
 
-  const handleBackgroundKeywordClick = (keyword: string) => {
-    setSelectedBackgroundKeywords((prevKeywords) => {
-      if (prevKeywords.includes(keyword)) {
-        return prevKeywords;
-      } else {
-        return [...prevKeywords, keyword];
-      }
-    });
+  const handleBackgroundSubmit = (keyword: string) => {
+    setSelectedBackgrounds((prevKeywords) => [...prevKeywords, keyword]);
   };
 
-  const handleBackgroundKeywordSubmit = (keyword: string) => {
-      setSelectedBackgroundKeywords((prevKeywords) => [...prevKeywords, keyword]);
-    
-    };
+//--//
+const handleEraClick = (era: string) => {
+  setSelectedEras((prevEras) => {
+    if (prevEras.includes(era)) {
+      return prevEras.filter((e) => e !== era);
+    } else {
+      return [...prevEras, era];
+    }
+  });
+  console.log(era);
+};
+
+const handleEraSubmit = (keyword: string) => {
+  setSelectedEras((prevKeywords) => [...prevKeywords, keyword]);
+};
+
 
   const handleEraClick = (era: string) => {
     setSelectedEras((prevEras) => {
@@ -93,43 +86,36 @@ const SettingPageFirst: React.FC = () => {
     });
   };
 
-  const handleEraKeywordClick = (keyword: string) => {
-    setSelectedEraKeywords((prevKeywords) => {
-      if (prevKeywords.includes(keyword)) {
-        return prevKeywords;
-      } else {
-        return [...prevKeywords, keyword];
-      }
+
+
+  const handleNextPageClick = () => {
+    console.log("선택된 장르 :", selectedGenres);
+    console.log("선택된 시대 :", selectedBackgrounds);
+    console.log("선택된 배경 :", selectedEras);
+
+    navigate("/setting", {
+      state: {
+        genre: selectedGenres,
+        time_period: selectedEras,
+        time_projection: selectedBackgrounds,
+      },
     });
   };
 
-const handleEraKeywordSubmit = (keyword: string) => {
-  setSelectedEraKeywords((prevKeywords) => [...prevKeywords, keyword]);
+  useEffect(() => {
+    console.log(selectedGenres);
+  }, [selectedGenres]);
 
-};
-    
-  const handleNextPageClick = async () => {
-    try {
-      const apiUrl = 'http://localhost:8000/api/v1/novels/';
-      const requestData: NovelData = {
-        novel_id: selectedKeywords.join(','),
-      };
-      const response = await axios.post(apiUrl, requestData);
+  useEffect(() => {
+    console.log(selectedBackgrounds);
+  }, [selectedBackgrounds]);
 
-      if (response.status === 201) {
-        console.log('API 응답 데이터:', response.data);
-        navigate('/setting',{state: {selectedKeywords}});
-      } else {
-        console.log('API 요청 실패');
-      }
-    } catch (error) {
-      console.error('API 요청 중 오류가 발생했습니다', error);
-    }
-};
+  useEffect(() => {
+    console.log(selectedEras);
+  }, [selectedEras]);
 
 
-
-  return (  
+  return (
     <div className="min-h-screen flex flex-col mt-20 p-8">
       <div className="text-5xl font-bold text-center text-[#6B3A18]">
         Sketch Story
@@ -140,11 +126,7 @@ const handleEraKeywordSubmit = (keyword: string) => {
             <GenreBox
               selectedGenres={selectedGenres}
               onGenreClick={handleGenreClick}
-              onGenreSubmit={handleGenreKeywordSubmit}
-            />
-            <GenreKeywords
-              selectedKeywords={selectedGenreKeywords}
-              onKeywordClick={handleGenreKeywordClick}
+              onGenreSubmit={handleGenreSubmit}
             />
           </div>
         </div>
@@ -154,12 +136,8 @@ const handleEraKeywordSubmit = (keyword: string) => {
             <BackgroundBox
               selectedBackgrounds={selectedBackgrounds}
               onBackgroundClick={handleBackgroundClick}
-              onBackgroundSubmit={handleBackgroundKeywordSubmit}
-            />
-            <BackgroundKeywords
-              selectedKeywords={selectedBackgroundKeywords}
-              onKeywordClick={handleBackgroundKeywordClick}
-            />
+              onBackgroundSubmit={handleBackgroundSubmit}
+            />      
           </div>
         </div>
         <div className="flex-1 mx-8">
@@ -167,12 +145,9 @@ const handleEraKeywordSubmit = (keyword: string) => {
             <EraBox
               selectedEras={selectedEras}
               onEraClick={handleEraClick}
-              onEraSubmit={handleEraKeywordSubmit}
+              onEraSubmit={handleEraSubmit}
             />
-            <EraKeywords
-              selectedKeywords={selectedEraKeywords}
-              onKeywordClick={handleEraKeywordClick}
-            />
+
           </div>
         </div>
       </div>

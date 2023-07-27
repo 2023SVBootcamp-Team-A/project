@@ -1,4 +1,3 @@
-// path("api/v1/novels/", openapi_views.init_setting_APIView.as_view()),
 import React, { useState,useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
@@ -6,58 +5,73 @@ import addLogo from "/images/add.png";
 import deleteLogo from "/images/delete.png";
 import checkboxLogo from "/images/checkbox.png";
 
+interface Character {
+    name: string;
+    personality: string;
+}
 
 interface NovelData {
-  novel_id: string;
-//   selectedKeywords: string[];
+  genre: string[];
+  time_period: string[];
+  time_projection: string[];
+  summary: string;
+  character: Character[];
 }
 
 const SettingPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { state } = location;
-  const { selectedKeywords = [] } = state || {};
-//   const [selectedNovelId, setSelectedNovelId] = useState<string>('')
-  
-  
+  const [summary, setSummary] = useState<string>('');
+  const [characterInputs, setCharacterInputs] = useState<Character[]>([{ name: '', personality: '' }]);
+  const [genre, setGenre] = useState<string[]>([]);
+  const [time_period, setTimePeriod] = useState<string[]>([]);
+  const [time_projection, setTimeProjection] = useState<string[]>([]);
+
   useEffect(() => {
-    if (selectedKeywords.length > 0) {
-        fetchNovelsData(selectedKeywords);
-    }
-  }, [selectedKeywords]);
+    const { state } = location;
 
-  const fetchNovelsData = async (selectedKeywords : string[]) => {
+    const { genre = [], time_period = [], time_projection = [] } = state || {};
+    setGenre(genre);
+    setTimePeriod(time_period);
+    setTimeProjection(time_projection);
+  }, [location]);
+
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
     try {
-      const apiUrl = "http://www.techeer-team-a.store:8000/api/v1/novels/";
-
-        const requestData:NovelData = {
-            novel_id: selectedKeywords.join(','),
+        const requestData: NovelData = {
+            genre: genre,
+            time_period: time_period,
+            time_projection: time_projection,
+            character: characterInputs,
+            summary: summary
         };
 
-        const response = await axios.post(apiUrl, requestData);
+        const response = await axios.post('http://localhost:8000/api/v1/novels/', 
+        requestData);
         
-        if (response.status === 200) {
+        if (response.status === 201) {
+        const token = response.data.token;
+        localStorage.setItem("token",token);
         console.log('API 응답 데이터:', response.data);
-        navigate('choice');
+        navigate('/choice');
     } else {
+        console.log(response);
         console.log('API 요청 실패');
     }
   };
 
-
-  const [inputs, setInputs] = useState<{ name: string; description: string; isCompleted: boolean }[]>([
-    { name: '', description: '', isCompleted: false }
-  ]);
-
   const handleAddInput = () => {
-    if (inputs.length < 5) {
-      setInputs([...inputs, { name: '', description: '', isCompleted: false }]);
+    if (characterInputs.length < 5) {
+      setCharacterInputs([...characterInputs, { name: '', personality: ''}]);
     }
   };
 
-  const handleInputChange = (index: number, field: 'name' | 'description', value: string) => {
-    const updatedInputs = [...inputs];
+  const handleInputChange = (index: number, field: 'name' | 'personality', value: string) => {
+    const updatedInputs = [...characterInputs];
     updatedInputs[index][field] = value;
     setCharacterInputs(updatedInputs);
   };
@@ -68,8 +82,12 @@ const SettingPage: React.FC = () => {
     setCharacterInputs(updatedInputs);
   };
 
-  const handleNextPageClick = () => {
-    navigate('/choice');
+  const handleNextPageClick = async (e: React.FormEvent) => {
+    try {
+        await handleSubmit(e);
+    } catch (error) {
+        console.error('다음 페이지 클릭시 오류 발생:' , error);
+    }
   };
 
   return (
@@ -113,8 +131,8 @@ const SettingPage: React.FC = () => {
               <input
                 className="w-full h-10 rounded-3xl px-4 mb-2  mr-5 border border-[#9B8F8F]"
                 placeholder="등장인물의 특징을 입력하세요. ex. 성격이 착함"
-                value={input.description}
-                onChange={(e) => handleInputChange(index, 'description', e.target.value)}
+                value={input.personality}
+                onChange={(e) => handleInputChange(index, 'personality', e.target.value)}
               />
               {input.name === "" && (
                 <button
