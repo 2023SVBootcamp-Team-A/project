@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import addLogo from "/images/add.png";
-import "./GenreBox.css";
 
 interface GenreBoxProps {
   selectedGenres: string[];
@@ -41,14 +40,12 @@ const GenreBox: React.FC<GenreBoxProps> = ({
     // 빈거 아니면
     if (newGenre.trim() !== "") {
       onGenreSubmit(newGenre.trim());
-      // 뉴장르를 predefinedGenres에 추가
       setGenres([...genres, newGenre.trim()]);
       console.log(genres);
     }
   };
 
   const handleGenreClick = (genre: string) => {
-    console.log(genre);
     onGenreClick(genre);
   };
 

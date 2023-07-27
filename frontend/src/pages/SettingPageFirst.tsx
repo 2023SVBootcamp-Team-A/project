@@ -2,11 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import GenreBox from "../components/Box/GenreBox";
-import GenreKeywords from "../components/Box/GenreKeywords";
 import BackgroundBox from "../components/Box/BackgroundBox";
-import BackgroundKeywords from "../components/Box/BackgroundKeywords";
 import EraBox from "../components/Box/EraBox";
-import EraKeywords from "../components/Box/EraKeywords.tsx";
+
 
 interface SettingPageFirstProps {
   genre: string;
@@ -18,11 +16,8 @@ const SettingPageFirst: React.FC = () => {
   const navigate = useNavigate();
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [selectedBackgrounds, setSelectedBackgrounds] = useState<string[]>([]);
-  const [selectedBackgroundKeywords, setSelectedBackgroundKeywords] = useState<
-    string[]
-  >([]);
   const [selectedEras, setSelectedEras] = useState<string[]>([]);
-  const [selectedEraKeywords, setSelectedEraKeywords] = useState<string[]>([]);
+
 
   const handleGenreClick = (genre: string) => {
     setSelectedGenres((prevGenres) => {
@@ -42,75 +37,45 @@ const SettingPageFirst: React.FC = () => {
   const handleBackgroundClick = (background: string) => {
     setSelectedBackgrounds((prevBackgrounds) => {
       if (prevBackgrounds.includes(background)) {
-        return prevBackgrounds.filter((g) => g !== background);
+        return prevBackgrounds.filter((b) => b !== background);
       } else {
         return [...prevBackgrounds, background];
       }
     });
+    console.log(background);
   };
 
-  const handleBackgroundKeywordClick = (keyword: string) => {
-    setSelectedBackgroundKeywords((prevKeywords) => {
-      if (prevKeywords.includes(keyword)) {
-        return prevKeywords;
-      } else {
-        return [...prevKeywords, keyword];
-      }
-    });
+  const handleBackgroundSubmit = (keyword: string) => {
+    setSelectedBackgrounds((prevKeywords) => [...prevKeywords, keyword]);
   };
 
-  const handleBackgroundKeywordSubmit = (keyword: string) => {
-    setSelectedBackgroundKeywords((prevKeywords) => [...prevKeywords, keyword]);
-  };
+//--//
+const handleEraClick = (era: string) => {
+  setSelectedEras((prevEras) => {
+    if (prevEras.includes(era)) {
+      return prevEras.filter((e) => e !== era);
+    } else {
+      return [...prevEras, era];
+    }
+  });
+  console.log(era);
+};
 
-  const handleEraClick = (era: string) => {
-    setSelectedEras((prevEras) => {
-      if (prevEras.includes(era)) {
-        return prevEras.filter((g) => g !== era);
-      } else {
-        return [...prevEras, era];
-      }
-    });
-  };
+const handleEraSubmit = (keyword: string) => {
+  setSelectedEras((prevKeywords) => [...prevKeywords, keyword]);
+};
 
-  const handleEraKeywordClick = (keyword: string) => {
-    setSelectedEraKeywords((prevKeywords) => {
-      if (prevKeywords.includes(keyword)) {
-        return prevKeywords;
-      } else {
-        return [...prevKeywords, keyword];
-      }
-    });
-  };
-
-  const handleEraKeywordSubmit = (keyword: string) => {
-    setSelectedEraKeywords((prevKeywords) => [...prevKeywords, keyword]);
-  };
 
   const handleNextPageClick = () => {
-    const queryString = `?genre=${JSON.stringify(
-      selectedGenres
-    )}&time_period=${JSON.stringify(
-      selectedEraKeywords
-    )}&time_projection=${JSON.stringify(selectedBackgroundKeywords)}`;
-
-    const genreKeywordsString = JSON.stringify(selectedGenres);
-    const eraKeywordsString = JSON.stringify(selectedEraKeywords);
-    const backgroundKeywordsString = JSON.stringify(selectedBackgroundKeywords);
-
-    console.log("선택된 장르 :", genreKeywordsString);
-    console.log("선택된 시대 :", eraKeywordsString);
-    console.log("선택된 배경 :", backgroundKeywordsString);
-    console.log("쿼리 스트링", queryString);
-
-    // const queryString = `?genre=${genreKeywordsString}&time_period=${eraKeywordsString}&time_projection=${backgroundKeywordsString}`;
+    console.log("선택된 장르 :", selectedGenres);
+    console.log("선택된 시대 :", selectedBackgrounds);
+    console.log("선택된 배경 :", selectedEras);
 
     navigate("/setting", {
       state: {
         genre: selectedGenres,
         time_period: selectedEras,
         time_projection: selectedBackgrounds,
-        search: queryString,
       },
     });
   };
@@ -118,6 +83,15 @@ const SettingPageFirst: React.FC = () => {
   useEffect(() => {
     console.log(selectedGenres);
   }, [selectedGenres]);
+
+  useEffect(() => {
+    console.log(selectedBackgrounds);
+  }, [selectedBackgrounds]);
+
+  useEffect(() => {
+    console.log(selectedEras);
+  }, [selectedEras]);
+
 
   return (
     <div className="min-h-screen flex flex-col mt-20 p-8">
@@ -140,11 +114,7 @@ const SettingPageFirst: React.FC = () => {
             <BackgroundBox
               selectedBackgrounds={selectedBackgrounds}
               onBackgroundClick={handleBackgroundClick}
-              onBackgroundSubmit={handleBackgroundKeywordSubmit}
-            />
-            <BackgroundKeywords
-              selectedKeywords={selectedBackgroundKeywords}
-              onKeywordClick={handleBackgroundKeywordClick}
+              onBackgroundSubmit={handleBackgroundSubmit}
             />
           </div>
         </div>
@@ -153,11 +123,7 @@ const SettingPageFirst: React.FC = () => {
             <EraBox
               selectedEras={selectedEras}
               onEraClick={handleEraClick}
-              onEraSubmit={handleEraKeywordSubmit}
-            />
-            <EraKeywords
-              selectedKeywords={selectedEraKeywords}
-              onKeywordClick={handleEraKeywordClick}
+              onEraSubmit={handleEraSubmit}
             />
           </div>
         </div>

@@ -39,34 +39,32 @@ const SettingPage: React.FC = () => {
     setTimeProjection(time_projection);
   }, [location]);
 
-  const handleSubmit = async () => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
     try {
-      const apiUrl = "http://localhost:8000/api/v1/novels/";
+        const requestData: NovelData = {
+            genre: genre,
+            time_period: time_period,
+            time_projection: time_projection,
+            character: characterInputs,
+            summary: summary
+        };
 
-      const requestData: NovelData = {
-        genre: genre,
-        time_period: time_period,
-        time_projection: time_projection,
-        character: characterInputs,
-        summary: summary,
-      };
-
-      const response = await axios.post(apiUrl, requestData);
-
-      if (response.status === 201) {
-        console.log("API 응답 데이터:", response.data);
-        navigate("/choice");
-      } else {
-        console.log("API 요청 실패");
-      }
-    } catch (error) {
-      console.error("api 요청 중 오류가 발생했습니다", error);
+        const response = await axios.post('http://localhost:8000/api/v1/novels/', 
+        requestData);
+        
+        if (response.status === 201) {
+        const token = response.data.token;
+        localStorage.setItem("token",token);
+        console.log('API 응답 데이터:', response.data);
+        navigate('/choice');
+    } else {
+        console.log(response);
+        console.log('API 요청 실패');
     }
   };
-
-  //   const [inputs, setInputs] = useState<{ name: string; personality: string; isCompleted: boolean }[]>([
-  //     { name: '', personality: '', isCompleted: false }
-  //   ]);
 
   const handleAddInput = () => {
     if (characterInputs.length < 5) {
@@ -90,9 +88,9 @@ const SettingPage: React.FC = () => {
     setCharacterInputs(updatedInputs);
   };
 
-  const handleNextPageClick = async () => {
+  const handleNextPageClick = async (e: React.FormEvent) => {
     try {
-      await handleSubmit();
+        await handleSubmit(e);
     } catch (error) {
       console.error("다음 페이지 클릭시 오류 발생:", error);
     }
