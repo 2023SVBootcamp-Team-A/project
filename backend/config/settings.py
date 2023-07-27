@@ -177,8 +177,8 @@ AWS_S3_REGION_NAME = AWS_S3_REGION_NAME
 AWS_S3_ENDPOINT_URL = AWS_S3_ENDPOINT_URL
 
 # DEFAULT_FILE_STORAGE 및 STATICFILES_STORAGE 설정
-DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+# DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+# STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": [
@@ -186,7 +186,6 @@ REST_FRAMEWORK = {
         "rest_framework.renderers.BrowsableAPIRenderer",
     ],
 }
-
 
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
