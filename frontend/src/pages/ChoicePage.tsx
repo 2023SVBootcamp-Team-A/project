@@ -13,7 +13,7 @@ export default function ChociePage() {
     
     const [visible, setVisible] = useState(false);
     const [resposeData, setResponseData] = useState<StoryResponse>();
-    const url = 'http://localhost:8000/api/v1/novels/'+ 39
+    const url = 'http://localhost:8000/api/v1/novels/'+ 43
     const GetData = async () => {
         try {
             const response = await axios.get<StoryResponse>(url, {
@@ -60,7 +60,7 @@ export default function ChociePage() {
                     </>
                 )}
             </div>
-            {!(resposeData == null) && visible && <Choice story={resposeData.story} question="어떤 선택을 하시겠습니까?" choices={resposeData.choices} novel_id={39} />}
+            {!(resposeData == null) && visible && <Choice story={resposeData.story} question="어떤 선택을 하시겠습니까?" choices={resposeData.choices} novel_id={43} />}
         </div>
     );
 }
