@@ -30,7 +30,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',')
+ALLOWED_HOSTS = ['backend','localhost']
 
 
 # Application definition
@@ -151,7 +151,11 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
 
-CORS_ORIGIN_WHITELIST = os.getenv('CORS_ORIGIN_WHITELIST').split(',')
+CORS_ORIGIN_WHITELIST = ['http://127.0.0.1:5173'
+                        ,'http://localhost:5173'
+                        ,'http://frontend:5173'
+                        ,'http://localhost'
+                        ]
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = [
     "*",
@@ -173,8 +177,8 @@ AWS_S3_REGION_NAME = AWS_S3_REGION_NAME
 AWS_S3_ENDPOINT_URL = AWS_S3_ENDPOINT_URL
 
 # DEFAULT_FILE_STORAGE 및 STATICFILES_STORAGE 설정
-# DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-# STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": [
@@ -182,6 +186,7 @@ REST_FRAMEWORK = {
         "rest_framework.renderers.BrowsableAPIRenderer",
     ],
 }
+
 
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {

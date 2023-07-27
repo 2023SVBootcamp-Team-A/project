@@ -27,7 +27,7 @@ const SettingPageFirst: React.FC<SettingPageFirstProps> = () => {
         if (prevGenres.includes(genre)) {
           return prevGenres.filter((g) => g !== genre);
       } else {
-        return [...prevGenres, genre];
+          return [...prevGenres, genre];
       }
     });
   };
@@ -44,16 +44,17 @@ const SettingPageFirst: React.FC<SettingPageFirstProps> = () => {
   };
 
   const handleGenreKeywordSubmit = (keyword: string) => {
-    setSelectedGenreKeywords((prevKeywords) => [...prevKeywords, keyword]);
-  };
+      setSelectedGenreKeywords((prevKeywords) => [...prevKeywords, keyword]);
+    
+    };
 
-  //---//
-  const handleBackgroundClick = (background: string) => {
-    setSelectedBackgrounds((prevBackgrounds) => {
-      if (prevBackgrounds.includes(background)) {
-        return prevBackgrounds.filter((g) => g !== background);
+    //---//
+    const handleBackgroundClick = (background: string) => {
+      setSelectedBackgrounds((prevBackgrounds) => {
+        if (prevBackgrounds.includes(background)) {
+          return prevBackgrounds.filter((g) => g !== background);
       } else {
-        return [...prevBackgrounds, background];
+          return [...prevBackgrounds, background];
       }
     });
   };
@@ -73,24 +74,24 @@ const SettingPageFirst: React.FC<SettingPageFirstProps> = () => {
     };
 
   const handleEraClick = (era: string) => {
-    setSelectedEras((prevEras) => {
-      if (prevEras.includes(era)) {
-        return prevEras.filter((g) => g !== era);
-      } else {
-        return [...prevEras, era];
-      }
-    });
-  };
+  setSelectedEras((prevEras) => {
+    if (prevEras.includes(era)) {
+      return prevEras.filter((g) => g !== era);
+  } else {
+      return [...prevEras, era];
+  }
+});
+};
 
   const handleEraKeywordClick = (keyword: string) => {
-    setSelectedEraKeywords((prevKeywords) => {
-      if (prevKeywords.includes(keyword)) {
-        return prevKeywords;
-      } else {
-        return [...prevKeywords, keyword];
-      }
-    });
-  };
+  setSelectedEraKeywords((prevKeywords) => {
+    if (prevKeywords.includes(keyword)) {
+      return prevKeywords;
+  } else {
+      return [...prevKeywords, keyword];
+  }
+  });
+};
 
 const handleEraKeywordSubmit = (keyword: string) => {
   setSelectedEraKeywords((prevKeywords) => [...prevKeywords, keyword]);
@@ -125,17 +126,15 @@ const handleEraKeywordSubmit = (keyword: string) => {
 
   return (  
     <div className="min-h-screen flex flex-col mt-20 p-8">
-      <div className="text-5xl font-bold text-center text-[#6B3A18]">
-        Sketch Story
-      </div>
-      <div className="h-5/6 w-5/6 bg-[#E9E7E4] flex flex-row p-4 mx-auto mt-5 mb-2 rounded-2xl">
-        <div className="flex-1 mx-8">
-          <div className="bg-[#E9E7E4] p-4 mb-4 rounded-xl">
-            <GenreBox
+    <div className="text-5xl font-bold text-center text-[#6B3A18]">Sketch Story</div>
+    <div className="h-5/6 w-5/6 bg-[#E9E7E4] flex flex-row p-4 mx-auto mt-5 mb-2 rounded-2xl">
+    <div className="flex-1 mx-8">
+          <div className="bg-[#E9E7E4] p-4 mb-4 rounded-xl">        
+          <GenreBox
               selectedGenres={selectedGenres}
               onGenreClick={handleGenreClick}
               onGenreSubmit={handleGenreKeywordSubmit}
-            />
+              />
             <GenreKeywords
               selectedKeywords={selectedGenreKeywords}
               onKeywordClick={handleGenreKeywordClick}
@@ -145,11 +144,11 @@ const handleEraKeywordSubmit = (keyword: string) => {
 
         <div className="flex-1 mx-8">
           <div className="bg-[#E9E7E4] p-4 mb-4 rounded-xl">
-            <BackgroundBox
+          <BackgroundBox
               selectedBackgrounds={selectedBackgrounds}
               onBackgroundClick={handleBackgroundClick}
               onBackgroundSubmit={handleBackgroundKeywordSubmit}
-            />
+              />
             <BackgroundKeywords
               selectedKeywords={selectedBackgroundKeywords}
               onKeywordClick={handleBackgroundKeywordClick}
@@ -158,29 +157,28 @@ const handleEraKeywordSubmit = (keyword: string) => {
         </div>
         <div className="flex-1 mx-8">
           <div className="bg-[#E9E7E4] p-4 mb-4 rounded-xl">
-            <EraBox
+          <EraBox
               selectedEras={selectedEras}
               onEraClick={handleEraClick}
               onEraSubmit={handleEraKeywordSubmit}
-            />
-            <EraKeywords
+              />
+            <EraKeywords       
               selectedKeywords={selectedEraKeywords}
               onKeywordClick={handleEraKeywordClick}
             />
           </div>
         </div>
       </div>
-      {/* 다음버튼 */}
-      <div className="h-5/6 w-5/6 mx-auto flex flex-col items-end">
-        <button
-          className="px-16 py-3 pr-16 font-bold text-white bg-[#9B8F8F] hover:bg-[#E9E7E4] hover:text-[#898181] rounded-2xl text-center shadow-lg shadow-black-800/80 dark:shadow-lg dark:shadow-black-800/80"
-          onClick={handleNextPageClick}
-        >
-          다음으로
-        </button>
-      </div>
+    {/* 다음버튼 */}
+    <div className="h-5/6 w-5/6 mx-auto flex flex-col items-end">
+      <button className="px-16 py-3 pr-16 font-bold text-white bg-[#9B8F8F] hover:bg-[#E9E7E4] hover:text-[#898181] rounded-2xl text-center shadow-lg shadow-black-800/80 dark:shadow-lg dark:shadow-black-800/80" onClick={handleNextPageClick}>
+        다음으로
+      </button>
     </div>
-  );
-};
+  </div>
 
+    );
+}
+  
 export default SettingPageFirst;
+

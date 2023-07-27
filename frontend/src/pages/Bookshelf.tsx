@@ -1,123 +1,6 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
 import "./Bookshelf.css";
-import NovelBook from "../components/NovelBook";
-
-type MyNovels = {
-  novel: Novel[];
-  meta: Meta;
-};
-
-type Meta = {
-  page: number;
-  pages: number;
-  prev_page: number;
-  next_page: number;
-  has_next: boolean;
-  has_prev: boolean;
-};
-
-type Novel = {
-  id: number;
-  novel_name: string;
-  novel_image: string;
-};
 
 export default function Bookshelf() {
-  const [novelList, setNovelList] = useState<Novel[]>([]);
-  const [novelList1, setNovelList1] = useState<Novel[]>([]);
-  const [novelList2, setNovelList2] = useState<Novel[]>([]);
-  const [novelList3, setNovelList3] = useState<Novel[]>([]);
-  const [metaData, setMetaData] = useState<Meta>();
-
-  // GET 요청 보내기
-  const getMyNovels = async (page: number) => {
-    const queryString = `?page=${page}`;
-
-    const response = await axios
-      .get(`http://localhost:8000/api/v1/novels${queryString}`)
-      .then(function (response) {
-        // 성공적으로 응답 받았을 때 처리하는 로직
-        // console.log(response.data.meta);
-
-        const { novel } = response.data;
-        // console.log(novel);
-
-        // 내용이 없으면 null 또는 undefined로 들어감!
-        const novelList1 = novel.slice(0, 4);
-        const novelList2 = novel.slice(4, 8);
-        const novelList3 = novel.slice(8, 12);
-
-        setNovelList(novel); // You can still set the original array if needed
-        // Set the individual lists in separate states if required
-        setNovelList1(novelList1);
-        setNovelList2(novelList2);
-        setNovelList3(novelList3);
-
-        setMetaData(response.data.meta);
-      })
-      .catch((error) => {
-        // 오류 발생 시 처리하는 로직
-        console.error("API 요청 중 오류가 발생하였습니다.", error);
-      });
-  };
-
-  useEffect(() => {
-    void getMyNovels(1);
-  }, []);
-
-  // Add this useEffect to log the updated novelList whenever it changes
-  useEffect(() => {
-    // console.log(novelList1);
-    // console.log(novelList2);
-    // console.log(novelList3);
-  }, [novelList1, novelList2, novelList3]);
-
-  useEffect(() => {
-    // console.log(metaData);
-  }, [metaData]);
-
-  const renderPagination = () => {
-    const components = [];
-
-    // metaData가 불러와졌을 때만 동작하도록 if문으로 감싼다.
-    if (metaData?.pages) {
-      for (let i = 1; i <= metaData?.pages; i++) {
-        // 여기에 컴포넌트를 생성하고 components 배열에 추가하는 로직을 구현합니다.
-        // 예를 들어, 페이지 번호를 출력하는 단순한 컴포넌트를 생성한다고 가정해보겠습니다.
-        if (i === metaData.page) {
-          components.push(
-            <li
-              key={i}
-              onClick={() => {
-                void getMyNovels(i);
-              }}
-            >
-              <a href="#" aria-current="page" className="navCurrentItem">
-                {i}
-              </a>
-            </li>
-          );
-        } else {
-          components.push(
-            <li
-              key={i}
-              onClick={() => {
-                void getMyNovels(i);
-              }}
-            >
-              <a href="#" className="navItem">
-                {i}
-              </a>
-            </li>
-          );
-        }
-      }
-    }
-
-    return components;
-  };
-
   return (
     <>
       <div className="title">
@@ -125,38 +8,172 @@ export default function Bookshelf() {
       </div>
       <div className="bookShelf">
         <div className="books-container">
-          {novelList1.map((novel) => (
-            <NovelBook key={novel.id} novel={novel} />
-          ))}
+          <div className="book">
+            <figure className="bookContainer">
+              <img
+                src="https://raw.github.com/peterwestendorp/shelves/master/photos/1.jpg"
+                alt="random photo"
+                className="photocard"
+              />
+              <figcaption className="bookName">Book 1</figcaption>
+            </figure>
+          </div>
+          <div className="book">
+            <figure className="bookContainer">
+              <img
+                src="https://raw.github.com/peterwestendorp/shelves/master/photos/2.jpg"
+                alt="random photo"
+                className="photocard"
+              />
+              <figcaption className="bookName">Book 2</figcaption>
+            </figure>
+          </div>
+          <div className="book">
+            <figure className="bookContainer">
+              <img
+                src="https://raw.github.com/peterwestendorp/shelves/master/photos/3.jpg"
+                alt="random photo"
+                className="photocard"
+              />
+              <figcaption className="bookName">Book 3</figcaption>
+            </figure>
+          </div>
+          <div className="book">
+            <figure className="bookContainer">
+              <img
+                src="https://raw.github.com/peterwestendorp/shelves/master/photos/4.jpg"
+                alt="random photo"
+                className="photocard"
+              />
+              <figcaption className="bookName">Book 4</figcaption>
+            </figure>
+          </div>
         </div>
         <div className="floor-thickness"></div>
         <div className="books-container">
-          {novelList2.map((novel) => (
-            <NovelBook key={novel.id} novel={novel} />
-          ))}
+          <div className="book">
+            <figure className="bookContainer">
+              <img
+                src="https://raw.github.com/peterwestendorp/shelves/master/photos/5.jpg"
+                alt="random photo"
+                className="photocard"
+              />
+              <figcaption className="bookName">Book 1</figcaption>
+            </figure>
+          </div>
+          <div className="book">
+            <figure className="bookContainer">
+              <img
+                src="https://raw.github.com/peterwestendorp/shelves/master/photos/6.jpg"
+                alt="random photo"
+                className="photocard"
+              />
+              <figcaption className="bookName">Book 2</figcaption>
+            </figure>
+          </div>
+          <div className="book">
+            <figure className="bookContainer">
+              <img
+                src="https://raw.github.com/peterwestendorp/shelves/master/photos/7.jpg"
+                alt="random photo"
+                className="photocard"
+              />
+              <figcaption className="bookName">Book 3</figcaption>
+            </figure>
+          </div>
+          <div className="book">
+            <figure className="bookContainer">
+              <img
+                src="https://raw.github.com/peterwestendorp/shelves/master/photos/8.jpg"
+                alt="random photo"
+                className="photocard"
+              />
+              <figcaption className="bookName">Book 4</figcaption>
+            </figure>
+          </div>
         </div>
         <div className="floor-thickness"></div>
         <div className="books-container">
-          {novelList3.map((novel) => (
-            <NovelBook key={novel.id} novel={novel} />
-          ))}
+          <div className="book">
+            <figure className="bookContainer">
+              <img
+                src="https://raw.github.com/peterwestendorp/shelves/master/photos/9.jpg"
+                alt="random photo"
+                className="photocard"
+              />
+              <figcaption className="bookName">Book 1</figcaption>
+            </figure>
+          </div>
+          <div className="book">
+            <figure className="bookContainer">
+              <img
+                src="https://image.freepik.com/free-photo/wall-wallpaper-concrete-colored-painted-textured-concept_53876-31799.jpg"
+                alt="random photo"
+                className="photocard"
+              />
+              <figcaption className="bookName">Book 2</figcaption>
+            </figure>
+          </div>
+          <div className="book">
+            <figure className="bookContainer">
+              <img
+                src="https://picsum.photos/200"
+                alt="random photo"
+                className="photocard"
+              />
+              <figcaption className="bookName">Book 3</figcaption>
+            </figure>
+          </div>
+          <div className="book">
+            <figure className="bookContainer">
+              <img
+                src="https://picsum.photos/200"
+                alt="random photo"
+                className="photocard"
+              />
+              <figcaption className="bookName">Book 4</figcaption>
+            </figure>
+          </div>
         </div>
         <div className="floor-thickness"></div>
       </div>
       <nav aria-label="Page navigation example">
         <ul className="inline-flex -space-x-px text-base h-10 mt-12">
-          {/* <li>
+          <li>
             <a href="#" className="navLeftArrow">
               &lt;
             </a>
-          </li> */}
-          {/* 페이지 수에 따라 컴포넌트를 렌더링합니다. */}
-          {renderPagination()}
-          {/* <li>
+          </li>
+          <li>
+            <a href="#" className="navFirstItem">
+              1
+            </a>
+          </li>
+          <li>
+            <a href="#" className="navSecondItem">
+              2
+            </a>
+          </li>
+          <li>
+            <a href="#" aria-current="page" className="navThirdItem">
+              3
+            </a>
+          </li>
+          <li>
+            <a href="#" className="navFourthItem">
+              4
+            </a>
+          </li>
+          <li>
+            <a href="#" className="navFifthItem">
+              5
+            </a>
+          </li>
+          <li>
             <a href="#" className="navRightArrow">
               &gt;
             </a>
-          </li> */}
+          </li>
         </ul>
       </nav>
     </>
