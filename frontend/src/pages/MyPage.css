@@ -48,24 +48,12 @@
     @apply flex items-center justify-center px-4 h-10 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg;
   }
 
-  .navFirstItem {
+  .navItem {
     @apply flex items-center justify-center px-4 h-10 leading-tight text-black bg-paginationdeepgray hover:bg-paginationlightgray;
   }
 
-  .navSecondItem {
-    @apply flex items-center justify-center px-4 h-10 leading-tight text-black bg-paginationdeepgray hover:bg-paginationlightgray;
-  }
-
-  .navThirdItem {
+  .navCurrentItem {
     @apply flex items-center justify-center px-4 h-10 text-black bg-paginationlightgray;
-  }
-
-  .navFourthItem {
-    @apply flex items-center justify-center px-4 h-10 leading-tight text-black bg-paginationdeepgray hover:bg-paginationlightgray;
-  }
-
-  .navFifthItem {
-    @apply flex items-center justify-center px-4 h-10 leading-tight text-black bg-paginationdeepgray hover:bg-paginationlightgray;
   }
 
   .navRightArrow {
