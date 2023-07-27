@@ -11,21 +11,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Get Github Actions IP
-      id: ip
-      uses: haythem/public-ip@v1.2
-
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_RDS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_RDS_SECRET_ACCESS_KEY }}
-        aws-region: ap-northeast-2
-
-    - name: Add Github Actions IP to RDS Security group
-      run: |
-        aws rds authorize-db-security-group-ingress --db-security-group-name ${{ secrets.RDS_SECURITY_GROUP_NAME }} --cidrip ${{ steps.ip.outputs.ipv4 }}/32
-
 
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -101,7 +86,3 @@ jobs:
 
     - name: Docker compose up
       run: docker-compose -f docker-compose.prod.yml up -d
-
-    - name: Remove Github Actions IP from RDS Security group
-      run: |
-        aws rds revoke-db-security-group-ingress --db-security-group-name ${{ secrets.RDS_SECURITY_GROUP_NAME }} --cidrip ${{ steps.ip.outputs.ipv4 }}/32
