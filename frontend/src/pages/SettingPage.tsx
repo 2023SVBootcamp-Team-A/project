@@ -89,7 +89,7 @@ const SettingPage: React.FC = () => {
     try {
         await handleSubmit(e);
     } catch (error) {
-        console.error('다음 페이지 클릭시 오류 발생:' , error);
+      console.error("다음 페이지 클릭시 오류 발생:", error);
     }
   };
 
@@ -180,5 +180,5 @@ const SettingPage: React.FC = () => {
       </div>
     </div>
   );
-}
+};
 export default SettingPage;

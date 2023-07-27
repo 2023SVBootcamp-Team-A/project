@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import GenreBox from "../components/Box/GenreBox";
 import BackgroundBox from "../components/Box/BackgroundBox";
 import EraBox from "../components/Box/EraBox";
@@ -12,7 +13,7 @@ interface SettingPageFirstProps {
   
 }
 
-const SettingPageFirst: React.FC<SettingPageFirstProps> = () => {
+const SettingPageFirst: React.FC = () => {
   const navigate = useNavigate();
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [selectedBackgrounds, setSelectedBackgrounds] = useState<string[]>([]);
@@ -34,7 +35,6 @@ const SettingPageFirst: React.FC<SettingPageFirstProps> = () => {
     setSelectedGenres((prevKeywords) => [...prevKeywords, keyword]);
   };
 
-  //---//
   const handleBackgroundClick = (background: string) => {
     setSelectedBackgrounds((prevBackgrounds) => {
       if (prevBackgrounds.includes(background)) {
