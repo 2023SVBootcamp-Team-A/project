@@ -85,13 +85,13 @@ const SettingPage: React.FC = () => {
     setCharacterInputs(updatedInputs);
   };
 
-  // const handleNextPageClick = async () => {
-  //   try {
-  //       await handleSubmit();
-  //   } catch (error) {
-  //       console.error('다음 페이지 클릭시 오류 발생:' , error);
-  //   }
-  // };
+  const handleNextPageClick = async (e: React.FormEvent) => {
+    try {
+        await handleSubmit(e);
+    } catch (error) {
+        console.error('다음 페이지 클릭시 오류 발생:' , error);
+    }
+  };
 
   return (
     <div className="h-fit flex flex-col items-center p-8">
