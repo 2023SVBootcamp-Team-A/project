@@ -9,14 +9,10 @@ interface EraBoxProps {
 
 const EraBox: React.FC<EraBoxProps> = ({ selectedEras, onEraClick, onEraSubmit }) => {
  
-  const predefinedEras = ['현대', '근대', '미래', '중세', '르네상스', '고대','조선','고려',]; 
-  
   const [newEra, setNewEra] = useState('');
   const [enterPressed, setEnterPressed] = useState(false);
-  const [predefinedErasState, setPredefinedErasState] = useState<string[]>(predefinedEras);
+  const [eras, setEras] = useState<string[]>(['현대', '근대', '미래', '중세', '르네상스', '고대','조선','고려',]);
   
-
-
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!enterPressed) {
       setNewEra(event.target.value);
@@ -26,31 +22,26 @@ const EraBox: React.FC<EraBoxProps> = ({ selectedEras, onEraClick, onEraSubmit }
   const handleAddEra = () => {
     if (newEra.trim() !== '') {
       onEraSubmit(newEra.trim());
-      setNewEra('');
+      setEras([...eras, newEra.trim()]);
+      console.log(eras);
     }
   };
 
   const handleEraClick = (era: string) => {
-    if (selectedEras.includes(era)) {
-      onEraClick(era);
-    } else {
-      if (!predefinedEras.includes(era)) {
-        onEraClick(era);
-      }
-    }
+    onEraClick(era);
   };
 
-  const handlePredefinedEraClick = (era: string) => {
-    setPredefinedErasState((prevState) => {
-      if (selectedEras.includes(era)) {
-        return prevState;
-      } else {
-        return prevState.includes(era)
-          ? prevState.filter((g) => g !== era) 
-          : [...prevState, era]; 
-      }
-    });
-  };
+  // const handlePredefinedEraClick = (era: string) => {
+  //   setPredefinedErasState((prevState) => {
+  //     if (selectedEras.includes(era)) {
+  //       return prevState;
+  //     } else {
+  //       return prevState.includes(era)
+  //         ? prevState.filter((g) => g !== era) 
+  //         : [...prevState, era]; 
+  //     }
+  //   });
+  // };
 
   const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
@@ -65,13 +56,13 @@ const EraBox: React.FC<EraBoxProps> = ({ selectedEras, onEraClick, onEraSubmit }
   };
 
   const renderEraButtons = () => {
-    return predefinedEras.map((era, index) => (
+    return eras.map((era, index) => (
       <div
         key={index}
         style={{
           width: '78.6px',
           height: '40.1px',
-          backgroundColor: predefinedErasState.includes(era) ? '#E3DDD7' : '#9B8F8F',
+          backgroundColor: selectedEras.includes(era) ? '#9B8F8F' : '#E3DDD7',
           borderRadius: '20px',
           margin: '5px',
           display: 'flex',
@@ -79,38 +70,38 @@ const EraBox: React.FC<EraBoxProps> = ({ selectedEras, onEraClick, onEraSubmit }
           alignItems: 'center',
           cursor: 'pointer',
         }}
-        onClick={() => handlePredefinedEraClick(era)}
+        onClick={() => handleEraClick(era)}
       >
-        <p style={{ color: predefinedErasState.includes(era) ? '#000000' : '#ffffff' }}>{era}</p>
+        <p style={{ color: selectedEras.includes(era) ? '#ffffff' : '#000000' }}>{era}</p>
       </div>
     ));
   };
 
-  const renderSelectedEras = () => {       
-    if (selectedEras.length > 0) {
-      return selectedEras.map((era, index) => (
-        <div
-          key={index}
-          style={{
-            width: '78.6px',
-            height: '40.1px',
-            backgroundColor: selectedEras.includes(era) ? '#9B8F8F' : '#E3DDD7',
-            borderRadius: '20px',
-            margin: '5px',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            cursor: 'pointer',
-          }}
-          onClick={() => handleEraClick(era)}
-        >
-          <p style={{ color: selectedEras.includes(era) ? '#FFFFF' : '#000000' }}>{era}</p>
-        </div>
-      ));
-    } else {
-      return <p></p>;
-    }
-  };
+  // const renderSelectedEras = () => {       
+  //   if (selectedEras.length > 0) {
+  //     return selectedEras.map((era, index) => (
+  //       <div
+  //         key={index}
+  //         style={{
+  //           width: '78.6px',
+  //           height: '40.1px',
+  //           backgroundColor: selectedEras.includes(era) ? '#9B8F8F' : '#E3DDD7',
+  //           borderRadius: '20px',
+  //           margin: '5px',
+  //           display: 'flex',
+  //           justifyContent: 'center',
+  //           alignItems: 'center',
+  //           cursor: 'pointer',
+  //         }}
+  //         onClick={() => handleEraClick(era)}
+  //       >
+  //         <p style={{ color: selectedEras.includes(era) ? '#FFFFF' : '#000000' }}>{era}</p>
+  //       </div>
+  //     ));
+  //   } else {
+  //     return <p></p>;
+  //   }
+  // };
 
   return (
     <div
@@ -149,8 +140,7 @@ const EraBox: React.FC<EraBoxProps> = ({ selectedEras, onEraClick, onEraSubmit }
         </div>
       </div>
       <div style={{ width: 'auto', height: 'auto', backgroundColor: '#FFFFFF', display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-        {renderEraButtons()}
-        {renderSelectedEras()}         
+        {renderEraButtons()}       
       </div>
     </div>
   );

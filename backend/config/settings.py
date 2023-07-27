@@ -153,6 +153,10 @@ LOGOUT_REDIRECT_URL = "/"
 
 CORS_ORIGIN_WHITELIST = os.getenv('CORS_ORIGIN_WHITELIST').split(',')
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = [
+    "*",
+]
+
 # AWS S3 관련 설정 추가
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
@@ -178,7 +182,6 @@ REST_FRAMEWORK = {
         "rest_framework.renderers.BrowsableAPIRenderer",
     ],
 }
-
 
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {

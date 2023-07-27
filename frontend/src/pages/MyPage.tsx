@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import "./Bookshelf.css";
+import "./MyPage.css";
 import NovelBook from "../components/NovelBook";
 
 type MyNovels = {
@@ -23,19 +23,29 @@ type Novel = {
   novel_image: string;
 };
 
-export default function Bookshelf() {
+export default function MyPage() {
   const [novelList, setNovelList] = useState<Novel[]>([]);
   const [novelList1, setNovelList1] = useState<Novel[]>([]);
   const [novelList2, setNovelList2] = useState<Novel[]>([]);
   const [novelList3, setNovelList3] = useState<Novel[]>([]);
   const [metaData, setMetaData] = useState<Meta>();
 
+  // 보낼 데이터
+  const idValue = localStorage.getItem("id") as string;
+
+  // axios 요청 설정
+  const config = {
+    headers: {
+      id: idValue.toString(), // number를 string으로 변환하여 전달
+    },
+  };
+
   // GET 요청 보내기
   const getMyNovels = async (page: number) => {
     const queryString = `?page=${page}`;
 
     const response = await axios
-      .get(`http://localhost:8000/api/v1/novels${queryString}`)
+      .get(`http://localhost:8000/api/v1/mynovels${queryString}`, config)
       .then(function (response) {
         // 성공적으로 응답 받았을 때 처리하는 로직
         // console.log(response.data.meta);
@@ -121,7 +131,7 @@ export default function Bookshelf() {
   return (
     <>
       <div className="title">
-        <h1>Bookshelf</h1>
+        <h1>My Page</h1>
       </div>
       <div className="bookShelf">
         <div className="books-container">

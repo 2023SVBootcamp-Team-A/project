@@ -19,16 +19,18 @@ class CharacterSerializer(serializers.ModelSerializer):
 class NovelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Novel
-        fields = ["user", "novel_name", "novel_image"]
+        fields = ["user"]
+
 
 class BackgroundResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Novel
         fields = ["id"]
 
+
 class NovelBackgroundRequestSerializer(serializers.Serializer):
-    genre = serializers.CharField(help_text='장르')
-    time_period = serializers.CharField(help_text='시간 배경')
-    time_projection = serializers.CharField(help_text='공간 배경')
-    summary = serializers.CharField(help_text='발생 사건')
+    genre = serializers.CharField(help_text="장르")
+    time_period = serializers.CharField(help_text="시간 배경")
+    time_projection = serializers.CharField(help_text="공간 배경")
+    summary = serializers.CharField(help_text="발생 사건")
     character = CharacterSerializer(many=True)

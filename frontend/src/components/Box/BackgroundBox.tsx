@@ -7,13 +7,27 @@ interface BackgroundBoxProps {
   onBackgroundSubmit: (genre: string) => void;
 }
 
-const BackgroundBox: React.FC<BackgroundBoxProps> = ({ selectedBackgrounds, onBackgroundClick, onBackgroundSubmit }) => {
+const BackgroundBox: React.FC<BackgroundBoxProps> = ({ 
+  selectedBackgrounds, 
+  onBackgroundClick, 
+  onBackgroundSubmit }) => {
  
-  const predefinedBackgrounds = ['한국', '미국', '영국','독일', '로마', '일본','회사','고등학교','대학교','길거리','집','숲 속','내 마음속']; 
-  
   const [newBackground, setNewBackground] = useState('');
   const [enterPressed, setEnterPressed] = useState(false);
-  const [predefinedBackgroundsState, setPredefinedBackgroundsState] = useState<string[]>(predefinedBackgrounds);
+  const [backgrounds, setBackgrounds] = useState<string[]>([
+    '한국', 
+    '미국', 
+    '영국',
+    '독일', 
+    '로마', 
+    '일본',
+    '회사',
+    '고등학교',
+    '대학교',
+    '길거리',
+    '집',
+    '숲 속',
+    '내 마음속']);
   
 
 
@@ -24,32 +38,15 @@ const BackgroundBox: React.FC<BackgroundBoxProps> = ({ selectedBackgrounds, onBa
   };
 
   const handleAddBackground = () => {
-    if (newBackground.trim() !== '') {
+    if (newBackground.trim() !== "") {
       onBackgroundSubmit(newBackground.trim());
-      setNewBackground('');
+      setBackgrounds([...backgrounds, newBackground.trim()]);
+      console.log(backgrounds);
     }
   };
 
   const handleBackgroundClick = (background: string) => {
-    if (selectedBackgrounds.includes(background)) {
-      onBackgroundClick(background);
-    } else {
-      if (!predefinedBackgrounds.includes(background)) {
-        onBackgroundClick(background);
-      }
-    }
-  };
-
-  const handlePredefinedBackgroundClick = (background: string) => {
-    setPredefinedBackgroundsState((prevState) => {
-      if (selectedBackgrounds.includes(background)) {
-        return prevState;
-      } else {
-        return prevState.includes(background)
-          ? prevState.filter((g) => g !== background) 
-          : [...prevState, background]; 
-      }
-    });
+    onBackgroundClick(background);
   };
 
   const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -65,13 +62,13 @@ const BackgroundBox: React.FC<BackgroundBoxProps> = ({ selectedBackgrounds, onBa
   };
 
   const renderBackgroundButtons = () => {
-    return predefinedBackgrounds.map((background, index) => (
+    return backgrounds.map((background, index) => (
       <div
         key={index}
         style={{
           width: '78.6px',
           height: '40.1px',
-          backgroundColor: predefinedBackgroundsState.includes(background) ? '#E3DDD7' : '#9B8F8F',
+          backgroundColor: selectedBackgrounds.includes(background) ? '#9B8F8F' : '#E3DDD7',
           borderRadius: '20px',
           margin: '5px',
           display: 'flex',
@@ -79,38 +76,13 @@ const BackgroundBox: React.FC<BackgroundBoxProps> = ({ selectedBackgrounds, onBa
           alignItems: 'center',
           cursor: 'pointer',
         }}
-        onClick={() => handlePredefinedBackgroundClick(background)}
+        onClick={() => handleBackgroundClick(background)}
       >
-        <p style={{ color: predefinedBackgroundsState.includes(background) ? '#000000' : '#ffffff' }}>{background}</p>
+        <p style={{ color: selectedBackgrounds.includes(background) ? '#ffffff' : '#000000' }}>{background}</p>
       </div>
     ));
   };
 
-  const renderSelectedBackgrounds = () => {       
-    if (selectedBackgrounds.length > 0) {
-      return selectedBackgrounds.map((background, index) => (
-        <div
-          key={index}
-          style={{
-            width: '78.6px',
-            height: '40.1px',
-            backgroundColor: selectedBackgrounds.includes(background) ? '#9B8F8F' : '#E3DDD7',
-            borderRadius: '20px',
-            margin: '5px',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            cursor: 'pointer',
-          }}
-          onClick={() => handleBackgroundClick(background)}
-        >
-          <p style={{ color: selectedBackgrounds.includes(background) ? '#FFFFF' : '#000000' }}>{background}</p>
-        </div>
-      ));
-    } else {
-      return <p></p>;
-    }
-  };
 
   return (
     <div
@@ -149,8 +121,7 @@ const BackgroundBox: React.FC<BackgroundBoxProps> = ({ selectedBackgrounds, onBa
         </div>
       </div>
       <div style={{ width: 'auto', height: 'auto', backgroundColor: '#FFFFFF', display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-        {renderBackgroundButtons()}
-        {renderSelectedBackgrounds()}         
+        {renderBackgroundButtons()}      
       </div>
     </div>
   );
