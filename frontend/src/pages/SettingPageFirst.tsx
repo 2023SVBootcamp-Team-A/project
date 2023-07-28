@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import GenreBox from "../components/Box/GenreBox";
 import BackgroundBox from "../components/Box/BackgroundBox";
 import EraBox from "../components/Box/EraBox";
 
 
 interface SettingPageFirstProps {
+  id : number;
   genre: string;
   time_period: string;
   time_projection: string;
-  
+
 }
 
 const SettingPageFirst: React.FC = () => {
@@ -35,6 +35,7 @@ const SettingPageFirst: React.FC = () => {
     setSelectedGenres((prevKeywords) => [...prevKeywords, keyword]);
   };
 
+  //---//
   const handleBackgroundClick = (background: string) => {
     setSelectedBackgrounds((prevBackgrounds) => {
       if (prevBackgrounds.includes(background)) {
@@ -71,6 +72,9 @@ const handleEraSubmit = (keyword: string) => {
     console.log("선택된 장르 :", selectedGenres);
     console.log("선택된 시대 :", selectedBackgrounds);
     console.log("선택된 배경 :", selectedEras);
+
+    const id = 'id';
+    localStorage.setItem("id", id);
 
     navigate("/setting", {
       state: {
