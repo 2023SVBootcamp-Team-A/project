@@ -42,6 +42,9 @@ const SettingPage: React.FC = () => {
     e.preventDefault();
 
     try {
+        const id = localStorage.getItem("id");
+        const token = localStorage.getItem("token");
+
         const requestData: NovelData = {
             genre: genre,
             time_period: time_period,
@@ -50,9 +53,17 @@ const SettingPage: React.FC = () => {
             summary: summary
         };
 
-        const response = await axios.post('http://localhost:8000/api/v1/novels/', 
-        requestData);
-        
+         console.log("요청 데이터", requestData);
+
+        const response = await axios.post('http://localhost:8000/api/v1/novels/', requestData,{
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          "Authorization": "token", // 토큰??
+          "id":id //아이디..?
+        }
+      });
+
         if (response.status === 201) {
         const token = response.data.token;
         localStorage.setItem("token",token);
@@ -74,22 +85,26 @@ const SettingPage: React.FC = () => {
   };
 
   const handleInputChange = (index: number, field: 'name' | 'personality', value: string) => {
-    const updatedInputs = [...characterInputs];
-    updatedInputs[index][field] = value;
-    setCharacterInputs(updatedInputs);
+    setCharacterInputs((prevInputs) => {
+      const updatedInputs = [...prevInputs];
+      updatedInputs[index][field] = value;
+      return updatedInputs;
+    });
   };
 
   const handleDeleteInput = (index: number) => {
-    const updatedInputs = [...characterInputs];
-    updatedInputs.splice(index, 1);
-    setCharacterInputs(updatedInputs);
+    setCharacterInputs((prevInputs) => {
+      const updatedInputs = [...prevInputs];
+      updatedInputs.splice(index, 1);
+      return updatedInputs;
+    });
   };
 
   const handleNextPageClick = async (e: React.FormEvent) => {
     try {
         await handleSubmit(e);
     } catch (error) {
-      console.error("다음 페이지 클릭시 오류 발생:", error);
+        console.error('다음 페이지 클릭시 오류 발생:' , error);
     }
   };
 
@@ -164,6 +179,8 @@ const SettingPage: React.FC = () => {
             <textarea
               className="flex flex-col w-auto h-80 rounded-xl p-4 mb-10 ml-4 mr-4 border border-[#9B8F8F]"
               placeholder="ex. 커피 중독자 연진은 어느날 70년이라는 시한부를 선고받는다. 그녀를 짝사랑하는 하은이 이를 알게되고..., 하은은 그녀를 지키기로 결심한다."
+              value={summary}
+              onChange={(e) => setSummary(e.target.value)}
             />
           </div>
         </div>
@@ -180,5 +197,5 @@ const SettingPage: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 export default SettingPage;
