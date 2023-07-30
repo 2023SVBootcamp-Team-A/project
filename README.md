@@ -41,15 +41,8 @@ Stable Diffusion, DALL∙E 등의 Vision 기반 Image Generation AI 모델들과
 - - - 
 ## 6. Members
 | Name | 김연진 | 강석규 | 김하은 | 이승욱 | 이택 | 임형찬 | 채영진 |
------ | ----- | -----
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
 |Role|Team Leader, Frontend, DevOps|Frontend, DevOps|Frontend|Backend, DevOps|Backend|Frontend, AI|Backend|
------ | ----- | -----
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
 |GitHub|[김연진](https://github.com/homebdy)|[강석규](https://github.com/AlgeMoya)|[김하은](https://github.com/HaeunKim01)|[이승욱](https://github.com/josephuk77)|[이택](https://github.com/LeeTaek2T)|[임형찬](https://github.com/V2LLAIN)|[채영진](https://github.com/youngjin516)|
 
-
-
-|Name|김연진|강석규|김하은|이승욱|이택|임형찬|
-|---|---|---|
-|왼쪽정렬|오른쪽정렬|중앙정렬|
-|왼쪽정렬|오른쪽정렬|중앙정렬|
-|왼쪽정렬|오른쪽정렬|중앙정렬|
