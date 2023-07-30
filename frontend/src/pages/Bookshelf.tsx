@@ -35,7 +35,7 @@ export default function Bookshelf() {
     const queryString = `?page=${page}`;
 
     const response = await axios
-      .get(`http://localhost:8000/api/v1/novels${queryString}`)
+      .get(`http://www.techeer-team-a.store:8000/api/v1/novels${queryString}`)
       .then(function (response) {
         // 성공적으로 응답 받았을 때 처리하는 로직
         // console.log(response.data.meta);
