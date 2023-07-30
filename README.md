@@ -40,7 +40,7 @@ Stable Diffusion, DALL∙E 등의 Vision 기반 Image Generation AI 모델들과
 
 - - - 
 ## 6. Members
-|Name|김연진|강석규|김하은|이승욱|이택|임형찬|채영진|
+| Name | 김연진 | 강석규 | 김하은 | 이승욱 | 이택 | 임형찬 | 채영진 |
 ----- | ----- | -----
 |Role|Team Leader, Frontend, DevOps|Frontend, DevOps|Frontend|Backend, DevOps|Backend|Frontend, AI|Backend|
 ----- | ----- | -----
