@@ -29,7 +29,7 @@ function Login() {
     e.preventDefault();
 
     const response = await axios
-      .post("http://localhost:8000/api/v1/user/login/", formData)
+      .post("http://www.techeer-team-a.store:8000/api/v1/user/login/", formData)
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
