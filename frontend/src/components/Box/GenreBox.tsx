@@ -41,6 +41,7 @@ const GenreBox: React.FC<GenreBoxProps> = ({
     if (newGenre.trim() !== "") {
       onGenreSubmit(newGenre.trim());
       setGenres([...genres, newGenre.trim()]);
+      setNewGenre("");
       console.log(genres);
     }
   };
@@ -96,6 +97,8 @@ const GenreBox: React.FC<GenreBoxProps> = ({
     <div
       style={{
         display: "flex",
+        height: "530px",
+        background: "white",
         flexDirection: "column",
         boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.4)",
       }}
