@@ -1,6 +1,7 @@
-import React, {useState, useEffect} from 'react';
-import Choice from '../components/Choice';
-import data from '../data/choice-data.json';
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router";
+import Choice from "../components/Choice";
+import data from "../data/choice-data.json";
 import axios from "axios";
 
 interface StoryResponse {
@@ -13,7 +14,9 @@ export default function ChociePage() {
     
     const [visible, setVisible] = useState(false);
     const [resposeData, setResponseData] = useState<StoryResponse>();
-    const url = 'http://localhost:8000/api/v1/novels/'+ 43
+    const location = useLocation();
+    const novel_id = location.state.novel;
+    const url = 'http://localhost:8000/api/v1/novels/'+ novel_id
     const GetData = async () => {
         try {
             const response = await axios.get<StoryResponse>(url, {
@@ -25,16 +28,14 @@ export default function ChociePage() {
                 }
             );
             setResponseData(response.data);
-            console.log(response.data)
         } catch(err) {
-          console.log(err);
+          (err);
         }
-    }
-    
-      useEffect(() => {
-        GetData(); 
-      }, []);
+    };
 
+  useEffect(() => {
+    GetData();
+  }, []);
 
     return(
         <div className="w-screen h-screen min-h-screen relative overflow-scroll">
@@ -60,7 +61,7 @@ export default function ChociePage() {
                     </>
                 )}
             </div>
-            {!(resposeData == null) && visible && <Choice story={resposeData.story} question="어떤 선택을 하시겠습니까?" choices={resposeData.choices} novel_id={43} />}
+            {!(resposeData == null) && visible && <Choice story={resposeData.story} question="어떤 선택을 하시겠습니까?" choices={resposeData.choices} novel_id={novel_id} />}
         </div>
     );
 }

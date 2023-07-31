@@ -11,6 +11,8 @@ from rest_framework.views import APIView
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from .models import MyUser
+from rest_framework import serializers
+
 
 def index(request):
     return HttpResponse("안녕하세요 pybo에 오신것을 환영합니다.")
@@ -78,6 +80,7 @@ class LoginAPIView(APIView):
     def post(self, request):
         user = request.data
         serializer = self.serializer_class(data=user)
-        serializer.is_valid(raise_exception=True)
-        userData = MyUser.objects.get(email=user['email'])
-        return Response(userData.id, status=status.HTTP_200_OK)
+        if serializer.is_valid():
+            userData = MyUser.objects.get(email=user["email"])
+            return Response(userData.id, status=status.HTTP_200_OK)
+        return Response({"error": "로그인을 실패했습니다"}, status=status.HTTP_400_BAD_REQUEST)
