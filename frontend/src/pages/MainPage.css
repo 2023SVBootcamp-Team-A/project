@@ -37,15 +37,15 @@
   }
 
   .carousel {
-    @apply w-[80%] px-4 py-8 bg-[#e2e1e0] rounded-lg relative mb-10 ml-[10%] mt-[5rem];
+    @apply w-[80%] px-4 py-6 bg-[#e2e1e0] rounded-2xl relative mb-10 ml-[10%] mt-[7rem];
   }
 
   .startButton {
-    @apply w-80 h-20 flex-shrink-0 rounded-full bg-mainpagegray mx-auto flex justify-center mb-10;
+    @apply w-64 h-20 flex-shrink-0 rounded-full bg-mainpagegray mx-auto flex justify-center mb-10 bg-[#9B8F8F] hover:bg-[#E9E7E4] hover:text-[#9B8F8F];
   }
 
   .startButton p {
-    @apply text-white text-3xl font-normal leading-normal mt-4;
+    @apply text-white text-2xl leading-normal mt-5 text-[#ffffff];
   }
 
   .btnGroup {
@@ -120,12 +120,11 @@
   z-index: 2;
   color: white;
   font-size: 25px;
-  font-weight: bold;
   padding-top: 1rem;
   padding-bottom: 1rem;
   padding-right: 0.5rem;
   padding-left: 0.5rem;
-  border: 2px solid white;
+  border: 4px solid white;
 }
 
 /* 
