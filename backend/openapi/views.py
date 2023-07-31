@@ -389,7 +389,8 @@ class init_setting_APIView(APIView):
     def post(self, request):
         # 요청할 때 입력한 정보들로 serializer를 생성한다
         data = request.data.copy()
-        data["user"] = MyUser.objects.get(id=1).id
+        user_id = request.headers.get('id')
+        data["user"] = MyUser.objects.get(id=user_id).id
         novel_serializer = NovelSerializer(data=data)
         background_serializer = BackgroundSerializer(data=data)
         character_array = data["character"]

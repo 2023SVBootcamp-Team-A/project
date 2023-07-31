@@ -16,15 +16,16 @@ export default function ChociePage() {
   const GetData = async () => {
     try {
       const response = await axios.get<StoryResponse>(
-        "http://www.techeer-team-a.store/api/v1/novels/1",
+        "http://localhost:8000/api/v1/novels/1",
         {
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            Authorization: ``, // 추후 관리하는 Token 삽입 할 것
+            id: localStorage.getItem('id')
           },
         }
       );
+      console.log(response.data)
       setResponseData(response.data);
     } catch (err) {
       console.log(err);
