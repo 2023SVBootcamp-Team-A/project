@@ -29,12 +29,7 @@ export default function ChociePage() {
         } catch(err) {
           console.log(err);
         }
-      );
-      setResponseData(response.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+    };
 
   useEffect(() => {
     GetData();
