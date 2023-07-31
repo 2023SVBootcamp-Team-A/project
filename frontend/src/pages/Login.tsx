@@ -29,9 +29,8 @@ function Login() {
     e.preventDefault();
 
     const response = await axios
-      .post("http:/localhost:8000/api/v1/user/login/", formData)
+      .post("http://localhost:8000/api/v1/user/login/", formData)
       .then((response) => {
-        console.log(response);
         if (response.status === 200) {
           const token = response.data;
           localStorage.setItem("id", token);
@@ -44,8 +43,15 @@ function Login() {
         }
       })
       .catch((error) => {
-        console.error("API 요청 중 오류가 발생하였습니다.", error);
-        console.log(formData);
+        if (error.response) {
+          // 서버 응답이 있는 경우
+          const responseData = error.response.data;
+          console.log("로그인 실패:", error.response);
+        } else {
+          // 서버 응답이 없는 경우 (네트워크 오류 등)
+          console.error("API 요청 중 오류가 발생하였습니다.", error);
+          console.log(formData);
+        }
       });
   };
 
