@@ -125,6 +125,7 @@ const EraBox: React.FC<EraBoxProps> = ({
               marginLeft: "10px",
               marginRight: "2px",
               padding: "10px",
+              fontSize: "15px",
             }}
           />
           <div>
@@ -147,6 +148,7 @@ const EraBox: React.FC<EraBoxProps> = ({
         style={{
           width: "auto",
           height: "auto",
+          margin: "17px",
           backgroundColor: "#FFFFFF",
           display: "flex",
           flexWrap: "wrap",

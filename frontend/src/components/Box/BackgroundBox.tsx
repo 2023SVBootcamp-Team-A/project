@@ -135,6 +135,7 @@ const BackgroundBox: React.FC<BackgroundBoxProps> = ({
               marginLeft: "10px",
               marginRight: "2px",
               padding: "10px",
+              fontSize: "15px",
             }}
           />
           <div>
@@ -157,7 +158,8 @@ const BackgroundBox: React.FC<BackgroundBoxProps> = ({
         style={{
           width: "auto",
           height: "auto",
-          backgroundColor: "#FFFFFF",
+          backgroundColor: "#ffffff",
+          margin: "17px",
           display: "flex",
           flexWrap: "wrap",
           justifyContent: "center",

@@ -4,13 +4,6 @@ import GenreBox from "../components/Box/GenreBox";
 import BackgroundBox from "../components/Box/BackgroundBox";
 import EraBox from "../components/Box/EraBox";
 
-interface SettingPageFirstProps {
-  id: number;
-  genre: string;
-  time_period: string;
-  time_projection: string;
-}
-
 const SettingPageFirst: React.FC = () => {
   const navigate = useNavigate();
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
@@ -101,8 +94,6 @@ const SettingPageFirst: React.FC = () => {
       <div className="h-5/6 w-5/6 bg-[#E9E7E4] flex flex-row p-4 mx-auto mt-5 mb-2 rounded-2xl">
         <div className="flex-1 mx-8">
           <div className="h-[550px] bg-[#E9E7E4] p-4 mb-4 rounded-xl">
-            {" "}
-            //여기 높이 수정
             <GenreBox
               selectedGenres={selectedGenres}
               onGenreClick={handleGenreClick}
