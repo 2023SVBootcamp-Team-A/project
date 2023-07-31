@@ -53,8 +53,6 @@ const SettingPage: React.FC = () => {
         summary: summary,
       };
 
-      console.log("요청 데이터", requestData);
-
       const response = await axios.post(
         "http://localhost:8000/api/v1/novels/",
         requestData,
@@ -72,8 +70,7 @@ const SettingPage: React.FC = () => {
         setNovelID(response.data);
         const token = response.data.token;
         localStorage.setItem("token", token);
-        console.log("API 응답 데이터:", response.data);
-        navigate("/choice");
+        navigate('/choice', { state: { novel: response.data.novel }});;
       } else {
         console.log(response);
         console.log("API 요청 실패");

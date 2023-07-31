@@ -31,7 +31,6 @@ function Login() {
     const response = await axios
       .post("http://localhost:8000/api/v1/user/login/", formData)
       .then((response) => {
-        console.log(response);
         if (response.status === 200) {
           const token = response.data;
           localStorage.setItem("id", token);

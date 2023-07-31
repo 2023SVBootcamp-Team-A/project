@@ -41,7 +41,6 @@ const GenreBox: React.FC<GenreBoxProps> = ({
       onGenreSubmit(newGenre.trim());
       setGenres([...genres, newGenre.trim()]);
       setNewGenre("");
-      console.log(genres);
     }
   };
 

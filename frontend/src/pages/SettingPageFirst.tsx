@@ -18,7 +18,6 @@ const SettingPageFirst: React.FC = () => {
         return [...prevGenres, genre];
       }
     });
-    console.log(genre);
   };
 
   const handleGenreSubmit = (keyword: string) => {
@@ -34,7 +33,6 @@ const SettingPageFirst: React.FC = () => {
         return [...prevBackgrounds, background];
       }
     });
-    console.log(background);
   };
 
   const handleBackgroundSubmit = (keyword: string) => {
@@ -58,9 +56,6 @@ const SettingPageFirst: React.FC = () => {
   };
 
   const handleNextPageClick = () => {
-    console.log("선택된 장르 :", selectedGenres);
-    console.log("선택된 시대 :", selectedBackgrounds);
-    console.log("선택된 배경 :", selectedEras);
 
     const id = "id";
     localStorage.setItem("id", id);
@@ -75,15 +70,12 @@ const SettingPageFirst: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log(selectedGenres);
   }, [selectedGenres]);
 
   useEffect(() => {
-    console.log(selectedBackgrounds);
   }, [selectedBackgrounds]);
 
   useEffect(() => {
-    console.log(selectedEras);
   }, [selectedEras]);
 
   return (
