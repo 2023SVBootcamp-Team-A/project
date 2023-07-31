@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import addLogo from "/images/add.png";
 import deleteLogo from "/images/delete.png";
-import checkboxLogo from "/images/checkbox.png";
 
 interface Character {
   name: string;
@@ -29,6 +28,7 @@ const SettingPage: React.FC = () => {
   const [genre, setGenre] = useState<string[]>([]);
   const [time_period, setTimePeriod] = useState<string[]>([]);
   const [time_projection, setTimeProjection] = useState<string[]>([]);
+  const [novel_id, setNovelID] = useState<number | null>(null); //api응답값 = response.data
 
   useEffect(() => {
     const { state } = location;
@@ -44,7 +44,6 @@ const SettingPage: React.FC = () => {
 
     try {
       const id = localStorage.getItem("id");
-      const token = localStorage.getItem("token");
 
       const requestData: NovelData = {
         genre: genre,
@@ -63,13 +62,14 @@ const SettingPage: React.FC = () => {
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            Authorization: "token", // 토큰??
-            id: id, //아이디..?
+            Authorization: "token",
+            id: id,
           },
         }
       );
 
       if (response.status === 201) {
+        setNovelID(response.data);
         const token = response.data.token;
         localStorage.setItem("token", token);
         console.log("API 응답 데이터:", response.data);
@@ -133,20 +133,6 @@ const SettingPage: React.FC = () => {
         <div className="ml-10 mr-10 mt-4 flex flex-col">
           {characterInputs.map((input, index) => (
             <div key={index} className="flex items-center gap-2">
-              {/* 값을 입력받으면 삭제버튼 */}
-              {input.name !== "" && (
-                <button
-                  className="cursor-pointer items-center w-5 h-5 ml-2"
-                  onClick={() => handleDeleteInput(index)}
-                >
-                  <img
-                    src={deleteLogo}
-                    alt="삭제 버튼"
-                    className="w-5 h-5 ml-2"
-                  />
-                </button>
-              )}
-
               <input
                 className="w-auto h-10 rounded-3xl px-4 mb-2 ml-5 border border-[#9B8F8F]"
                 placeholder="이름을 입력하세요."
@@ -156,7 +142,7 @@ const SettingPage: React.FC = () => {
                 }
               />
               <input
-                className="w-full h-10 rounded-3xl px-4 mb-2  mr-5 border border-[#9B8F8F]"
+                className="w-full h-10 rounded-3xl px-4 mb-2 border border-[#9B8F8F]"
                 placeholder="등장인물의 특징을 입력하세요. ex. 성격이 착함"
                 value={input.personality}
                 onChange={(e) =>
@@ -169,17 +155,16 @@ const SettingPage: React.FC = () => {
                   style={{ pointerEvents: "none" }}
                 ></button>
               )}
-
-              {/* 값을 입력받으면 체크박스 표시 */}
+              {/* 값을 입력받으면 삭제버튼 */}
               {input.name !== "" && (
                 <button
-                  className="cursor-default items-center w-5 h-5 mr-5"
-                  style={{ pointerEvents: "none" }}
+                  className="cursor-pointer items-center w-5 h-5 ml-0"
+                  onClick={() => handleDeleteInput(index)}
                 >
                   <img
-                    src={checkboxLogo}
-                    alt="체크박스"
-                    className="w-5 h-5 mr-5"
+                    src={deleteLogo}
+                    alt="삭제 버튼"
+                    className="w-5 h-5 ml-2"
                   />
                 </button>
               )}
@@ -209,7 +194,7 @@ const SettingPage: React.FC = () => {
           </div>
           <div className="ml-5 mr-5 mt-4 mb-0 flex flex-col">
             <textarea
-              className="flex flex-col w-auto h-80 rounded-xl p-4 mb-10 ml-4 mr-4 border border-[#9B8F8F]"
+              className="flex flex-col w-auto h-80 rounded-xl p-4 mb-10 border border-[#9B8F8F]"
               placeholder="ex. 커피 중독자 연진은 어느날 70년이라는 시한부를 선고받는다. 그녀를 짝사랑하는 하은이 이를 알게되고..., 하은은 그녀를 지키기로 결심한다."
               value={summary}
               onChange={(e) => setSummary(e.target.value)}
