@@ -5,11 +5,13 @@ import Loading from '../components/Loading'
 interface ChoiceProps {
     story: string;
     question: string;
-    choices: { choice: string }[];
+    choices: string[];
+    novel_id: number;
 }
 
-export default function Choice({ story, question, choices }: ChoiceProps) {
+export default function Choice({ story, question, choices, novel_id }: ChoiceProps) {
     const selectArray = ["A", "B", "C", "D"]
+    choices.push("여기서 그만두고 결과를 확인한다.")
     return (
       <div className="w-screen h-screen bg-white/60 absolute top-0 left-0 overflow-scroll pt-32">
         <div className="flex flex-col items-center justify-center h-full">
@@ -42,7 +44,7 @@ export default function Choice({ story, question, choices }: ChoiceProps) {
           <div className="lg:w-7/12 md:w-9/12 w-full px-6 flex flex-col space-y-2">
             {
               choices.map((choice, index) => (
-                <SelectBox key={index} seq={selectArray[index]} question={choice.choice} />
+                <SelectBox key={index} seq={selectArray[index]} question={choice} end={selectArray[choices.length-1]} novel_id={novel_id} />
               ))
               
             }

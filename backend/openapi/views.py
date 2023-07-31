@@ -195,7 +195,6 @@ def mynovels(request, novel_id):
             "novel_stories": novel_story_data,
             "backgrounds": background_data,
         }
-
         return Response(serialized_data, status=status.HTTP_200_OK)
     elif request.method == "DELETE":
         try:
@@ -213,6 +212,7 @@ def mynovels(request, novel_id):
 class NovelView(APIView):
     def get(self, request, novel_id):
         chat_logs = load_chat_logs(novel_id)
+        novelStory = NovelStory.objects.filter(novel_id=novel_id).last()
         # Retrieve the parsed result from the latest assistant's response
         for log in reversed(chat_logs):
             if log.role == "assistant":
@@ -223,31 +223,34 @@ class NovelView(APIView):
 
                 for line in answer.split("\n"):
                     line = line.strip()
-                    if line.startswith("A"):
+                    if line.startswith("A") or line.startswith("1"):
                         parsing_choices = True
-                        choices.append(line)
+                        choices.append(line[2:])
                     elif parsing_choices:
-                        choices.append(line)
+                        choices.append(line[2:])
                     else:
-
                         novel_content += line + '\n'
                 return JsonResponse({
                     'story': novel_content,
-                    'choices': choices
+                    'choices': choices[:2],
+                    'image': novelStory.image
                 })
         return JsonResponse({
             'message': 'No parsed result found for the given novel_id.'
         })
     def post(self, request, novel_id):
-        input_data = request.POST.get("input_field", "")
+        print(request.data)
+        input_data = request.data.get('input_field')
+        if (input_data == "end"):
+            input_data = "여기서 소설 작성을 멈추고 결말을 작성해주세요."
+        print(input_data)
         chat_log = ChatLog(novel_id=novel_id, role="user", chat_log=input_data)
         chat_log.save()
         response_message = send_message(input_data, novel_id)
         print(send_message)
         # 응답 본문에 챗봇의 응답 포함
         response_data = {
-            "input": input_data,
-            "response": response_message["response_message"],
+            "code": response_message
         }
         return JsonResponse(response_data)
 
@@ -319,7 +322,6 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
     }
 
     system_instructions = [
-
         'You are a helpful assistant.',
         'Please write a novel in Korean',
         'You write a novel, and you give the user a choice in the middle of the novel',#소설을 써내려가다 소설 중간에 사용자에게 선택지를 줘
@@ -327,12 +329,13 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
         'When a user chooses a choice, he or she writes a novel based on the choice', #사용자가 선택지를 선택하면 그 선택지를 바탕으로 소설을 이어써줘
         'Use English capital letters instead of numbers for the options.', #옵션에는 숫자 대신 영문 대문자를 사용합니다. -
         'Please add a space before the English capitalization of each option.', #각 옵션의 영문 대문자 앞에 공백을 추가하십시오. 
-        'When a choice comes out, make sure that the English capital letter corresponding to the choice comes out immediately after the line change comes out' #-선택지가 나오면, 선택지에 해당하는 영문 대문자가 라인변경이 나온 직후에 나오도록 한다
-        'After the user makes a choice, do not reveal their selection again.', #사용자가 선택한 후에는 선택한 항목을 다시 표시하지 않습니다
+        'When a choice comes out, make sure that the English capital letter corresponding to the choice comes out immediately after the line change comes out', #-선택지가 나오면, 선택지에 해당하는 영문 대문자가 라인변경이 나온 직후에 나오도록 한다
+        'After the user makes a choice, do not reveal their selection again.', #사용자가 선택한 후에는 선택한 항목을 다시 표시하지 않습니다 - 
         'If the user selects a choice, continue the novel based on the selected option.', #사용자가 선택한 항목을 선택한 경우 선택한 옵션을 기준으로 소설을 계속합니다.
-        'The maximum number of times a user can choose a choice is three', #사용자에게 선택지를 고르는 횟수는 최대 3번으로 하자. -
-        'If the user chooses three choices, the novel is finished',
-        "When writing a novel, please include a description of the character's conversation or situation",
+        'If the user chooses three choices, the novel is finished', #사용자가 선택지를 세 가지 선택을 하면 소설이 완성됩니다
+        "When writing a novel, please include a description of the character's conversation or situation", #소설을 쓸 때는 등장인물의 대화나 상황에 대한 설명을 넣어주세요
+        "Please don't include GPT API answers asking you to choose one option after the novel is finished", #소설내용이 끝난뒤 선택지 하나를 골라달라는 GPT API 답변은 넣지 말아줘
+        "Please don't include the GPT API answer asking you to choose one option"
     ]
 
     chat_logs = load_chat_logs(novel_id)
@@ -341,17 +344,31 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
         for instruction in system_instructions
     ]
 
-    user_message = {"role": "user", "content": message}
-    messages.append(user_message)
-
     for log in chat_logs:
         messages.append({"role": log.role, "content": log.chat_log})
-    if len(messages) == 1:
 
+    if len(messages) == 12:
         messages.append({'role': 'user', 'content': message})
 
+    novel_instance = Novel.objects.get(id=novel_id)
+    characters = novel_instance.novel_character.all()
+    backgrounds = novel_instance.novel_background.all()
 
-    print(messages)
+    for character in characters:
+        character_data = {
+            "role": "assistant",
+            "content": f"Character Name: {character.name}, Personality: {character.personality}",
+        }
+        messages.append(character_data)
+
+    # Append background data to messages
+    for background in backgrounds:
+        background_data = {
+            "role": "assistant",
+            "content": f"Genre: {background.genre}, Time Period: {background.time_period}, Time Projection: {background.time_projection}, Summary: {background.summary}",
+        }
+        messages.append(background_data)
+
     # Send message to GPT API
     data = {"model": "gpt-3.5-turbo", "messages": messages, "temperature": 1.0}
     try:
@@ -359,22 +376,19 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
         response.raise_for_status()
         response_json = response.json()
         answer = response_json["choices"][0]["message"]["content"]
-
-
-        image_url = dalleIMG(answer)
-        
+        if answer.startswith('A') or answer.startswith(' A'):
+            answer = answer[2:]
+        print(answer)
         chat_log = ChatLog(novel_id=novel_id, role='assistant', chat_log=answer)
         chat_log.save()
         
         page_number = NovelStory.objects.filter(novel_id=novel_id).count()+1
-
+        image_url = dalleIMG(answer)
         novel_story = NovelStory.objects.create(novel_id=novel_id, page=page_number, content=answer, image=image_url)
         novel_story.save()
-
-        return {
-            'response_message': answer,
-            'image_url': image_url,
-        }
+        print(messages)
+        return 200
+    
     except requests.exceptions.RequestException as e:
         print("An error occurred while sending the request:", str(e))
         return {"response_message": "An error occurred while processing your request."}
@@ -449,8 +463,6 @@ def dalleIMG(query):
     # ChatGPT API 호출하기
     response = openai.ChatCompletion.create(model=model, messages=messages)
     answer3 = response["choices"][0]["message"]["content"]
-    print(answer3)
-
     # 새 메시지 구성
     messages = [
         {
@@ -537,3 +549,17 @@ def save_image_to_s3(image, bucket_name, file_name):
 def my_api_view(request):
     if request.method == "POST":
         return Response({"success": "소설 만드셔도 됩니다"}, status=200)
+
+class TestServer(APIView):
+    def get(self, request, novel_id):
+        data = NovelStory.objects.filter(novel_id=novel_id).values()
+        novel = Novel.objects.get(id=novel_id)
+        res = {
+            "novel_name": novel.novel_name,
+            "cover": novel.novel_image,
+            "novelStory": data
+        }
+        # serial = ResultPageSerializer(data=res, many=True)
+        # if serial.is_valid():
+        #     return Response(serial.data, status=200)
+        return Response(res, status=200)
