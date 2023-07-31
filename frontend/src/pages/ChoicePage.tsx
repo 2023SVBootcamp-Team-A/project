@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
-import Choice from '../components/Choice';
-import data from '../data/choice-data.json';
+import React, { useState, useEffect } from "react";
+import Choice from "../components/Choice";
+import data from "../data/choice-data.json";
 import axios from "axios";
 
 interface StoryResponse {
@@ -13,7 +13,7 @@ export default function ChociePage() {
     
     const [visible, setVisible] = useState(false);
     const [resposeData, setResponseData] = useState<StoryResponse>();
-    const url = 'http://localhost:8000/api/v1/novels/'+ 43
+    const url = 'http://www.techeer-team-a.store/api/v1/novels/'+ 43
     const GetData = async () => {
         try {
             const response = await axios.get<StoryResponse>(url, {
@@ -29,12 +29,16 @@ export default function ChociePage() {
         } catch(err) {
           console.log(err);
         }
+      );
+      setResponseData(response.data);
+    } catch (err) {
+      console.log(err);
     }
-    
-      useEffect(() => {
-        GetData(); 
-      }, []);
+  };
 
+  useEffect(() => {
+    GetData();
+  }, []);
 
     return(
         <div className="w-screen h-screen min-h-screen relative overflow-scroll">

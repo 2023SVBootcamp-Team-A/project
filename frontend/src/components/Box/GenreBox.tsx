@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import addLogo from "/images/add.png";
 
 interface GenreBoxProps {
@@ -7,15 +7,28 @@ interface GenreBoxProps {
   onGenreSubmit: (genre: string) => void;
 }
 
-const GenreBox: React.FC<GenreBoxProps> = ({ selectedGenres, onGenreClick, onGenreSubmit }) => {
- 
-  const predefinedGenres = ['공포', 'SF', '로맨스', '판타지', '코미디', '액션','스포츠','성장','청춘','드라마','스릴러','타임루프','재난']; 
-  
-  const [newGenre, setNewGenre] = useState('');
+const GenreBox: React.FC<GenreBoxProps> = ({
+  selectedGenres,
+  onGenreClick,
+  onGenreSubmit,
+}) => {
+  const [newGenre, setNewGenre] = useState("");
   const [enterPressed, setEnterPressed] = useState(false);
-  const [predefinedGenresState, setPredefinedGenresState] = useState<string[]>(predefinedGenres);
-  
-
+  const [genres, setGenres] = useState<string[]>([
+    "공포",
+    "SF",
+    "로맨스",
+    "판타지",
+    "코미디",
+    "액션",
+    "스포츠",
+    "성장",
+    "청춘",
+    "드라마",
+    "스릴러",
+    "타임루프",
+    "재난",
+  ]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!enterPressed) {
@@ -24,36 +37,21 @@ const GenreBox: React.FC<GenreBoxProps> = ({ selectedGenres, onGenreClick, onGen
   };
 
   const handleAddGenre = () => {
-    if (newGenre.trim() !== '') {
+    // 빈거 아니면
+    if (newGenre.trim() !== "") {
       onGenreSubmit(newGenre.trim());
-      setNewGenre('');
+      setGenres([...genres, newGenre.trim()]);
+      setNewGenre("");
+      console.log(genres);
     }
   };
 
   const handleGenreClick = (genre: string) => {
-    if (selectedGenres.includes(genre)) {
-      onGenreClick(genre);
-    } else {
-      if (!predefinedGenres.includes(genre)) {
-        onGenreClick(genre);
-      }
-    }
-  };
-
-  const handlePredefinedGenreClick = (genre: string) => {
-    setPredefinedGenresState((prevState) => {
-      if (selectedGenres.includes(genre)) {
-        return prevState;
-      } else {
-        return prevState.includes(genre)
-          ? prevState.filter((g) => g !== genre) 
-          : [...prevState, genre]; 
-      }
-    });
+    onGenreClick(genre);
   };
 
   const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       event.preventDefault();
       if (!enterPressed) {
         setEnterPressed(true);
@@ -65,64 +63,67 @@ const GenreBox: React.FC<GenreBoxProps> = ({ selectedGenres, onGenreClick, onGen
   };
 
   const renderGenreButtons = () => {
-    return predefinedGenres.map((genre, index) => (
+    return genres.map((genre, index) => (
       <div
+        className="genreButton"
         key={index}
         style={{
-          width: '78.6px',
-          height: '40.1px',
-          backgroundColor: predefinedGenresState.includes(genre) ? '#E3DDD7' : '#9B8F8F',
-          borderRadius: '20px',
-          margin: '5px',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          cursor: 'pointer',
+          backgroundColor: selectedGenres.includes(genre)
+            ? "#9B8F8F"
+            : "#E3DDD7",
+          width: "78.6px",
+          height: "40.1px",
+          borderRadius: "20px",
+          margin: "5px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          cursor: "pointer",
         }}
-        onClick={() => handlePredefinedGenreClick(genre)}
+        onClick={() => handleGenreClick(genre)}
       >
-        <p style={{ color: predefinedGenresState.includes(genre) ? '#000000' : '#ffffff' }}>{genre}</p>
+        <p
+          style={{
+            color: selectedGenres.includes(genre) ? "#FFFFFF" : "#000000",
+          }}
+        >
+          {genre}
+        </p>
       </div>
     ));
-  };
-
-  const renderSelectedGenres = () => {       
-    if (selectedGenres.length > 0) {
-      return selectedGenres.map((genre, index) => (
-        <div
-          key={index}
-          style={{
-            width: '78.6px',
-            height: '40.1px',
-            backgroundColor: selectedGenres.includes(genre) ? '#9B8F8F' : '#E3DDD7',
-            borderRadius: '20px',
-            margin: '5px',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            cursor: 'pointer',
-          }}
-          onClick={() => handleGenreClick(genre)}
-        >
-          <p style={{ color: selectedGenres.includes(genre) ? '#FFFFF' : '#000000' }}>{genre}</p>
-        </div>
-      ));
-    } else {
-      return <p></p>;
-    }
   };
 
   return (
     <div
       style={{
-        display: 'flex',
-        flexDirection: 'column',
-        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.4)',
+        display: "flex",
+        height: "530px",
+        background: "white",
+        flexDirection: "column",
+        boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.4)",
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', backgroundColor: '#C8C0B8', padding: '0 18px', marginBottom:'2px',boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.4)' }}>
-        <p style={{ color: '#FFFFFF', fontSize: '20px', marginLeft: '-10px'}}>장르</p>
-        <div style={{ display: 'flex', alignItems: 'center', marginLeft: 'auto', flex: '1' }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          backgroundColor: "#C8C0B8",
+          padding: "0 18px",
+          marginBottom: "2px",
+          boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.4)",
+        }}
+      >
+        <p style={{ color: "#FFFFFF", fontSize: "20px", marginLeft: "-10px" }}>
+          장르
+        </p>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            marginLeft: "auto",
+            flex: "1",
+          }}
+        >
           <input
             type="text"
             value={newGenre}
@@ -130,30 +131,43 @@ const GenreBox: React.FC<GenreBoxProps> = ({ selectedGenres, onGenreClick, onGen
             onKeyDown={handleInputKeyDown}
             placeholder="원하는 장르를 추가하세요"
             style={{
-              width: '100%',
-              height: '44px',
-              marginLeft: '10px',
-              marginRight: '2px',
-              padding: '10px',
-
+              width: "100%",
+              height: "44px",
+              marginLeft: "10px",
+              marginRight: "2px",
+              padding: "10px",
             }}
           />
           <div>
             <button
-            style={{display: 'flex', alignItems: 'center', cursor: 'pointer', fontSize: '10px', marginRight:'-12px' }}
-            onClick={handleAddGenre}
-          >
-          <img src={addLogo} alt="추가 버튼" className="w-8 h-7" />
-          </button>
+              style={{
+                display: "flex",
+                alignItems: "center",
+                cursor: "pointer",
+                fontSize: "10px",
+                marginRight: "-12px",
+              }}
+              onClick={handleAddGenre}
+            >
+              <img src={addLogo} alt="추가 버튼" className="w-8 h-7" />
+            </button>
           </div>
         </div>
       </div>
-      <div style={{ width: 'auto', height: 'auto', backgroundColor: '#FFFFFF', display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+      <div
+        style={{
+          width: "auto",
+          height: "auto",
+          backgroundColor: "#FFFFFF",
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+        }}
+      >
         {renderGenreButtons()}
-        {renderSelectedGenres()}         
       </div>
     </div>
   );
 };
 
-export default GenreBox;  
+export default GenreBox;

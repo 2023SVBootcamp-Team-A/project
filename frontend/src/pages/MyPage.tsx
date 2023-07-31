@@ -31,7 +31,7 @@ export default function MyPage() {
   const [metaData, setMetaData] = useState<Meta>();
 
   // 보낼 데이터
-  const idValue = localStorage.getItem("id");
+  const idValue = localStorage.getItem("id") as string;
 
   // axios 요청 설정
   const config = {
@@ -45,7 +45,10 @@ export default function MyPage() {
     const queryString = `?page=${page}`;
 
     const response = await axios
-      .get(`http://localhost:8000/api/v1/mynovels${queryString}`, config)
+      .get(
+        `http://www.techeer-team-a.store:8000/api/v1/mynovels${queryString}`,
+        config
+      )
       .then(function (response) {
         // 성공적으로 응답 받았을 때 처리하는 로직
         // console.log(response.data.meta);
