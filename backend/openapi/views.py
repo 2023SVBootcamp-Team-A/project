@@ -350,6 +350,25 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
     if len(messages) == 12:
         messages.append({'role': 'user', 'content': message})
 
+    novel_instance = Novel.objects.get(id=novel_id)
+    characters = novel_instance.novel_character.all()
+    backgrounds = novel_instance.novel_background.all()
+
+    for character in characters:
+        character_data = {
+            "role": "assistant",
+            "content": f"Character Name: {character.name}, Personality: {character.personality}",
+        }
+        messages.append(character_data)
+
+    # Append background data to messages
+    for background in backgrounds:
+        background_data = {
+            "role": "assistant",
+            "content": f"Genre: {background.genre}, Time Period: {background.time_period}, Time Projection: {background.time_projection}, Summary: {background.summary}",
+        }
+        messages.append(background_data)
+
     # Send message to GPT API
     data = {"model": "gpt-3.5-turbo", "messages": messages, "temperature": 1.0}
     try:
