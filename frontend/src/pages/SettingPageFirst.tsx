@@ -4,13 +4,11 @@ import GenreBox from "../components/Box/GenreBox";
 import BackgroundBox from "../components/Box/BackgroundBox";
 import EraBox from "../components/Box/EraBox";
 
-
 interface SettingPageFirstProps {
-  id : number;
+  id: number;
   genre: string;
   time_period: string;
   time_projection: string;
-
 }
 
 const SettingPageFirst: React.FC = () => {
@@ -18,7 +16,6 @@ const SettingPageFirst: React.FC = () => {
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [selectedBackgrounds, setSelectedBackgrounds] = useState<string[]>([]);
   const [selectedEras, setSelectedEras] = useState<string[]>([]);
-
 
   const handleGenreClick = (genre: string) => {
     setSelectedGenres((prevGenres) => {
@@ -51,29 +48,28 @@ const SettingPageFirst: React.FC = () => {
     setSelectedBackgrounds((prevKeywords) => [...prevKeywords, keyword]);
   };
 
-//--//
-const handleEraClick = (era: string) => {
-  setSelectedEras((prevEras) => {
-    if (prevEras.includes(era)) {
-      return prevEras.filter((e) => e !== era);
-    } else {
-      return [...prevEras, era];
-    }
-  });
-  console.log(era);
-};
+  //--//
+  const handleEraClick = (era: string) => {
+    setSelectedEras((prevEras) => {
+      if (prevEras.includes(era)) {
+        return prevEras.filter((e) => e !== era);
+      } else {
+        return [...prevEras, era];
+      }
+    });
+    console.log(era);
+  };
 
-const handleEraSubmit = (keyword: string) => {
-  setSelectedEras((prevKeywords) => [...prevKeywords, keyword]);
-};
-
+  const handleEraSubmit = (keyword: string) => {
+    setSelectedEras((prevKeywords) => [...prevKeywords, keyword]);
+  };
 
   const handleNextPageClick = () => {
     console.log("선택된 장르 :", selectedGenres);
     console.log("선택된 시대 :", selectedBackgrounds);
     console.log("선택된 배경 :", selectedEras);
 
-    const id = 'id';
+    const id = "id";
     localStorage.setItem("id", id);
 
     navigate("/setting", {
@@ -97,7 +93,6 @@ const handleEraSubmit = (keyword: string) => {
     console.log(selectedEras);
   }, [selectedEras]);
 
-
   return (
     <div className="min-h-screen flex flex-col mt-20 p-8">
       <div className="text-5xl font-bold text-center text-[#6B3A18]">
@@ -105,7 +100,9 @@ const handleEraSubmit = (keyword: string) => {
       </div>
       <div className="h-5/6 w-5/6 bg-[#E9E7E4] flex flex-row p-4 mx-auto mt-5 mb-2 rounded-2xl">
         <div className="flex-1 mx-8">
-          <div className="bg-[#E9E7E4] p-4 mb-4 rounded-xl">
+          <div className="h-[550px] bg-[#E9E7E4] p-4 mb-4 rounded-xl">
+            {" "}
+            //여기 높이 수정
             <GenreBox
               selectedGenres={selectedGenres}
               onGenreClick={handleGenreClick}
@@ -113,7 +110,6 @@ const handleEraSubmit = (keyword: string) => {
             />
           </div>
         </div>
-
         <div className="flex-1 mx-8">
           <div className="bg-[#E9E7E4] p-4 mb-4 rounded-xl">
             <BackgroundBox

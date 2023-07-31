@@ -57,7 +57,7 @@ const SettingPage: React.FC = () => {
       console.log("요청 데이터", requestData);
 
       const response = await axios.post(
-        "http://www.techeer-team-a.store:8000/api/v1/novels/",
+        "http://localhost:8000/api/v1/novels/",
         requestData,
         {
           headers: {
