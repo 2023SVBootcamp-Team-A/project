@@ -36,7 +36,6 @@ const EraBox: React.FC<EraBoxProps> = ({
       onEraSubmit(newEra.trim());
       setEras([...eras, newEra.trim()]);
       setNewEra("");
-      console.log(eras);
     }
   };
 

@@ -40,7 +40,6 @@ const BackgroundBox: React.FC<BackgroundBoxProps> = ({
       onBackgroundSubmit(newBackground.trim());
       setBackgrounds([...backgrounds, newBackground.trim()]);
       setNewBackground("");
-      console.log(backgrounds);
     }
   };
 
