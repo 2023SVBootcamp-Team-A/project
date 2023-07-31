@@ -1,3 +1,4 @@
+from requests import Response
 from rest_framework import serializers
 from users.models import MyUser
 from django.contrib.auth import authenticate
@@ -47,14 +48,7 @@ class LoginSerializer(serializers.Serializer):
         user = authenticate(username=email, password=password)
 
         if user is None:
-            raise serializers.ValidationError(
-                "A user with this email and password was not found"
-            )
-
-        if not user.is_active:
-            raise serializers.ValidationError("This user has been deactivated.")
-
-        user.save()
+            raise serializers.ValidationError("비밀번호가 틀립니다.")
 
         return {
             "email": user.email,
