@@ -232,7 +232,7 @@ class NovelView(APIView):
                         novel_content += line + '\n'
                 return JsonResponse({
                     'story': novel_content,
-                    'choices': choices,
+                    'choices': choices[:2],
                     'image': novelStory.image
                 })
         return JsonResponse({
