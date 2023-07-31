@@ -13,7 +13,7 @@ export default function Choice({ story, question, choices, novel_id }: ChoicePro
     const selectArray = ["A", "B", "C", "D"]
     choices.push("여기서 그만두고 결과를 확인한다.")
     return (
-      <div className="w-screen h-screen bg-white/60 absolute top-0 left-0 overflow-scroll pt-32">
+      <div className="w-screen h-screen bg-white/60 absolute top-0 left-0 overflow-scroll pt-20">
         <div className="flex flex-col items-center justify-center h-full">
           <div className="lg:w-7/12 md:w-9/12 w-full p-4">
             <div className="flex flex-col space-y-4">

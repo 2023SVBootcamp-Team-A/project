@@ -22,7 +22,7 @@ export default function ChociePage() {
                     headers: {
                         "Content-Type": "application/json",
                         "Accept": "application/json",
-                        id: Number(localStorage.getItem('id'))
+                        "id": localStorage.getItem('id')
                     }
                 }
             );
