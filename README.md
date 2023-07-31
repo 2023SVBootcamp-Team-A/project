@@ -28,7 +28,7 @@ Stable Diffusion, DALL∙E 등의 Vision 기반 Image Generation AI 모델들과
 
 - - - 
 ## 3. Tech Stack
-<img width="574" alt="스크린샷 2023-07-30 오후 2 34 58" src="https://github.com/2023SVBootcamp-Team-A/project/assets/104286511/8a0166e3-6e92-4f4c-9293-8ff53dc43cb0">
+![그림1](https://github.com/2023SVBootcamp-Team-A/project/assets/104286511/126a15dc-b63a-4e8a-b848-3b00162ad280)
 
 - - - 
 ## 4. 실행 방법
