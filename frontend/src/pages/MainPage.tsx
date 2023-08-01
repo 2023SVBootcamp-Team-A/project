@@ -122,13 +122,15 @@ export default function MainPage() {
       </div>
       {/* 시작 버튼 */}
       <button
-        className="startButton"
+        type="button"
+        className="px-12 py-3 mb-10 ml-4 rounded-full text-white text-2xl bg-[#9B8F8F] hover:bg-[#E9E7E4] hover:text-[#898181] rounded-2xl text-center shadow-lg shadow-black-800/80 dark:shadow-lg dark:shadow-black-800/80"
         onClick={() => {
           navigate("/settingfirst");
         }}
       >
-        <p className="">Click to Start</p>
+        Click to Start
       </button>
+
       {/* 로그인 회원가입 마이페이지 */}
       <div className="btnGroup">
         {authState.isLoggedIn ? (
