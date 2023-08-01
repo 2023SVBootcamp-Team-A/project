@@ -34,8 +34,37 @@ interface Response {
   "novelStory": novelStory[];
 }
 
+function PageList(novelStory: novelStory[]) {
+  const pageList: any = [];
+  novelStory.map(
+    (data, index) => {
+      console.log(data)
+      for (let i = 0; i < 2; i++){
+        pageList.push(
+          (i == 1) ? (
+          <Page key={data.id} number={index+1} chapter={index/2 + 1}>
+            {(novelStory != null) && data.content.split("\n").map((line, index) => (
+                <span key={index}>{line}<br/></span>
+              ))}
+          </Page> ) : (
+              <Page key={data.id} number={index+1} chapter={index/2 + 1}>
+                <div className="flex flex-col items-center">
+                  <span className="m-8 text-center text-5xl text-[#744624]">Chapter 1</span>
+                  <img src={data.image} className="flex flex-col items-center object-cover" style={{width: '344px', height: '300px'}} />
+                </div>
+              </Page>
+            )
+          ) 
+      }
+    }
+  )
+  console.log(pageList)
+  return pageList;
+}
+
 const FlipBook: React.FC<FlipBookProps> = (props  => {
   const [novelStory, setNovelStory] = useState<novelStory[]>();
+  const [pageList, setpageList] = useState<[]>();
   const url = 'http://localhost:8000/api/v1/mynovels/'+ props.novel_id;
   const GetData = async () => {
       try {
@@ -47,6 +76,9 @@ const FlipBook: React.FC<FlipBookProps> = (props  => {
             }
         );
         setNovelStory(response.data.novelStory);
+        (novelStory != null) &&
+          setpageList(PageList(novelStory))
+        console.log(pageList)
       } catch(err) {
         console.log(err);
       }
@@ -56,8 +88,9 @@ const FlipBook: React.FC<FlipBookProps> = (props  => {
     GetData();
   }, []);
   
-  const book = useRef();
-  return (
+  const book = useRef(null);
+  return ( 
+    novelStory && pageList &&
     <div className="w-screen h-screen ">
       <div className="flex flex-col justify-center items-center">
         <div className="xl:w-9/12 md:w-5/6 w-7/12 h-3/6 absolute md:top-28 top-20">
@@ -93,19 +126,22 @@ const FlipBook: React.FC<FlipBookProps> = (props  => {
                       <h2>소설</h2>
                   </div>
               </div>
-              {/* {
-                (novelStory != null) ?
-                novelStory?.map((story, index) => (
-                    <Page key={index} number={story.id} chapter={story.id}>
-                      <div className="flex flex-col items-center">
-                        <span className="m-8 text-center text-5xl text-[#744624]">Chapter {index}</span>
-                        <img src={(story != null) ? story?.image : "null"} className="flex flex-col items-center object-cover" style={{width: '344px', height: '300px'}} />
-                      </div>
-                    </Page>
-                  ) 
-                ) : <></>
+              {
+                pageList.map((data, index) => <div key={index}>{data}</div>)
+              }
+              {/* { novelStory ? 
+                novelStory.map((data, index) => (
+                    data && data.image ?
+                      <Page key={index} number={1} chapter={1}>
+                        <div className="flex flex-col items-center">
+                          <span className="m-8  text-center text-5xl text-[#744624]">Chapter 1</span>
+                          <img src={data.image} alt="page" />
+                        </div>
+                      </Page>
+                    : <span>No Image</span>
+                )) : <></>
               } */}
-              <Page number={1} chapter={1}>
+              {/* <Page number={1} chapter={1}>
                 <div className="flex flex-col items-center">
                   <span className="m-8  text-center text-5xl text-[#744624]">Chapter 1</span>
                     {novelStory && novelStory[0] ? <img src={(novelStory != null) ? novelStory[0]?.image : "null"} className="flex flex-col items-center object-cover" style={{width: '344px', height: '300px'}} /> : <>  </>}
@@ -152,7 +188,7 @@ const FlipBook: React.FC<FlipBookProps> = (props  => {
                   {(novelStory != null) && novelStory[3]?.content.split("\n").map((line, index) => (
                       <span key={index}>{line}<br/></span>
                     ))}
-              </Page>
+              </Page> */}
               <div className="page page-cover page-cover-bottom" data-density="hard">
                   <div className="page-content">
                       <h2>THE END</h2>
