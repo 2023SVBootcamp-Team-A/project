@@ -13,6 +13,7 @@ services:
         ELASTIC_VERSION: 8.5.2
     volumes:
       - ./elk/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro,Z
+      - elasticsearch:/user/share/elasticsearch/data:Z
     ports:
       - 9200:9200
       - 9300:9300
@@ -30,7 +31,7 @@ services:
 
   logstash:
     build:
-      context: elk/logstash
+      context: ./elk/logstash
       args:
         ELASTIC_VERSION: 8.5.2
     volumes:
@@ -65,7 +66,7 @@ services:
 
   filebeat:
     build:
-      context: elk/filebeat
+      context: ./elk/filebeat
       args:
         ELASTIC_VERSION: 8.5.2
     entrypoint: "filebeat -e -strict.perms=false"

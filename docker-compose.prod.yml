@@ -27,6 +27,8 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     volumes:
+      - static_volume:/app/backend/staticfiles
+      - media_volume:/app/backend/mediafiles
       - ./backend:/app/backend
     ports:
       - "8000:8000"
@@ -40,8 +42,11 @@ services:
     ports:
       - "80:80"
     volumes:
+      - static_volume:/app/backend/staticfiles
+      - media_volume:/app/backend/mediafiles
       - build_folder:/var/www/frontend # 하단 volumes에서 정의한 build_folder를 nginx 컨테이너의 /var/www/frontend/로 한다.
       - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - ./nginx/log:/var/log/nginx
     depends_on:
       - frontend
 
@@ -109,11 +114,15 @@ services:
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/kmsg:/dev/kmsg:ro
     ports:
       - "8080:8080"
+    privileged: true
     restart: always
 
 volumes:
+  static_volume:
+  media_volume:
   grafana-storage:
   prometheus-storage:
   build_folder: null # frontend 컨테이너가 실행되기 전에는 빈 값이나, frontend 컨테이너가 실행된 이후에는 build_folder의 내용이 빌드된 리액트 정적 파일들이 있게 된다.
