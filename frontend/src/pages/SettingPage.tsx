@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import addLogo from "/images/add.png";
 import deleteLogo from "/images/delete.png";
+import { useSelector } from "react-redux";
 
 interface Character {
   name: string;
@@ -20,6 +21,7 @@ interface NovelData {
 const SettingPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const authState = useSelector((state: any) => state);
 
   const [summary, setSummary] = useState<string>("");
   const [characterInputs, setCharacterInputs] = useState<Character[]>([
@@ -29,6 +31,13 @@ const SettingPage: React.FC = () => {
   const [time_period, setTimePeriod] = useState<string[]>([]);
   const [time_projection, setTimeProjection] = useState<string[]>([]);
   const [novel_id, setNovelID] = useState<number | null>(null); //api응답값 = response.data
+
+  useEffect(() => {
+    if (!authState.isLoggedIn) {
+      alert("로그인이 필요합니다.");
+      navigate("/");
+    }
+  }, []);
 
   useEffect(() => {
     const { state } = location;
@@ -70,7 +79,7 @@ const SettingPage: React.FC = () => {
         setNovelID(response.data);
         const token = response.data.token;
         localStorage.setItem("token", token);
-        navigate('/choice', { state: { novel: response.data.novel }});;
+        navigate("/choice", { state: { novel: response.data.novel } });
       } else {
         console.log(response);
         console.log("API 요청 실패");

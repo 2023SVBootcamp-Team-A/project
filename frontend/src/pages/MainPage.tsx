@@ -124,7 +124,12 @@ export default function MainPage() {
       <button
         className="startButton"
         onClick={() => {
-          navigate("/settingfirst");
+          if (authState.isLoggedIn) {
+            navigate("/settingfirst");
+          } else {
+            alert("로그인이 필요합니다.");
+            navigate("/login");
+          }
         }}
       >
         <p className="">Click to Start</p>
