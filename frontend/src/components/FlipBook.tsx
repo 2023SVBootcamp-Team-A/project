@@ -7,14 +7,16 @@ interface FlipBookProps {
   novel_id: number;
 }
 
-const Page: React.FC<{ children: React.ReactNode; number: number; chapter: number; }> = React.forwardRef(
+const Page: React.FC<{ children: React.ReactNode; number: number; left:boolean }> = React.forwardRef(
   (props, ref: React.Ref<HTMLInputElement>) => {
   
     return (
       <div className="w-full h-full p-1 color-[#785e3a] border-spacing-1 overflow-y-scroll" ref={ref}>
-            <div className="w-full h-full flex flex-col justify-between">
-                <div className="h-11/12 flex-grow-1 text-size-[18px] text-justify mt-10 p-10 lg:text-18 text-15">{props.children}</div>
-                <h2 className="h-auto font-[20px] text-center">page {props.number}</h2>
+            <div 
+              className="w-full h-full flex flex-col justify-between">
+                <div className="h-11/12 flex-grow-1 text-size-[18px] text-justify mt-6 p-10 lg:text-18 text-15">{props.children}</div>
+                {!props.left && <h2 className="h-auto font-[20px] text-right mr-5 mb-2 ml-5 text-black">{props.number}</h2>}
+                {props.left && <h2 className="h-auto font-[20px] text-left mr-5 mb-2 ml-5 text-black">{props.number}</h2>}
             </div>
       </div>
     );
@@ -42,13 +44,13 @@ function PageList(novelStory: novelStory[]) {
         pageList.push(
           (i == 1) ? (
             <div
-              className="overflow-y-scroll h-full p-3 text-left bg-[#fdfaf7] text-black"
+              className="animate-fade-up animate-once animate-duration-1000 animate-ease-linear overflow-y-scroll h-full p-3 text-left bg-[#fdfaf7] text-black"
               style={{
                 boxShadow:
-                  "inset -7px 0 30px -7px rgba(0, 0, 0, 0.4)",
+                  "inset -7px 0 30px -7px rgba(0, 0, 0, 0.4), 10px 10px 4px rgba(0, 0, 0, 0.20)",
               }}
             >
-              <Page key={data.id} number={index+1} chapter={index/2 + 1}>
+              <Page key={data.id} number={2*index} left={false}>
                 <div className="h-full overflow-scroll">
                 {(novelStory != null) && data.content.split("\n").map((line, index) => (
                     <span key={index}>{line}<br/></span>
@@ -57,17 +59,17 @@ function PageList(novelStory: novelStory[]) {
               </Page>
             </div> ) : (
             <div
-              className="overflow-y-scroll h-full p-3 text-left bg-[#fdfaf7] text-black"
+              className="animate-fade-up animate-once animate-duration-1000 animate-ease-linear overflow-y-scroll h-full p-3 text-left bg-[#fdfaf7] text-black"
               style={{
                 boxShadow:
-                  "inset 7px 0 36px -7px rgba(0, 0, 0, 0.4)",
+                  "inset 7px 0 36px -7px rgba(0, 0, 0, 0.4), 10px 10px 4px rgba(0, 0, 0, 0.20)",
                 borderLeft:
                   "0",
               }}
             >
-              <Page key={data.id} number={index+1} chapter={index/2 + 1}>
+              <Page key={data.id} number={2*index+1} left={true}>
                 <div className="flex flex-col items-center">
-                  <span className="mb-8 text-center text-5xl text-[#744624]">Chapter 1</span>
+                  <span className="mb-8 text-center text-5xl text-[#744624]">Chapter {data.id}</span>
                   <img src={data.image} className="flex flex-col items-center object-cover" style={{width: '344px', height: '300px'}} />
                 </div>
               </Page>
@@ -140,7 +142,7 @@ const FlipBook: React.FC<FlipBookProps> = (props  => {
               style={{ }}
               ref={book}
             >
-              <div className="page page-cover page-cover-top" data-density="hard">
+              <div className="bg-beige">
                   <div className="page-content">
                       <h2>소설</h2>
                   </div>
@@ -148,66 +150,6 @@ const FlipBook: React.FC<FlipBookProps> = (props  => {
               {
                 pageList.map((data, index) => <div key={index}>{data}</div>)
               }
-              {/* { novelStory ? 
-                novelStory.map((data, index) => (
-                    data && data.image ?
-                      <Page key={index} number={1} chapter={1}>
-                        <div className="flex flex-col items-center">
-                          <span className="m-8  text-center text-5xl text-[#744624]">Chapter 1</span>
-                          <img src={data.image} alt="page" />
-                        </div>
-                      </Page>
-                    : <span>No Image</span>
-                )) : <></>
-              } */}
-              {/* <Page number={1} chapter={1}>
-                <div className="flex flex-col items-center">
-                  <span className="m-8  text-center text-5xl text-[#744624]">Chapter 1</span>
-                    {novelStory && novelStory[0] ? <img src={(novelStory != null) ? novelStory[0]?.image : "null"} className="flex flex-col items-center object-cover" style={{width: '344px', height: '300px'}} /> : <>  </>}
-                </div>
-              </Page>
-              <Page number={2} chapter={1}>
-                  {(novelStory != null) && novelStory[0]?.content.split("\n").map((line, index) => (
-                      <span key={index}>{line}<br/></span>
-                    ))}
-              </Page>
-              <Page number={3} chapter={2}>
-                <div className="flex flex-col items-center">
-                  <span className="m-8 text-center text-5xl text-[#744624]">Chapter 2</span>
-                    {novelStory && novelStory[1] ? <img src={(novelStory != null) ? novelStory[1]?.image : "null"} className="flex flex-col items-center object-cover" style={{width: '344px', height: '300px'}} /> : <>  </>}
-                </div>
-              </Page>
-              <Page number={4} chapter={2}>
-                  {(novelStory != null) && novelStory[1]?.content.split("\n").map((line, index) => (
-                      <span key={index}>{line}<br/></span>
-                    ))}
-              </Page>
-              <Page number={5} chapter={3}>
-                  {novelStory && novelStory[2] ? 
-                  <div className="flex flex-col items-center">
-                  <span className="m-8 text-center text-5xl text-[#744624]">Chapter 3</span>
-                  <img src={(novelStory != null) ? novelStory[2]?.image : "null"} className="flex flex-col items-center object-cover" style={{width: '344px', height: '300px'}} />
-                  </div> : <> </>}
-              </Page>
-              <Page number={6} chapter={3}>
-                  {(novelStory != null) && novelStory[2]?.content.split("\n").map((line, index) => (
-                      <span key={index}>{line}<br/></span>
-                    ))}
-              </Page>
-              <Page number={7} chapter={4}>
-                <div className="flex flex-col items-center">
-                {novelStory && novelStory[3] ? 
-                  <div className="flex flex-col items-center">
-                  <span className="m-8 text-center text-5xl text-[#744624]">Chapter 3</span>
-                  <img src={(novelStory != null) ? novelStory[3]?.image : "null"} className="flex flex-col items-center object-cover" style={{width: '344px', height: '300px'}} />
-                  </div> : <> </>}
-                </div>
-              </Page>
-              <Page number={8} chapter={4}>
-                  {(novelStory != null) && novelStory[3]?.content.split("\n").map((line, index) => (
-                      <span key={index}>{line}<br/></span>
-                    ))}
-              </Page> */}
               <div className="page page-cover page-cover-bottom" data-density="hard">
                   <div className="page-content">
                       <h2>THE END</h2>
