@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router";
 import Choice from "../components/Choice";
 import data from "../data/choice-data.json";
 import axios from "axios";
@@ -10,24 +11,24 @@ interface StoryResponse {
 }
 
 export default function ChociePage() {
-    
     const [visible, setVisible] = useState(false);
     const [resposeData, setResponseData] = useState<StoryResponse>();
-    const url = 'http://www.techeer-team-a.store/api/v1/novels/'+ 43
+    const location = useLocation();
+    const novel_id = location.state.novel;
+    const url = 'http://localhost:8000/api/v1/novels/'+ novel_id
     const GetData = async () => {
         try {
             const response = await axios.get<StoryResponse>(url, {
                     headers: {
                         "Content-Type": "application/json",
                         "Accept": "application/json",
-                        "Authorization": `` // 추후 관리하는 Token 삽입 할 것
+                        "id": localStorage.getItem('id')
                     }
                 }
             );
             setResponseData(response.data);
-            console.log(response.data)
         } catch(err) {
-          console.log(err);
+          (err);
         }
     };
 
@@ -59,7 +60,10 @@ export default function ChociePage() {
                     </>
                 )}
             </div>
-            {!(resposeData == null) && visible && <Choice story={resposeData.story} question="어떤 선택을 하시겠습니까?" choices={resposeData.choices} novel_id={43} />}
+            {
+              !(resposeData == null) && visible &&
+                <Choice story={resposeData.story} question="어떤 선택을 하시겠습니까?" choices={resposeData.choices} novel_id={novel_id} />
+            }
         </div>
     );
 }
