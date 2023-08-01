@@ -44,13 +44,13 @@ function PageList(novelStory: novelStory[]) {
         pageList.push(
           (i == 1) ? (
             <div
-              className="animate-fade-up animate-once animate-duration-1000 animate-ease-linear overflow-y-scroll h-full p-3 text-left bg-[#fdfaf7] text-black"
+              className="overflow-y-scroll h-full p-3 text-left bg-[#fdfaf7] text-black"
               style={{
                 boxShadow:
                   "inset -7px 0 30px -7px rgba(0, 0, 0, 0.4), 10px 10px 4px rgba(0, 0, 0, 0.20)",
               }}
             >
-              <Page key={data.id} number={2*index} left={false}>
+              <Page key={data.id} number={2*index+2} left={false}>
                 <div className="h-full overflow-scroll">
                 {(novelStory != null) && data.content.split("\n").map((line, index) => (
                     <span key={index}>{line}<br/></span>
@@ -59,7 +59,7 @@ function PageList(novelStory: novelStory[]) {
               </Page>
             </div> ) : (
             <div
-              className="animate-fade-up animate-once animate-duration-1000 animate-ease-linear overflow-y-scroll h-full p-3 text-left bg-[#fdfaf7] text-black"
+              className="overflow-y-scroll h-full p-3 text-left bg-[#fdfaf7] text-black"
               style={{
                 boxShadow:
                   "inset 7px 0 36px -7px rgba(0, 0, 0, 0.4), 10px 10px 4px rgba(0, 0, 0, 0.20)",
@@ -70,7 +70,7 @@ function PageList(novelStory: novelStory[]) {
               <Page key={data.id} number={2*index+1} left={true}>
                 <div className="flex flex-col items-center">
                   <span className="mb-8 text-center text-5xl text-[#744624]">Chapter {data.id}</span>
-                  <img src={data.image} className="flex flex-col items-center object-cover" style={{width: '344px', height: '300px'}} />
+                  <img src={data.image} className="w-4/5 h-3/4 flex flex-col items-center object-cover" />
                 </div>
               </Page>
             </div>
@@ -113,9 +113,9 @@ const FlipBook: React.FC<FlipBookProps> = (props  => {
   return ( 
     novelStory && pageList &&
     <div className="w-screen h-screen ">
-      <div className="flex flex-col justify-center items-center">
-        <div className="xl:w-9/12 md:w-5/6 w-7/12 h-3/6 absolute md:top-28 top-20">
-          <div className="flex flex-col justify-center items-center">
+      <div className="h-11/12 flex flex-col justify-center items-center">
+        <div className="xl:w-9/12 md:w-10/12 sm:w-9/12 w-11/12 h-4/6 absolute md:top-28 top-20">
+          <div className="flex flex-col animate-fade-up animate-once animate-duration-1000 animate-ease-linear">
             <HTMLFlipBook
               width={580}
               height={680}
@@ -127,8 +127,8 @@ const FlipBook: React.FC<FlipBookProps> = (props  => {
               drawShadow={true}
               flippingTime={1000}
               className="book-theme"
-              startPage={1}
-              usePortrait={false}
+              startPage={2}
+              usePortrait={true}
               startZIndex={30}
               autoSize={true}
               maxShadowOpacity={0.5}
@@ -143,8 +143,8 @@ const FlipBook: React.FC<FlipBookProps> = (props  => {
               ref={book}
             >
               <div className="bg-beige">
-                  <div className="page-content">
-                      <h2>소설</h2>
+                  <div className="w-full h-full flex flex-col justify-center border-solid">
+                      <h2 className="text-center text-2xl pt-1/2">소설</h2>
                   </div>
               </div>
               {
