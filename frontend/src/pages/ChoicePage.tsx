@@ -11,7 +11,6 @@ interface StoryResponse {
 }
 
 export default function ChociePage() {
-    
     const [visible, setVisible] = useState(false);
     const [resposeData, setResponseData] = useState<StoryResponse>();
     const location = useLocation();
@@ -23,7 +22,7 @@ export default function ChociePage() {
                     headers: {
                         "Content-Type": "application/json",
                         "Accept": "application/json",
-                        "Authorization": `` // 추후 관리하는 Token 삽입 할 것
+                        "id": localStorage.getItem('id')
                     }
                 }
             );
@@ -61,7 +60,10 @@ export default function ChociePage() {
                     </>
                 )}
             </div>
-            {!(resposeData == null) && visible && <Choice story={resposeData.story} question="어떤 선택을 하시겠습니까?" choices={resposeData.choices} novel_id={novel_id} />}
+            {
+              !(resposeData == null) && visible &&
+                <Choice story={resposeData.story} question="어떤 선택을 하시겠습니까?" choices={resposeData.choices} novel_id={novel_id} />
+            }
         </div>
     );
 }
