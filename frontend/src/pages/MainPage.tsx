@@ -94,7 +94,9 @@ export default function MainPage() {
       {/* 캐루셀 */}
       {/* <!-- Slider main container --> */}
       <div className="carousel">
-        <div className="swiper-text">Make your World</div>
+        <div className="swiper-text text-4xl font-['DoublePica']">
+          Make your World
+        </div>
         {/* <!-- Additional required wrapper --> */}
         <Swiper
           slidesPerView={3}
@@ -125,7 +127,7 @@ export default function MainPage() {
           navigate("/settingfirst");
         }}
       >
-        <p>Click to Start</p>
+        <p className="">Click to Start</p>
       </button>
       {/* 로그인 회원가입 마이페이지 */}
       <div className="btnGroup">
