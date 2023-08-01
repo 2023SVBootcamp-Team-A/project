@@ -80,7 +80,7 @@ const SettingPageFirst: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col mt-20 p-8">
-      <div className="text-5xl font-bold text-center text-[#6B3A18]">
+      <div className="text-5xl font-bold text-center text-[#6B3A18] font-['Inria']">
         Sketch Story
       </div>
       <div className="h-5/6 w-5/6 bg-[#E9E7E4] flex flex-row p-4 mx-auto mt-5 mb-2 rounded-2xl">

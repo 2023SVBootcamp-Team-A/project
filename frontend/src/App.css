@@ -40,3 +40,8 @@
 .read-the-docs {
   color: #888;
 }
+
+@font-face {
+  font-family: "IBMPlexSansKR";
+  src: url("../fonts/AnyConv.com__IBMPlexSansKR-Medium.woff") format("woff");
+}

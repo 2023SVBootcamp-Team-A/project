@@ -12,17 +12,17 @@ export default {
   content: ["./index.html", "./src/**/*.{html,js,ts,jsx,tsx}"],
   theme: {
     screens: {
-      'sm': '640px',
-      'md': '768px',
-      'lg': '1024px',
-      'xl': '1280px',
-      '2xl': '1536px',
-      'pot': '705px',
-      'lg-pot':'960px'
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1536px",
+      pot: "705px",
+      "lg-pot": "960px",
     },
     extend: {
       backgroundImage: {
-        'background-img' : "/images/background.png"
+        "background-img": "/images/background.png",
       },
       variants: {},
       borderRadius: px0_100,
@@ -37,7 +37,9 @@ export default {
         paginationlightgray: "#eae9e9",
       },
       fontFamily: {
-        sans: ["IBMPlexSansKR"],
+        IBMPlexSansKR: ["IBMPlexSansKR-Regular"],
+        DoublePica: ["IMFellDoublePica-Regular"],
+        Inria: ["InriaSerif-Regular"],
       },
     },
   },
