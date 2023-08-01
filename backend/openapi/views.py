@@ -31,6 +31,7 @@ from openapi.serializers import (
     NovelSerializer,
     BackgroundResponseSerializer,
     NovelBackgroundRequestSerializer,
+    NovelListSerializer
 )
 
 from drf_yasg.utils import swagger_auto_schema
@@ -80,7 +81,7 @@ def mynovel_list(request):
 
         try:
             page_obj = paginator.page(page_number)
-            serializer = NovelSerializer(page_obj, many=True)
+            serializer = NovelListSerializer(page_obj, many=True)
 
             data = {
                 "novel": serializer.data,
@@ -140,7 +141,7 @@ def novel_list(request):
 
         try:
             page_obj = paginator.page(page_number)
-            serializer = NovelSerializer(page_obj, many=True)
+            serializer = NovelListSerializer(page_obj, many=True)
 
             data = {
                 "novel": serializer.data,

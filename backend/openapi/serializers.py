@@ -21,6 +21,11 @@ class NovelSerializer(serializers.ModelSerializer):
         model = Novel
         fields = ["user"]
 
+class NovelListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Novel
+        fields = ["user", "id", "novel_name", "novel_image"]
+
 
 class BackgroundResponseSerializer(serializers.ModelSerializer):
     class Meta:
