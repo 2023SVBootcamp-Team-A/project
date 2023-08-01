@@ -1,7 +1,7 @@
 import React, {useRef, useEffect, useState} from "react";
 import HTMLFlipBook from "react-pageflip";
-import "./FlipBook.scss"
 import axios from "axios";
+import classNames from "classnames";
 
 interface FlipBookProps {
   novel_id: number;
@@ -9,12 +9,12 @@ interface FlipBookProps {
 
 const Page: React.FC<{ children: React.ReactNode; number: number; chapter: number; }> = React.forwardRef(
   (props, ref: React.Ref<HTMLInputElement>) => {
+  
     return (
-      <div className="page" ref={ref}>
-            <div className="page-content">
-                <h2 className="page-header">Chapter {props.chapter}</h2>
-                <div className="page-text lg:text-21 text-15">{props.children}</div>
-                <div className="page-footer">{props.number}</div>
+      <div className="w-full h-full p-1 color-[#785e3a] border-spacing-1 overflow-y-scroll" ref={ref}>
+            <div className="w-full h-full flex flex-col justify-between">
+                <div className="h-11/12 flex-grow-1 text-size-[18px] text-justify mt-10 p-10 lg:text-18 text-15">{props.children}</div>
+                <h2 className="h-auto font-[20px] text-center">page {props.number}</h2>
             </div>
       </div>
     );
@@ -38,21 +38,40 @@ function PageList(novelStory: novelStory[]) {
   const pageList: any = [];
   novelStory.map(
     (data, index) => {
-      console.log(data)
       for (let i = 0; i < 2; i++){
         pageList.push(
           (i == 1) ? (
-          <Page key={data.id} number={index+1} chapter={index/2 + 1}>
-            {(novelStory != null) && data.content.split("\n").map((line, index) => (
-                <span key={index}>{line}<br/></span>
-              ))}
-          </Page> ) : (
+            <div
+              className="overflow-y-scroll h-full p-3 text-left bg-[#fdfaf7] text-black"
+              style={{
+                boxShadow:
+                  "inset -7px 0 30px -7px rgba(0, 0, 0, 0.4)",
+              }}
+            >
+              <Page key={data.id} number={index+1} chapter={index/2 + 1}>
+                <div className="h-full overflow-scroll">
+                {(novelStory != null) && data.content.split("\n").map((line, index) => (
+                    <span key={index}>{line}<br/></span>
+                  ))}
+                </div>
+              </Page>
+            </div> ) : (
+            <div
+              className="overflow-y-scroll h-full p-3 text-left bg-[#fdfaf7] text-black"
+              style={{
+                boxShadow:
+                  "inset 7px 0 36px -7px rgba(0, 0, 0, 0.4)",
+                borderLeft:
+                  "0",
+              }}
+            >
               <Page key={data.id} number={index+1} chapter={index/2 + 1}>
                 <div className="flex flex-col items-center">
-                  <span className="m-8 text-center text-5xl text-[#744624]">Chapter 1</span>
+                  <span className="mb-8 text-center text-5xl text-[#744624]">Chapter 1</span>
                   <img src={data.image} className="flex flex-col items-center object-cover" style={{width: '344px', height: '300px'}} />
                 </div>
               </Page>
+            </div>
             )
           ) 
       }
