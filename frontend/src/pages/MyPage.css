@@ -15,7 +15,7 @@
 
 @layer components {
   .title {
-    @apply mt-[6rem] text-4xl font-bold text-[#612d08];
+    @apply mt-[6rem] text-4xl font-bold text-[#612d08] font-['Inria'];
   }
 
   .books-container {
@@ -32,7 +32,7 @@
   }
 
   .photocard {
-    @apply h-40 w-28 block outline-none;
+    @apply h-40 w-28 block outline-none object-cover;
   }
 
   .bookName {
@@ -40,8 +40,9 @@
   }
 
   .floor-thickness {
-    @apply h-6 w-[45rem] mx-auto bg-[var(--color-shelf-bottom-panel-front)];
+    @apply h-6 w-[45rem] mx-auto;
     box-shadow: 15px 15px 30px 1.5px black;
+    background-image: url(".././assets/wooden3.jpg");
   }
 
   .navLeftArrow {
