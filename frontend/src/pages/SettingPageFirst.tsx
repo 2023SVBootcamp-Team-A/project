@@ -3,12 +3,14 @@ import { useNavigate } from "react-router-dom";
 import GenreBox from "../components/Box/GenreBox";
 import BackgroundBox from "../components/Box/BackgroundBox";
 import EraBox from "../components/Box/EraBox";
+import { useSelector } from "react-redux";
 
 const SettingPageFirst: React.FC = () => {
   const navigate = useNavigate();
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [selectedBackgrounds, setSelectedBackgrounds] = useState<string[]>([]);
   const [selectedEras, setSelectedEras] = useState<string[]>([]);
+  const authState = useSelector((state: any) => state);
 
   const handleGenreClick = (genre: string) => {
     setSelectedGenres((prevGenres) => {
@@ -56,7 +58,6 @@ const SettingPageFirst: React.FC = () => {
   };
 
   const handleNextPageClick = () => {
-
     const id = "id";
     localStorage.setItem("id", id);
 
@@ -70,17 +71,21 @@ const SettingPageFirst: React.FC = () => {
   };
 
   useEffect(() => {
-  }, [selectedGenres]);
+    if (!authState.isLoggedIn) {
+      alert("로그인이 필요합니다.");
+      navigate("/");
+    }
+  }, []);
 
-  useEffect(() => {
-  }, [selectedBackgrounds]);
+  useEffect(() => {}, [selectedGenres]);
 
-  useEffect(() => {
-  }, [selectedEras]);
+  useEffect(() => {}, [selectedBackgrounds]);
+
+  useEffect(() => {}, [selectedEras]);
 
   return (
     <div className="min-h-screen flex flex-col mt-20 p-8">
-      <div className="text-5xl font-bold text-center text-[#6B3A18]">
+      <div className="text-5xl font-bold text-center text-[#6B3A18] font-['Inria']">
         Sketch Story
       </div>
       <div className="h-5/6 w-5/6 bg-[#E9E7E4] flex flex-row p-4 mx-auto mt-5 mb-2 rounded-2xl">

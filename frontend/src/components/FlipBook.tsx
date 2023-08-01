@@ -127,7 +127,7 @@ const FlipBook: React.FC<FlipBookProps> = (props  => {
               drawShadow={true}
               flippingTime={1000}
               className="book-theme"
-              startPage={2}
+              startPage={1}
               usePortrait={true}
               startZIndex={30}
               autoSize={true}

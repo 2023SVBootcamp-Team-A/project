@@ -94,7 +94,9 @@ export default function MainPage() {
       {/* 캐루셀 */}
       {/* <!-- Slider main container --> */}
       <div className="carousel">
-        <div className="swiper-text">Make your World</div>
+        <div className="swiper-text text-4xl font-['DoublePica']">
+          Make your World
+        </div>
         {/* <!-- Additional required wrapper --> */}
         <Swiper
           slidesPerView={3}
@@ -120,13 +122,20 @@ export default function MainPage() {
       </div>
       {/* 시작 버튼 */}
       <button
-        className="startButton"
+        type="button"
+        className="px-12 py-3 mb-10 ml-4 rounded-full text-white text-2xl bg-[#9B8F8F] hover:bg-[#E9E7E4] hover:text-[#898181] rounded-2xl text-center shadow-lg shadow-black-800/80 dark:shadow-lg dark:shadow-black-800/80"
         onClick={() => {
-          navigate("/settingfirst");
+          if (authState.isLoggedIn) {
+            navigate("/settingfirst");
+          } else {
+            alert("로그인이 필요합니다.");
+            navigate("/login");
+          }
         }}
       >
-        <p>Click to Start</p>
+        Click to Start
       </button>
+
       {/* 로그인 회원가입 마이페이지 */}
       <div className="btnGroup">
         {authState.isLoggedIn ? (

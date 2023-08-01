@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "./Bookshelf.css";
 import NovelBook from "../components/NovelBook";
+import { useNavigate } from "react-router";
 
 type MyNovels = {
   novel: Novel[];
@@ -24,6 +25,7 @@ type Novel = {
 };
 
 export default function Bookshelf() {
+  const navigate = useNavigate();
   const [novelList, setNovelList] = useState<Novel[]>([]);
   const [novelList1, setNovelList1] = useState<Novel[]>([]);
   const [novelList2, setNovelList2] = useState<Novel[]>([]);
@@ -36,9 +38,11 @@ export default function Bookshelf() {
 
     const response = await axios
       .get(`http://www.techeer-team-a.store:8000/api/v1/novels${queryString}`)
+      // .get(`http://localhost:8000/api/v1/novels${queryString}`)
       .then(function (response) {
         // 성공적으로 응답 받았을 때 처리하는 로직
         const { novel } = response.data;
+        console.log(novel);
 
         // 내용이 없으면 null 또는 undefined로 들어감!
         const novelList1 = novel.slice(0, 4);
