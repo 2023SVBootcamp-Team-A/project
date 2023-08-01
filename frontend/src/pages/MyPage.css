@@ -23,7 +23,7 @@
   }
 
   .book {
-    @apply h-40 w-28 bg-white flex justify-center items-center shadow-md;
+    @apply h-40 w-28 bg-white flex justify-center items-center shadow-md hover:cursor-pointer;
     box-shadow: 0 1px 3px 0 black, 0 1px 2px -1px black;
   }
 

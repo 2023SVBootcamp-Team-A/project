@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Loading from "./Loading";
 import axios from "axios";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 type Novel = {
   id: number;
@@ -14,8 +14,13 @@ type novelBookProps = {
 };
 
 function NovelBook({ novel }: novelBookProps) {
+  const navigate = useNavigate();
+
   return (
-    <div className="book">
+    <div
+      className="book"
+      onClick={() => navigate(`/result/`, { state: { novel_id: novel.id } })}
+    >
       <figure className="bookContainer">
         <img
           src={novel.novel_image}

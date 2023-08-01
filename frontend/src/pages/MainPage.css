@@ -37,15 +37,7 @@
   }
 
   .carousel {
-    @apply w-[80%] px-4 py-6 bg-[#e2e1e0] rounded-2xl relative mb-10 ml-[10%] mt-[7rem];
-  }
-
-  .startButton {
-    @apply w-64 h-20 flex-shrink-0 rounded-full bg-mainpagegray mx-auto flex justify-center mb-10 bg-[#9B8F8F] hover:bg-[#E9E7E4] hover:text-[#9B8F8F];
-  }
-
-  .startButton p {
-    @apply text-white text-2xl leading-normal mt-5 text-[#ffffff];
+    @apply w-[80%] px-6 py-4 bg-[#b5b5b5] opacity-70 rounded-2xl relative mb-10 ml-[10rem] mt-[7rem];
   }
 
   .btnGroup {
@@ -53,7 +45,7 @@
   }
 
   .button {
-    @apply flex justify-start ml-10 mr-10 hover:cursor-pointer;
+    @apply flex justify-center ml-16 mr-7 hover:cursor-pointer;
   }
 
   .button p {
@@ -61,7 +53,7 @@
   }
 
   .btnIcon {
-    @apply flex rounded-full items-start gap-2 flex-shrink-0 bg-mainpagegray w-6 h-6 left-3 top-3;
+    @apply flex rounded-full items-center gap-2 flex-shrink-0 bg-mainpagegray w-6 h-6 left-3 top-3;
   }
 
   .iconNext {
@@ -84,19 +76,17 @@
 }
 
 .mySwiper {
-  width: 80%;
+  width: 70%;
   height: 20rem;
   margin-top: 2rem;
   margin-bottom: 2rem;
   position: relative;
-  opacity: 0.75;
 }
 
 .swiper-slide {
   text-align: center;
   font-size: 18px;
-  background: #fff;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  box-shadow: 10px 10px 5px rgb(0, 0.4, 0.4, 0.4);
   border-radius: 2px;
   display: inline-block;
   position: relative;
@@ -124,7 +114,7 @@
   padding-bottom: 1rem;
   padding-right: 0.5rem;
   padding-left: 0.5rem;
-  border: 4px solid white;
+  border: 5px solid white;
 }
 
 /* 

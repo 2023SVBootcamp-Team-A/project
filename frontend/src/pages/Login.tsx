@@ -38,7 +38,8 @@ function Login() {
           dispatch(loginSuccess());
           console.log("로그인 성공!");
           navigate("/");
-        } else {
+        } else if (response.status === 400) {
+          // 로그인 실패했을 때 추가
           console.log(response);
           console.log("로그인 실패");
         }

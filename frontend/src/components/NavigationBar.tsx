@@ -34,7 +34,7 @@ export default function NavigationBar() {
                         clipRule="evenodd"
                       />
                     </svg>
-                    <span className="text-xl">MyW</span>
+                    <span className="text-xl font-['DoublePica']">MyW</span>
                   </div>
                 </NavigationBarBtn>
               </div>
@@ -62,7 +62,7 @@ export default function NavigationBar() {
               </div>
             </div>
             <div className="w-2/12 h-12 flex-1 rounded-br-20 text-right text-base text-white bg-beige">
-              <span className="hidden md:flex flex-1 flex-col items-center">
+              <span className="hidden md:flex flex-1 flex-col items-center font-['DoublePica']">
                 Make your
                 <br />
                 World
@@ -75,14 +75,14 @@ export default function NavigationBar() {
       <div className="w-screen h-3.5 absolute left-0 top-0">
         <div className="md:hidden  bg-beige">
           <div className="flex ">
-            <div className="flex w-screen items-center justify-center p-4 pl-20 text-white text-2xl">
+            <div className="flex w-screen items-center justify-center p-4 pl-20 text-white font-['DoublePica'] text-2xl">
               <NavigationBarBtn link="/">
                 <div className="flex">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     // svg에도 CSS 클래스를 적용할 수 있습니다.
-                    className="flex h-5 w-5 mr-1 mt white"
-                    viewBox="0 0 20 20"
+                    className="flex h-5 w-5 mr-1"
+                    viewBox="0 0 25 25"
                     fill="white"
                   >
                     <path
