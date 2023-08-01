@@ -41,5 +41,7 @@ export default {
       },
     },
   },
-  plugins: [tailwindcssanimate],
+  plugins: [
+    require('tailwindcss-animated')
+  ],
 };
