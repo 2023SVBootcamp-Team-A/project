@@ -4,7 +4,7 @@ import axios from "axios";
 import classNames from "classnames";
 
 interface FlipBookProps {
-  novel_id: number;
+  novel_id: number | undefined;
 }
 
 const Page: React.FC<{ children: React.ReactNode; number: number; left:boolean }> = React.forwardRef(
@@ -69,7 +69,7 @@ function PageList(novelStory: novelStory[]) {
             >
               <Page key={data.id} number={2*index+1} left={true}>
                 <div className="flex flex-col items-center">
-                  <span className="mb-8 text-center text-5xl text-[#744624]">Chapter {data.id}</span>
+                  <span className="mb-8 text-center text-5xl text-[#744624]">Chapter {index+1}</span>
                   <img src={data.image} className="w-4/5 h-3/4 flex flex-col items-center object-cover" />
                 </div>
               </Page>
@@ -97,8 +97,7 @@ const FlipBook: React.FC<FlipBookProps> = (props  => {
             }
         );
         setNovelStory(response.data.novelStory);
-        (novelStory != null) &&
-          setpageList(PageList(novelStory))
+        setpageList(PageList(response.data.novelStory))
         console.log(pageList)
       } catch(err) {
         console.log(err);
@@ -107,6 +106,7 @@ const FlipBook: React.FC<FlipBookProps> = (props  => {
   
   useEffect(() => {
     GetData();
+
   }, []);
   
   const book = useRef(null);

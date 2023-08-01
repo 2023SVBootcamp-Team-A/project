@@ -58,9 +58,6 @@ const SettingPageFirst: React.FC = () => {
   };
 
   const handleNextPageClick = () => {
-    const id = "id";
-    localStorage.setItem("id", id);
-
     navigate("/setting", {
       state: {
         genre: selectedGenres,

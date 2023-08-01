@@ -4,6 +4,7 @@ import axios from "axios";
 import addLogo from "/images/add.png";
 import deleteLogo from "/images/delete.png";
 import { useSelector } from "react-redux";
+import Loading from "../components/Loading";
 
 interface Character {
   name: string;
@@ -31,6 +32,7 @@ const SettingPage: React.FC = () => {
   const [time_period, setTimePeriod] = useState<string[]>([]);
   const [time_projection, setTimeProjection] = useState<string[]>([]);
   const [novel_id, setNovelID] = useState<number | null>(null); //api응답값 = response.data
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!authState.isLoggedIn) {
@@ -52,7 +54,6 @@ const SettingPage: React.FC = () => {
     e.preventDefault();
 
     try {
-      const id = localStorage.getItem("id");
 
       const requestData: NovelData = {
         genre: genre,
@@ -61,7 +62,7 @@ const SettingPage: React.FC = () => {
         character: characterInputs,
         summary: summary,
       };
-
+      setLoading(true);
       const response = await axios.post(
         "http://localhost:8000/api/v1/novels/",
         requestData,
@@ -69,23 +70,22 @@ const SettingPage: React.FC = () => {
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            Authorization: "token",
-            id: id,
+            id: localStorage.getItem("id"),
           },
         }
       );
 
       if (response.status === 201) {
         setNovelID(response.data);
-        const token = response.data.token;
-        localStorage.setItem("token", token);
         navigate("/choice", { state: { novel: response.data.novel } });
       } else {
         console.log(response);
         console.log("API 요청 실패");
+        setLoading(false);
       }
     } catch (error) {
       console.error("api 요청 중 오류가 발생했습니다", error);
+      setLoading(false);
     }
   };
 
@@ -218,6 +218,7 @@ const SettingPage: React.FC = () => {
           시작하기
         </button>
       </div>
+      {loading && <Loading />}
     </div>
   );
 };

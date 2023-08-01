@@ -19,7 +19,7 @@ function NovelBook({ novel }: novelBookProps) {
   return (
     <div
       className="book"
-      onClick={() => navigate(`/result/`, { state: { novel_id: novel.id } })}
+      onClick={() => navigate(`/result`, { state: { novel_id: novel.id } })}
     >
       <figure className="bookContainer">
         <img

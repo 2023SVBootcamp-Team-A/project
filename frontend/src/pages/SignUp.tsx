@@ -35,7 +35,6 @@ function SignUp() {
 
       if (response.status === 201) {
         const token = response.data.token;
-        localStorage.setItem("token", token);
         console.log("회원가입 성공!");
         navigate("/login");
       } else {
