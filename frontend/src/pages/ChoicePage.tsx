@@ -60,7 +60,10 @@ export default function ChociePage() {
                     </>
                 )}
             </div>
-            {!(resposeData == null) && visible && <Choice story={resposeData.story} question="어떤 선택을 하시겠습니까?" choices={resposeData.choices} novel_id={novel_id} />}
+            {
+              !(resposeData == null) && visible &&
+                <Choice story={resposeData.story} question="어떤 선택을 하시겠습니까?" choices={resposeData.choices} novel_id={novel_id} />
+            }
         </div>
     );
 }

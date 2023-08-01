@@ -35,16 +35,16 @@ export default function SelectBox({seq, question, end, novel_id}: SelectBoxProps
 
     };
     return (
-        <div className='flex'>
+        <div className='flex group'>
             <button
-            className="w-20 h-14 bg-choice text-25 font-light text-center text-black"
+            className="w-20 h-14 bg-choice text-25 font-light text-center text-black group-hover:bg-[#FFAE72]"
             style={{ boxShadow: "0px 4px 4px 0 rgba(0,0,0,0.25)"}}
             onClick={PostResponse}
             >
                 {seq}
             </button>
             <button 
-                className="w-full h-14 bg-beige-white text-17 font-light text-left text-black"
+                className="w-full h-14 bg-beige-white text-17 font-light text-left text-black group-hover:bg-[#FFD6B7]"
                 style={{ boxShadow: "0px 4px 4px 0 rgba(0,0,0,0.25)" }}
                 onClick={PostResponse}
             >
