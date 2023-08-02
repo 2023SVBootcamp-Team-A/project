@@ -17,6 +17,17 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "./MainPage.css";
+import img_1271 from ".././assets/1271.png";
+import img_1542 from ".././assets/1542.png";
+import img_1720 from ".././assets/1720.png";
+import img_2480 from ".././assets/2480.png";
+import img_2505 from ".././assets/2505.png";
+import img_2781 from ".././assets/2781.png";
+import img_5432 from ".././assets/5432.png";
+import img_7157 from ".././assets/7157.png";
+import img_7409 from ".././assets/7409.png";
+import img_7559 from ".././assets/7559.png";
+import img_8230 from ".././assets/8230.png";
 
 import { Provider, useSelector } from "react-redux";
 import store from "../redux/store";
@@ -36,43 +47,35 @@ export default function MainPage() {
 
   const [slides, setSlides] = useState([
     {
-      image:
-        "https://team-a-s3-bucket.s3.ap-northeast-2.amazonaws.com/images/2023-07-27-23-36-23_7157.png",
+      image: img_1271,
       caption: "Slide 1",
     },
     {
-      image:
-        "https://team-a-s3-bucket.s3.ap-northeast-2.amazonaws.com/images/2023-07-28-03-20-02_2480.png",
+      image: img_1542,
       caption: "Slide 1",
     },
     {
-      image:
-        "https://team-a-s3-bucket.s3.ap-northeast-2.amazonaws.com/images/2023-07-28-03-10-19_2505.png",
+      image: img_1720,
       caption: "Slide 1",
     },
     {
-      image:
-        "https://team-a-s3-bucket.s3.ap-northeast-2.amazonaws.com/images/2023-07-28-03-07-49_2781.png",
+      image: img_2480,
       caption: "Slide 1",
     },
     {
-      image:
-        "https://team-a-s3-bucket.s3.ap-northeast-2.amazonaws.com/images/2023-07-28-02-52-28_2399.png",
+      image: img_2505,
       caption: "Slide 1",
     },
     {
-      image:
-        "https://team-a-s3-bucket.s3.ap-northeast-2.amazonaws.com/images/2023-07-28-02-32-35_4155.png",
+      image: img_2781,
       caption: "Slide 1",
     },
     {
-      image:
-        "https://team-a-s3-bucket.s3.ap-northeast-2.amazonaws.com/images/2023-07-28-02-31-39_7409.png",
+      image: img_5432,
       caption: "Slide 1",
     },
     {
-      image:
-        "https://team-a-s3-bucket.s3.ap-northeast-2.amazonaws.com/images/2023-07-28-02-20-24_7899.png",
+      image: img_7157,
       caption: "Slide 1",
     },
   ]);

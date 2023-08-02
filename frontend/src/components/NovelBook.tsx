@@ -27,7 +27,7 @@ function NovelBook({ novel }: novelBookProps) {
           alt={novel.novel_name}
           className="photocard"
         />
-        <figcaption className="bookName">{novel.novel_name}</figcaption>
+        {/* <figcaption className="bookName">{novel.novel_name}</figcaption> */}
       </figure>
     </div>
   );

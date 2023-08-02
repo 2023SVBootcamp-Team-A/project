@@ -37,7 +37,21 @@
   }
 
   .carousel {
-    @apply w-[80%] px-6 py-4 bg-[#b5b5b5] opacity-70 rounded-2xl relative mb-10 mt-[7rem] ml-auto mr-auto;
+    @apply w-[80%] px-6 py-4 opacity-90 rounded-2xl relative mb-[4rem] mt-[7rem] ml-auto mr-auto;
+    background: radial-gradient(at center, #8b8884, #c9c5c0);
+    /* background: conic-gradient(red, yellow, green, cyan, blue, magenta, red); */
+    /* background: repeating-linear-gradient(45deg, red, yellow 20px, green 40px); */
+    /* background: repeating-radial-gradient(circle, red, yellow 10px, green 20px); */
+    /* background: repeating-conic-gradient(
+      red,
+      yellow 45deg,
+      green 90deg,
+      cyan 135deg,
+      blue 180deg,
+      magenta 225deg,
+      red 270deg,
+      red 315deg
+    ); */
   }
 
   .btnGroup {
@@ -45,7 +59,7 @@
   }
 
   .button {
-    @apply flex justify-center ml-16 mr-7 hover:cursor-pointer;
+    @apply flex justify-center ml-20 mr-10 hover:cursor-pointer;
   }
 
   .button p {
@@ -58,6 +72,10 @@
 
   .iconNext {
     @apply w-3 h-4 mt-1.5 ml-3;
+  }
+
+  .swiper-slide {
+    /* @apply shadow-lg; */
   }
 }
 
@@ -76,11 +94,13 @@
 }
 
 .mySwiper {
-  width: 70%;
-  height: 20rem;
+  width: 75%;
+  height: 25rem;
   margin-top: 2rem;
   margin-bottom: 2rem;
   position: relative;
+  opacity: 100%;
+  box-shadow: 10px 10px 5px rgb(0, 0.4, 0.4, 0.4);
 }
 
 .swiper-slide {
