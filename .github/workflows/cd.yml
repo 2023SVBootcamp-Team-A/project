@@ -116,11 +116,11 @@ jobs:
 
     # Docker Compose를 사용하여 프로덕션 환경을 위한 이미지를 빌드합니다.
     - name: Docker compose build
-      run: docker-compose -f docker-compose.prod.yml build
+      run: docker-compose -f docker-compose.prod.yml  -f docker-compose.logging.yml build
 
     # Docker Compose를 사용하여 프로덕션 환경에 이미지를 푸시합니다.
     - name: Docker compose push
-      run: docker-compose -f docker-compose.prod.yml push
+      run: docker-compose -f docker-compose.prod.yml  -f docker-compose.logging.yml push
 
     # SSH를 통해 EC2에 접속하여 배포 스크립트를 실행합니다.
     - name: Deploy to AWS EC2
@@ -133,6 +133,6 @@ jobs:
         script: |
           cd project
           git pull origin main
-          sudo docker-compose -f docker-compose.prod.yml down
-          sudo docker-compose -f docker-compose.prod.yml pull
-          sudo docker-compose -f docker-compose.prod.yml up -d
+          sudo docker-compose -f docker-compose.prod.yml  -f docker-compose.logging.yml down
+          sudo docker-compose -f docker-compose.prod.yml  -f docker-compose.logging.yml pull
+          sudo docker-compose -f docker-compose.prod.yml  -f docker-compose.logging.yml up -d
