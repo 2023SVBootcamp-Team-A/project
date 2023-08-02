@@ -11,13 +11,14 @@ export default function NavigationBar() {
   const dispatch = useDispatch();
   const [menuToggle, setMenuToggle] = useState(false);
   const authState = useSelector((state: any) => state);
+
   return (
     <>
       <div className="flex flex-col items-center z-10">
-        <div className="w-5/6 h-16 top-3.5 absolute">
+        <div className="w-5/6 h-12 top-3.5 absolute">
           <div className="flex content-center">
             <div className="flex-1 flex-col items-center">
-              <div className="hidden md:flex w-2/12 h-full py-4 flex-1 flex-col items-center absolute text-3xl font-medium text-center text-white rounded-bl-20 bg-beige">
+              <div className="hidden md:flex w-2/12 h-12 flex-1 flex-col items-center absolute text-xl font-medium text-center text-white rounded-bl-20 bg-beige">
                 <NavigationBarBtn link="/">
                   <div className="flex">
                     <svg
@@ -33,26 +34,26 @@ export default function NavigationBar() {
                         clipRule="evenodd"
                       />
                     </svg>
-                    <span className="text-2xl">MyW</span>
+                    <span className="text-xl font-['DoublePica']">MyW</span>
                   </div>
                 </NavigationBarBtn>
               </div>
             </div>
-            <div className="hidden md:flex w-4/6 h-16 bg-[#BCBAB8] flex-row items-center">
+            <div className="hidden md:flex w-4/6 h-12 bg-[#BCBAB8] flex-row items-center">
               {/* <div className="flex-1 flex flex-col items-center">
                 <NavigationBarBtn link="/">Home</NavigationBarBtn>
               </div> */}
               {authState.isLoggedIn ? (
-                <div className="hidden md:flex flex-1 flex-col items-center">
+                <div className="hidden md:flex flex-1 flex-col items-center px-1 h-full bg-[#BCBAB8] hover:bg-[#D0CFCD]">
                   <NavigationBarBtn link="/mypage">My page</NavigationBarBtn>
                 </div>
               ) : (
                 <></>
               )}
-              <div className="hidden md:flex flex-1 flex-col items-center">
-                <NavigationBarBtn link="/bookshelf">Bookshelf</NavigationBarBtn>
+              <div className="hidden md:flex flex-1 flex-col items-center px-1 h-full bg-[#BCBAB8] hover:bg-[#D0CFCD]">
+                <NavigationBarBtn link="/bookshelf">Bookshelf</NavigationBarBtn>{" "}
               </div>
-              <div className="hidden md:flex flex-1 flex-col items-center">
+              <div className="hidden md:flex flex-1 flex-col items-center px-1 h-full bg-[#BCBAB8] hover:bg-[#D0CFCD]">
                 {authState.isLoggedIn ? (
                   <NavigationBarBtn link="/logout">Log Out</NavigationBarBtn>
                 ) : (
@@ -60,8 +61,8 @@ export default function NavigationBar() {
                 )}
               </div>
             </div>
-            <div className="w-2/12 h-full flex-1 rounded-br-20 text-right text-2xl text-white bg-beige">
-              <span className="hidden md:flex flex-1 flex-col items-center">
+            <div className="w-2/12 h-12 flex-1 rounded-br-20 text-right text-base text-white bg-beige">
+              <span className="hidden md:flex flex-1 flex-col items-center font-['DoublePica']">
                 Make your
                 <br />
                 World
@@ -74,14 +75,14 @@ export default function NavigationBar() {
       <div className="w-screen h-3.5 absolute left-0 top-0">
         <div className="md:hidden  bg-beige">
           <div className="flex ">
-            <div className="flex w-screen items-center justify-center p-4 pl-20 text-white text-2xl">
+            <div className="flex w-screen items-center justify-center p-4 pl-20 text-white font-['DoublePica'] text-2xl">
               <NavigationBarBtn link="/">
                 <div className="flex">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     // svg에도 CSS 클래스를 적용할 수 있습니다.
-                    className="flex h-5 w-5 mr-1 mt white"
-                    viewBox="0 0 20 20"
+                    className="flex h-5 w-5 mr-1"
+                    viewBox="0 0 25 25"
                     fill="white"
                   >
                     <path
@@ -188,3 +189,5 @@ export default function NavigationBar() {
     </>
   );
 }
+
+//E9E7E4 9B8F8F 898181

@@ -27,6 +27,8 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     volumes:
+      - static_volume:/app/backend/staticfiles
+      - media_volume:/app/backend/mediafiles
       - ./backend:/app/backend
     ports:
       - "8000:8000"
@@ -40,31 +42,87 @@ services:
     ports:
       - "80:80"
     volumes:
+      - static_volume:/app/backend/staticfiles
+      - media_volume:/app/backend/mediafiles
       - build_folder:/var/www/frontend # 하단 volumes에서 정의한 build_folder를 nginx 컨테이너의 /var/www/frontend/로 한다.
       - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - ./nginx/log:/var/log/nginx
     depends_on:
       - frontend
 
   prometheus:
-    image: prom/prometheus
+    image: prom/prometheus:latest
+    restart: always
     ports:
-      - 9090:9090
+      - "9090:9090"
+    links:
+      - cadvisor
+      - alertmanager
     volumes:
-      - ./backend/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./monitoring/prometheus/:/etc/prometheus/
+    user: root
+    depends_on:
+      - cadvisor
     command:
-      - --config.file=/etc/prometheus/prometheus.yml
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+      - "--web.console.templates=/usr/share/prometheus/consoles"
 
   grafana:
-    image: grafana/grafana
+    build:
+      context: ./monitoring/grafana
+    container_name: grafana
     ports:
-      - 3000:3000
-    environment:
-      - GF_SECURITY_ADMIN_USER=${GF_USER}
-      - GF_SECURITY_ADMIN_PASSWORD=${GF_PASSWORD}
+      - "3001:3000"
+    depends_on:
+      - prometheus
+
+  node-exporter:
+    container_name: node-exporter
+    image: prom/node-exporter
     volumes:
-      - grafana-storage:/var/lib/grafana
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - "--path.procfs=/host/proc"
+      - "--path.sysfs=/host/sys"
+      - --collector.filesystem.ignored-mount-points
+      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+    ports:
+      - "9100:9100"
+    restart: always
+
+  alertmanager:
+    container_name: alertmanager
+    image: prom/alertmanager
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./monitoring/alertmanager/:/etc/alertmanager/
+    restart: always
+    command:
+      - "--config.file=/etc/alertmanager/config.yml"
+      - "--storage.path=/alertmanager"
+
+  cadvisor:
+    container_name: cadvisor
+    image: gcr.io/cadvisor/cadvisor:v0.46.0
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/kmsg:/dev/kmsg:ro
+    ports:
+      - "8080:8080"
+    privileged: true
+    restart: always
 
 volumes:
+  static_volume:
+  media_volume:
   grafana-storage:
   prometheus-storage:
   build_folder: null # frontend 컨테이너가 실행되기 전에는 빈 값이나, frontend 컨테이너가 실행된 이후에는 build_folder의 내용이 빌드된 리액트 정적 파일들이 있게 된다.

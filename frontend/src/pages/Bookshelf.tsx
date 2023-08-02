@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "./Bookshelf.css";
 import NovelBook from "../components/NovelBook";
+import { useNavigate } from "react-router";
 
 type MyNovels = {
   novel: Novel[];
@@ -24,10 +25,10 @@ type Novel = {
 };
 
 export default function Bookshelf() {
+  const navigate = useNavigate();
   const [novelList, setNovelList] = useState<Novel[]>([]);
   const [novelList1, setNovelList1] = useState<Novel[]>([]);
   const [novelList2, setNovelList2] = useState<Novel[]>([]);
-  const [novelList3, setNovelList3] = useState<Novel[]>([]);
   const [metaData, setMetaData] = useState<Meta>();
 
   // GET 요청 보내기
@@ -35,24 +36,21 @@ export default function Bookshelf() {
     const queryString = `?page=${page}`;
 
     const response = await axios
-      .get(`http://localhost:8000/api/v1/novels${queryString}`)
+      .get(`http://www.techeer-team-a.store:8000/api/v1/novels${queryString}`)
+      // .get(`http://localhost:8000/api/v1/novels${queryString}`)
       .then(function (response) {
         // 성공적으로 응답 받았을 때 처리하는 로직
-        // console.log(response.data.meta);
-
         const { novel } = response.data;
-        // console.log(novel);
+        console.log(novel);
 
         // 내용이 없으면 null 또는 undefined로 들어감!
         const novelList1 = novel.slice(0, 4);
         const novelList2 = novel.slice(4, 8);
-        const novelList3 = novel.slice(8, 12);
 
         setNovelList(novel); // You can still set the original array if needed
         // Set the individual lists in separate states if required
         setNovelList1(novelList1);
         setNovelList2(novelList2);
-        setNovelList3(novelList3);
 
         setMetaData(response.data.meta);
       })
@@ -67,11 +65,7 @@ export default function Bookshelf() {
   }, []);
 
   // Add this useEffect to log the updated novelList whenever it changes
-  useEffect(() => {
-    // console.log(novelList1);
-    // console.log(novelList2);
-    // console.log(novelList3);
-  }, [novelList1, novelList2, novelList3]);
+  // useEffect(() => {}, [novelList1, novelList2]);
 
   useEffect(() => {
     // console.log(metaData);
@@ -136,15 +130,9 @@ export default function Bookshelf() {
           ))}
         </div>
         <div className="floor-thickness"></div>
-        <div className="books-container">
-          {novelList3.map((novel) => (
-            <NovelBook key={novel.id} novel={novel} />
-          ))}
-        </div>
-        <div className="floor-thickness"></div>
       </div>
       <nav aria-label="Page navigation example">
-        <ul className="inline-flex -space-x-px text-base h-10 mt-12">
+        <ul className="inline-flex -space-x-px text-base h-10 mt-20">
           {/* <li>
             <a href="#" className="navLeftArrow">
               &lt;

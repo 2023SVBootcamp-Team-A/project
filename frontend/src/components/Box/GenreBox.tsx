@@ -37,11 +37,10 @@ const GenreBox: React.FC<GenreBoxProps> = ({
   };
 
   const handleAddGenre = () => {
-    // 빈거 아니면
     if (newGenre.trim() !== "") {
       onGenreSubmit(newGenre.trim());
       setGenres([...genres, newGenre.trim()]);
-      console.log(genres);
+      setNewGenre("");
     }
   };
 
@@ -96,6 +95,8 @@ const GenreBox: React.FC<GenreBoxProps> = ({
     <div
       style={{
         display: "flex",
+        height: "530px",
+        background: "white",
         flexDirection: "column",
         boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.4)",
       }}
@@ -133,6 +134,7 @@ const GenreBox: React.FC<GenreBoxProps> = ({
               marginLeft: "10px",
               marginRight: "2px",
               padding: "10px",
+              fontSize: "15px",
             }}
           />
           <div>
@@ -155,6 +157,7 @@ const GenreBox: React.FC<GenreBoxProps> = ({
         style={{
           width: "auto",
           height: "auto",
+          margin: "17px",
           backgroundColor: "#FFFFFF",
           display: "flex",
           flexWrap: "wrap",

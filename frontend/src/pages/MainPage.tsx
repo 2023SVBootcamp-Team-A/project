@@ -8,6 +8,8 @@ import icon_next from ".././assets/icon_next.png";
 import { useNavigate } from "react-router";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
+import * as Sentry from "@sentry/react";
 // import required modules
 import { Navigation, Pagination } from "swiper/modules";
 // Import Swiper styles
@@ -15,6 +17,17 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "./MainPage.css";
+import img_1271 from ".././assets/1271.png";
+import img_1542 from ".././assets/1542.png";
+import img_1720 from ".././assets/1720.png";
+import img_2480 from ".././assets/2480.png";
+import img_2505 from ".././assets/2505.png";
+import img_2781 from ".././assets/2781.png";
+import img_5432 from ".././assets/5432.png";
+import img_7157 from ".././assets/7157.png";
+import img_7409 from ".././assets/7409.png";
+import img_7559 from ".././assets/7559.png";
+import img_8230 from ".././assets/8230.png";
 
 import { Provider, useSelector } from "react-redux";
 import store from "../redux/store";
@@ -34,43 +47,35 @@ export default function MainPage() {
 
   const [slides, setSlides] = useState([
     {
-      image:
-        "https://raw.github.com/peterwestendorp/shelves/master/photos/1.jpg",
+      image: img_1271,
       caption: "Slide 1",
     },
     {
-      image:
-        "https://raw.github.com/peterwestendorp/shelves/master/photos/2.jpg",
+      image: img_1542,
       caption: "Slide 1",
     },
     {
-      image:
-        "https://raw.github.com/peterwestendorp/shelves/master/photos/3.jpg",
+      image: img_1720,
       caption: "Slide 1",
     },
     {
-      image:
-        "https://raw.github.com/peterwestendorp/shelves/master/photos/4.jpg",
+      image: img_2480,
       caption: "Slide 1",
     },
     {
-      image:
-        "https://raw.github.com/peterwestendorp/shelves/master/photos/5.jpg",
+      image: img_2505,
       caption: "Slide 1",
     },
     {
-      image:
-        "https://raw.github.com/peterwestendorp/shelves/master/photos/6.jpg",
+      image: img_2781,
       caption: "Slide 1",
     },
     {
-      image:
-        "https://raw.github.com/peterwestendorp/shelves/master/photos/7.jpg",
+      image: img_5432,
       caption: "Slide 1",
     },
     {
-      image:
-        "https://raw.github.com/peterwestendorp/shelves/master/photos/8.jpg",
+      image: img_7157,
       caption: "Slide 1",
     },
   ]);
@@ -94,7 +99,9 @@ export default function MainPage() {
       {/* 캐루셀 */}
       {/* <!-- Slider main container --> */}
       <div className="carousel">
-        <div className="swiper-text">Make your World</div>
+        <div className="swiper-text text-4xl font-['DoublePica']">
+          Make your World
+        </div>
         {/* <!-- Additional required wrapper --> */}
         <Swiper
           slidesPerView={3}
@@ -104,9 +111,9 @@ export default function MainPage() {
             // type: "fraction",
           }}
           loop={true}
-          autoplay={false}
-          navigation={true}
-          modules={[Pagination, Navigation]}
+          autoplay={{ delay: 3000 }} // 자동재생! (3초 지연 시간 설정)
+          navigation={false}
+          modules={[Autoplay, Pagination, Navigation]}
           className="mySwiper"
         >
           {/* <!-- Slides --> */}
@@ -120,13 +127,20 @@ export default function MainPage() {
       </div>
       {/* 시작 버튼 */}
       <button
-        className="startButton"
+        type="button"
+        className="px-12 py-3 mb-10 ml-4 rounded-full text-white text-2xl bg-[#9B8F8F] hover:bg-[#E9E7E4] hover:text-[#898181] rounded-2xl text-center shadow-lg shadow-black-800/80 dark:shadow-lg dark:shadow-black-800/80"
         onClick={() => {
-          navigate("/settingfirst");
+          if (authState.isLoggedIn) {
+            navigate("/settingfirst");
+          } else {
+            alert("로그인이 필요합니다.");
+            navigate("/login");
+          }
         }}
       >
-        <p>Click to Start</p>
+        Click to Start
       </button>
+
       {/* 로그인 회원가입 마이페이지 */}
       <div className="btnGroup">
         {authState.isLoggedIn ? (
