@@ -4,28 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: "IBMPlexSansKR";
-  src: url("./assets/fonts/IBMPlexSansKR-Medium.ttf") format("ttf");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "IBMPlexSansKR";
-  src: url("./assets/fonts/IBMPlexSansKR-Bold.ttf") format("ttf");
-}
-
-@font-face {
-  font-family: "IBMPlexSansKR";
-  src: url("./assets/fonts/IBMPlexSansKR-Light.ttf") format("ttf");
-}
-
-@font-face {
-  font-family: 'IBMPlexSansKR';
-  src: url('./assets/fonts/IBMPlexSansKR-SemiBold.ttf') format('ttf');
-}
-
 .flip-animation {
   animation: flipAnimation 4s linear infinite;
 }
@@ -41,4 +19,23 @@
   100% {
     transform: perspective(800px) rotateY(360deg);
   }
+}
+
+@font-face {
+  font-family: "IBMPlexSansKR";
+  src: url("./assets/fonts/IBMPlexSansKR-Regular.woff") format("woff");
+}
+
+@font-face {
+  font-family: "DoublePica";
+  src: url("./assets/fonts/IMFellDoublePica-Regular.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Inria";
+  src: url("./assets/fonts/InriaSerif-Regular.woff") format("woff");
+}
+
+.body {
+  font-family: "IBMPlexSansKR", "DoublePica", "Inria";
 }

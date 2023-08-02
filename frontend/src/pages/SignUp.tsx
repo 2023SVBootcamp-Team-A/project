@@ -29,13 +29,12 @@ function SignUp() {
 
     try {
       const response = await axios.post(
-        "http://www.techeer-team-a.store:8000/api/v1/user/sign/",
+        "http://localhost:8000/api/v1/user/sign/",
         formData
       );
 
       if (response.status === 201) {
         const token = response.data.token;
-        localStorage.setItem("token", token);
         console.log("회원가입 성공!");
         navigate("/login");
       } else {
