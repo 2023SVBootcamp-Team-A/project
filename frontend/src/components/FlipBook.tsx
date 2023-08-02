@@ -1,97 +1,166 @@
-import React, {useRef} from "react";
+import React, {useRef, useEffect, useState} from "react";
 import HTMLFlipBook from "react-pageflip";
-import "./FlipBook.scss"
+import axios from "axios";
+import classNames from "classnames";
 
+interface FlipBookProps {
+  novel_id: number | undefined;
+}
 
-const Page: React.FC<{ children: React.ReactNode; number: number; chapter: number; }> = React.forwardRef(
+const Page: React.FC<{ children: React.ReactNode; number: number; left:boolean }> = React.forwardRef(
   (props, ref: React.Ref<HTMLInputElement>) => {
+  
     return (
-      <div className="page" ref={ref}>
-            <div className="page-content">
-                <h2 className="page-header">Chapter {props.chapter}</h2>
-                <div className="page-text lg:text-21 text-15">{props.children}</div>
-                <div className="page-footer">{props.number}</div>
+      <div className="w-full h-full p-1 color-[#785e3a] border-spacing-1 overflow-y-scroll" ref={ref}>
+            <div 
+              className="w-full h-full flex flex-col justify-between">
+                <div className="h-11/12 flex-grow-1 text-size-[18px] text-justify mt-6 p-10 lg:text-18 text-15">{props.children}</div>
+                {!props.left && <h2 className="h-auto font-[20px] text-right mr-5 mb-2 ml-5 text-black">{props.number}</h2>}
+                {props.left && <h2 className="h-auto font-[20px] text-left mr-5 mb-2 ml-5 text-black">{props.number}</h2>}
             </div>
       </div>
     );
   }
 );
 
-const FlipBook: React.FC = () => {
-  const book = useRef();
-  return (
+interface novelStory {
+  "id": number;
+  "page": number;
+  "image": string;
+  "content": string;
+}
+
+interface Response {
+  "novel_name": string;
+  "cover": string;
+  "novelStory": novelStory[];
+}
+
+function PageList(novelStory: novelStory[]) {
+  const pageList: any = [];
+  novelStory.map(
+    (data, index) => {
+      for (let i = 0; i < 2; i++){
+        pageList.push(
+          (i == 1) ? (
+            <div
+              className="overflow-y-scroll h-full p-3 text-left bg-[#fdfaf7] text-black"
+              style={{
+                boxShadow:
+                  "inset -7px 0 30px -7px rgba(0, 0, 0, 0.4), 10px 10px 4px rgba(0, 0, 0, 0.20)",
+              }}
+            >
+              <Page key={data.id} number={2*index+2} left={false}>
+                <div className="h-full overflow-scroll">
+                {(novelStory != null) && data.content.split("\n").map((line, index) => (
+                    <span key={index}>{line}<br/></span>
+                  ))}
+                </div>
+              </Page>
+            </div> ) : (
+            <div
+              className="overflow-y-scroll h-full p-3 text-left bg-[#fdfaf7] text-black"
+              style={{
+                boxShadow:
+                  "inset 7px 0 36px -7px rgba(0, 0, 0, 0.4), 10px 10px 4px rgba(0, 0, 0, 0.20)",
+                borderLeft:
+                  "0",
+              }}
+            >
+              <Page key={data.id} number={2*index+1} left={true}>
+                <div className="flex flex-col items-center">
+                  <span className="mb-8 text-center text-5xl text-[#744624]">Chapter {index+1}</span>
+                  <img src={data.image} className="w-4/5 h-3/4 flex flex-col items-center object-cover" />
+                </div>
+              </Page>
+            </div>
+            )
+          ) 
+      }
+    }
+  )
+  console.log(pageList)
+  return pageList;
+}
+
+const FlipBook: React.FC<FlipBookProps> = (props  => {
+  const [novelStory, setNovelStory] = useState<novelStory[]>();
+  const [pageList, setpageList] = useState<[]>();
+  const url = 'http://localhost:8000/api/v1/mynovels/'+ props.novel_id;
+  const GetData = async () => {
+      try {
+        const response = await axios.get<Response>(url, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                }
+            }
+        );
+        setNovelStory(response.data.novelStory);
+        setpageList(PageList(response.data.novelStory))
+        console.log(pageList)
+      } catch(err) {
+        console.log(err);
+      }
+  }
+  
+  useEffect(() => {
+    GetData();
+
+  }, []);
+  
+  const book = useRef(null);
+  return ( 
+    novelStory && pageList &&
     <div className="w-screen h-screen ">
-      <div className="flex flex-col justify-center items-center">
-        <div className="xl:w-9/12 md:w-5/6 w-7/12 h-3/6 absolute md:top-28 top-20">
-        <div className="flex flex-col justify-center items-center">
-          <HTMLFlipBook
-            width={580}
-            height={680}
-            size="stretch"
-            minWidth={400}
-            maxWidth={650}
-            minHeight={600}
-            maxHeight={680}
-            drawShadow={true}
-            flippingTime={1000}
-            className="book-theme"
-            startPage={1}
-            usePortrait={true}
-            startZIndex={30}
-            autoSize={true}
-            maxShadowOpacity={0.5}
-            showCover={true}
-            mobileScrollSupport={true}
-            clickEventForward={true}
-            useMouseEvents={true}
-            swipeDistance={3}
-            showPageCorners={true}
-            disableFlipByClick={false}
-            style={{ }}
-            ref={book}
-          >
-            <div className="page page-cover page-cover-top" data-density="hard">
-                <div className="page-content">
-                    <h2>BOOK TITLE</h2>
-                </div>
-            </div>
-            <Page number={1} chapter={1}>
-              <div className="flex flex-col items-center">
-                <span className="m-8  text-center text-5xl text-[#744624]">우주 탐사</span>
-                <img src="/images/dall.png" className="flex flex-col items-center object-cover" style={{width: '344px', height: '300px'}} />
+      <div className="h-11/12 flex flex-col justify-center items-center">
+        <div className="xl:w-9/12 md:w-10/12 sm:w-9/12 w-11/12 h-4/6 absolute md:top-28 top-20">
+          <div className="flex flex-col animate-fade-up animate-once animate-duration-1000 animate-ease-linear">
+            <HTMLFlipBook
+              width={580}
+              height={680}
+              size="stretch"
+              minWidth={400}
+              maxWidth={650}
+              minHeight={600}
+              maxHeight={680}
+              drawShadow={true}
+              flippingTime={1000}
+              className="book-theme"
+              startPage={1}
+              usePortrait={true}
+              startZIndex={30}
+              autoSize={true}
+              maxShadowOpacity={0.5}
+              showCover={true}
+              mobileScrollSupport={true}
+              clickEventForward={true}
+              useMouseEvents={true}
+              swipeDistance={3}
+              showPageCorners={true}
+              disableFlipByClick={false}
+              style={{ }}
+              ref={book}
+            >
+              <div className="bg-beige">
+                  <div className="w-full h-full flex flex-col justify-center border-solid">
+                      <h2 className="text-center text-2xl pt-1/2">소설</h2>
+                  </div>
               </div>
-            </Page>
-            <Page number={2} chapter={1}>
-              이블린과 해럴드는 눈길을 브랜든에게 돌렸다. "어떤 방법이 있을까요?" 해럴드가 물었다.<br />
-              "우리 주위에는 탐사 임무를 위해 보낸 우주선이나 시설이 있을 것이다. 그런 곳에서 추가 연료를 구할 수 있을지도 몰라."<br />
-              "하지만 우리는 화성의 표면에서 멀리 떨어져 있잖아요." 이블린이 말했다. "우리가 가까운 시설에 도달할 시간은 없을 텐데요."<br />
-              "그렇다면 우리는 이 우주선에서 대기하며 구조 대기를 요청해야 합니다." 해럴드가 제안했다. "우리가 발신할 수 있는 신호를 어떻게든 보내야 합니다."<br />
-              이블린과 해럴드는 주저하고 있었지만, 브랜든은 단호하게 말했다. "너희들은 돌아갈 수 있는 방법을 찾으려고 하지만, 우리가 죽는 것보다는 시도해 보는 게 낫지 않을까? 우리는 우주에 도전한 사람들이야. 실패를 두려워하지 말자."<br />
-            </Page>
-            <Page number={3} chapter={1}>
-              <div className="flex flex-col items-center">
-                <span className="m-8  text-center text-5xl text-[#744624]">우주 탐사</span>
-                <img src="/images/dall.png" className="flex flex-col items-center object-cover" style={{width: '344px', height: '300px'}} />
+              {
+                pageList.map((data, index) => <div key={index}>{data}</div>)
+              }
+              <div className="page page-cover page-cover-bottom" data-density="hard">
+                  <div className="page-content">
+                      <h2>THE END</h2>
+                  </div>
               </div>
-            </Page>
-            <Page number={4} chapter={1}>
-              이블린과 해럴드는 눈길을 브랜든에게 돌렸다. "어떤 방법이 있을까요?" 해럴드가 물었다.<br />
-              "우리 주위에는 탐사 임무를 위해 보낸 우주선이나 시설이 있을 것이다. 그런 곳에서 추가 연료를 구할 수 있을지도 몰라."<br />
-              "하지만 우리는 화성의 표면에서 멀리 떨어져 있잖아요." 이블린이 말했다. "우리가 가까운 시설에 도달할 시간은 없을 텐데요."<br />
-              "그렇다면 우리는 이 우주선에서 대기하며 구조 대기를 요청해야 합니다." 해럴드가 제안했다. "우리가 발신할 수 있는 신호를 어떻게든 보내야 합니다."<br />
-              이블린과 해럴드는 주저하고 있었지만, 브랜든은 단호하게 말했다. "너희들은 돌아갈 수 있는 방법을 찾으려고 하지만, 우리가 죽는 것보다는 시도해 보는 게 낫지 않을까? 우리는 우주에 도전한 사람들이야. 실패를 두려워하지 말자."<br />
-            </Page>
-            <div className="page page-cover page-cover-bottom" data-density="hard">
-                <div className="page-content">
-                    <h2>THE END</h2>
-                </div>
-            </div>
-          </HTMLFlipBook>
+            </HTMLFlipBook>
+          </div>
         </div>
-        </div>
-    </div>
+      </div>
     </div>
   );
-};
+});
 
 export default FlipBook;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import addLogo from "/images/add.png";
 
 interface BackgroundBoxProps {
@@ -7,15 +7,27 @@ interface BackgroundBoxProps {
   onBackgroundSubmit: (genre: string) => void;
 }
 
-const BackgroundBox: React.FC<BackgroundBoxProps> = ({ selectedBackgrounds, onBackgroundClick, onBackgroundSubmit }) => {
- 
-  const predefinedBackgrounds = ['한국', '미국', '영국','독일', '로마', '일본','회사','고등학교','대학교','길거리','집','숲 속','내 마음속']; 
-  
-  const [newBackground, setNewBackground] = useState('');
+const BackgroundBox: React.FC<BackgroundBoxProps> = ({
+  selectedBackgrounds,
+  onBackgroundClick,
+  onBackgroundSubmit,
+}) => {
+  const [newBackground, setNewBackground] = useState("");
   const [enterPressed, setEnterPressed] = useState(false);
-  const [predefinedBackgroundsState, setPredefinedBackgroundsState] = useState<string[]>(predefinedBackgrounds);
-  
-
+  const [backgrounds, setBackgrounds] = useState<string[]>([
+    "한국",
+    "미국",
+    "영국",
+    "독일",
+    "로마",
+    "일본",
+    "회사",
+    "고등학교",
+    "대학교",
+    "길거리",
+    "집",
+    "숲 속",
+  ]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!enterPressed) {
@@ -24,36 +36,19 @@ const BackgroundBox: React.FC<BackgroundBoxProps> = ({ selectedBackgrounds, onBa
   };
 
   const handleAddBackground = () => {
-    if (newBackground.trim() !== '') {
+    if (newBackground.trim() !== "") {
       onBackgroundSubmit(newBackground.trim());
-      setNewBackground('');
+      setBackgrounds([...backgrounds, newBackground.trim()]);
+      setNewBackground("");
     }
   };
 
   const handleBackgroundClick = (background: string) => {
-    if (selectedBackgrounds.includes(background)) {
-      onBackgroundClick(background);
-    } else {
-      if (!predefinedBackgrounds.includes(background)) {
-        onBackgroundClick(background);
-      }
-    }
-  };
-
-  const handlePredefinedBackgroundClick = (background: string) => {
-    setPredefinedBackgroundsState((prevState) => {
-      if (selectedBackgrounds.includes(background)) {
-        return prevState;
-      } else {
-        return prevState.includes(background)
-          ? prevState.filter((g) => g !== background) 
-          : [...prevState, background]; 
-      }
-    });
+    onBackgroundClick(background);
   };
 
   const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       event.preventDefault();
       if (!enterPressed) {
         setEnterPressed(true);
@@ -65,64 +60,68 @@ const BackgroundBox: React.FC<BackgroundBoxProps> = ({ selectedBackgrounds, onBa
   };
 
   const renderBackgroundButtons = () => {
-    return predefinedBackgrounds.map((background, index) => (
+    return backgrounds.map((background, index) => (
       <div
         key={index}
         style={{
-          width: '78.6px',
-          height: '40.1px',
-          backgroundColor: predefinedBackgroundsState.includes(background) ? '#E3DDD7' : '#9B8F8F',
-          borderRadius: '20px',
-          margin: '5px',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          cursor: 'pointer',
+          width: "78.6px",
+          height: "40.1px",
+          backgroundColor: selectedBackgrounds.includes(background)
+            ? "#9B8F8F"
+            : "#E3DDD7",
+          borderRadius: "20px",
+          margin: "5px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          cursor: "pointer",
         }}
-        onClick={() => handlePredefinedBackgroundClick(background)}
+        onClick={() => handleBackgroundClick(background)}
       >
-        <p style={{ color: predefinedBackgroundsState.includes(background) ? '#000000' : '#ffffff' }}>{background}</p>
+        <p
+          style={{
+            color: selectedBackgrounds.includes(background)
+              ? "#ffffff"
+              : "#000000",
+          }}
+        >
+          {background}
+        </p>
       </div>
     ));
-  };
-
-  const renderSelectedBackgrounds = () => {       
-    if (selectedBackgrounds.length > 0) {
-      return selectedBackgrounds.map((background, index) => (
-        <div
-          key={index}
-          style={{
-            width: '78.6px',
-            height: '40.1px',
-            backgroundColor: selectedBackgrounds.includes(background) ? '#9B8F8F' : '#E3DDD7',
-            borderRadius: '20px',
-            margin: '5px',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            cursor: 'pointer',
-          }}
-          onClick={() => handleBackgroundClick(background)}
-        >
-          <p style={{ color: selectedBackgrounds.includes(background) ? '#FFFFF' : '#000000' }}>{background}</p>
-        </div>
-      ));
-    } else {
-      return <p></p>;
-    }
   };
 
   return (
     <div
       style={{
-        display: 'flex',
-        flexDirection: 'column',
-        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.4)',
+        display: "flex",
+        height: "530px",
+        background: "white",
+        flexDirection: "column",
+        boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.4)",
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', backgroundColor: '#C8C0B8', padding: '0 18px', marginBottom:'2px',boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.4)' }}>
-        <p style={{ color: '#FFFFFF', fontSize: '20px', marginLeft: '-10px'}}>배경</p>
-        <div style={{ display: 'flex', alignItems: 'center', marginLeft: 'auto', flex: '1' }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          backgroundColor: "#C8C0B8",
+          padding: "0 18px",
+          marginBottom: "2px",
+          boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.4)",
+        }}
+      >
+        <p style={{ color: "#FFFFFF", fontSize: "20px", marginLeft: "-10px" }}>
+          배경
+        </p>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            marginLeft: "auto",
+            flex: "1",
+          }}
+        >
           <input
             type="text"
             value={newBackground}
@@ -130,30 +129,45 @@ const BackgroundBox: React.FC<BackgroundBoxProps> = ({ selectedBackgrounds, onBa
             onKeyDown={handleInputKeyDown}
             placeholder="원하는 배경을 추가하세요"
             style={{
-              width: '100%',
-              height: '44px',
-              marginLeft: '10px',
-              marginRight: '2px',
-              padding: '10px',
-
+              width: "100%",
+              height: "44px",
+              marginLeft: "10px",
+              marginRight: "2px",
+              padding: "10px",
+              fontSize: "15px",
             }}
           />
           <div>
             <button
-            style={{display: 'flex', alignItems: 'center', cursor: 'pointer', fontSize: '10px', marginRight:'-12px' }}
-            onClick={handleAddBackground}
-          >
-          <img src={addLogo} alt="추가 버튼" className="w-8 h-7" />
-          </button>
+              style={{
+                display: "flex",
+                alignItems: "center",
+                cursor: "pointer",
+                fontSize: "10px",
+                marginRight: "-12px",
+              }}
+              onClick={handleAddBackground}
+            >
+              <img src={addLogo} alt="추가 버튼" className="w-8 h-7" />
+            </button>
           </div>
         </div>
       </div>
-      <div style={{ width: 'auto', height: 'auto', backgroundColor: '#FFFFFF', display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+      <div
+        style={{
+          width: "auto",
+          height: "auto",
+          backgroundColor: "#ffffff",
+          margin: "17px",
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+        }}
+      >
         {renderBackgroundButtons()}
-        {renderSelectedBackgrounds()}         
       </div>
     </div>
   );
 };
 
-export default BackgroundBox;  
+export default BackgroundBox;

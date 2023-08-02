@@ -1,46 +1,47 @@
-import React, {useState, useEffect} from 'react';
-import Choice from '../components/Choice';
-import data from '../data/choice-data.json';
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router";
+import Choice from "../components/Choice";
+import data from "../data/choice-data.json";
 import axios from "axios";
 
 interface StoryResponse {
-    "response_content": string,
-    "response_message": string,
-    choices: string[]
+    "story": string,
+    "choices": string[],
+    "image": string
 }
 
 export default function ChociePage() {
-    
     const [visible, setVisible] = useState(false);
     const [resposeData, setResponseData] = useState<StoryResponse>();
-
+    const location = useLocation();
+    const novel_id = location.state.novel;
+    const url = 'http://localhost:8000/api/v1/novels/'+ novel_id
     const GetData = async () => {
         try {
-            const response = await axios.get<StoryResponse>('http://localhost:8000/api/v1/novels/1', {
+            const response = await axios.get<StoryResponse>(url, {
                     headers: {
                         "Content-Type": "application/json",
                         "Accept": "application/json",
-                        "Authorization": `` // 추후 관리하는 Token 삽입 할 것
+                        "id": localStorage.getItem('id')
                     }
                 }
             );
             setResponseData(response.data);
         } catch(err) {
-          console.log(err);
+          (err);
         }
-    }
-    
-      useEffect(() => {
-        GetData(); 
-      }, []);
+    };
 
+  useEffect(() => {
+    GetData();
+  }, []);
 
     return(
         <div className="w-screen h-screen min-h-screen relative overflow-scroll">
             <div
                 className="w-screen h-screen min-h-screen relative overflow-scroll bg-scroll bg-no-repeat bg-top bg-cover hover:bg-fixed" 
                 style={{
-                    backgroundImage: `url(${data.url})`,
+                    backgroundImage: `url(${!(resposeData == null) && resposeData.image})`,
                     backgroundSize: "cover",
                 }}
             >
@@ -59,7 +60,10 @@ export default function ChociePage() {
                     </>
                 )}
             </div>
-            {!(resposeData == null) && visible && <Choice story={resposeData.response_content} question={data.question} choices={data.choices} />}
+            {
+              !(resposeData == null) && visible &&
+                <Choice story={resposeData.story} question="어떤 선택을 하시겠습니까?" choices={resposeData.choices} novel_id={novel_id} />
+            }
         </div>
     );
 }
