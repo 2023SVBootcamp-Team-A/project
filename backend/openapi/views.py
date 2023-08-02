@@ -333,7 +333,6 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
         'After the user makes a choice, do not reveal their selection again.', #사용자가 선택한 후에는 선택한 항목을 다시 표시하지 않습니다
         "When writing a novel, please include a description of the character's conversation or situation",
         'Write the title of the novel at the start of the novel',#소설의 제목은 소설이 시작 될때 작성해줘
-        'When you give a title to a novel, add "Title:"', #소설의 제목을 줄때 "Title: " 을 붙여서 줘
         "Let's capitalize on the choice in English", #선택지를 선택하는것은 영어 대문자로 하자
         "Please don't let the answers in gpt overlap", #gpt의 답변이 중복되지 않게 해줘
 
@@ -349,6 +348,14 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
     characters = novel_instance.novel_character.all()
     backgrounds = novel_instance.novel_background.all()
 
+    for background in backgrounds:
+        background_data = {
+            "role": "assistant",
+            "content": f"Genre: {background.genre}, Time Period: {background.time_period}, Time Projection: {background.time_projection}, Summary: {background.summary}",
+        }
+        messages.append(background_data)
+    
+
     # Append character data to messages
     for character in characters:
         character_data = {
@@ -358,37 +365,12 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
         messages.append(character_data)
 
     # Append background data to messages
-    for background in backgrounds:
-        background_data = {
-            "role": "assistant",
-            "content": f"Genre: {background.genre}, Time Period: {background.time_period}, Time Projection: {background.time_projection}, Summary: {background.summary}",
-        }
-        messages.append(background_data) 
         
     for log in chat_logs:
         messages.append({"role": log.role, "content": log.chat_log})
 
     if len(messages) == 12:
         messages.append({'role': 'user', 'content': message})
-
-    novel_instance = Novel.objects.get(id=novel_id)
-    characters = novel_instance.novel_character.all()
-    backgrounds = novel_instance.novel_background.all()
-
-    for character in characters:
-        character_data = {
-            "role": "assistant",
-            "content": f"Character Name: {character.name}, Personality: {character.personality}",
-        }
-        messages.append(character_data)
-
-    # Append background data to messages
-    for background in backgrounds:
-        background_data = {
-            "role": "assistant",
-            "content": f"Genre: {background.genre}, Time Period: {background.time_period}, Time Projection: {background.time_projection}, Summary: {background.summary}",
-        }
-        messages.append(background_data)
 
     for log in chat_logs:
         messages.append({"role": log.role, "content": log.chat_log})
@@ -457,6 +439,7 @@ class init_setting_APIView(APIView):
     @method_decorator(login_required_api)
     def post(self, request):
         # 요청할 때 입력한 정보들로 serializer를 생성한다
+        print(request.data)
         data = request.data.copy()
         user_id = int(request.headers.get('id'))
         data["user"] = MyUser.objects.get(id=user_id).id
