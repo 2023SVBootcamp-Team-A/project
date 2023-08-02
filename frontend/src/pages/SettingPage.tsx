@@ -64,7 +64,7 @@ const SettingPage: React.FC = () => {
       };
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:8000/api/v1/novels/",
+        "http://www.techeer-team-a.store:8000/api/v1/novels/",
         requestData,
         {
           headers: {

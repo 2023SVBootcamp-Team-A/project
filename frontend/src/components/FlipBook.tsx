@@ -86,7 +86,7 @@ function PageList(novelStory: novelStory[]) {
 const FlipBook: React.FC<FlipBookProps> = (props  => {
   const [novelStory, setNovelStory] = useState<novelStory[]>();
   const [pageList, setpageList] = useState<[]>();
-  const url = 'http://localhost:8000/api/v1/mynovels/'+ props.novel_id;
+  const url = 'http://www.techeer-team-a.store:8000/api/v1/mynovels/'+ props.novel_id;
   const GetData = async () => {
       try {
         const response = await axios.get<Response>(url, {
