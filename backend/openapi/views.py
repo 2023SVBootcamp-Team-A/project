@@ -320,19 +320,18 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
 
     system_instructions = [
 
-        'You are a helpful assistant.',
-        'Please write a novel in Korean',
+        'Please write the answer in Korean',
         'You write a novel, and you give the user a choice in the middle of the novel',#소설을 써내려가다 소설 중간에 사용자에게 선택지를 줘
         'Give me a choice and stop the novel you were you were writing',#선택지를 주면 너가쓰던 소설을 멈춰
         'When a user chooses a choice, he or she writes a novel based on the choice', #사용자가 선택지를 선택하면 그 선택지를 바탕으로 소설을 이어써줘
         'Use English capital letters instead of numbers for the options.', #옵션에는 숫자 대신 영문 대문자를 사용합니다. -
-        'Please add a space before the English capitalization of each option.', #각 옵션의 영문 대문자 앞에 공백을 추가하십시오. 
-        'When a choice comes out, make sure that the English capital letter corresponding to the choice comes out immediately after the line change comes out' #-선택지가 나오면, 선택지에 해당하는 영문 대문자가 라인변경이 나온 직후에 나오도록 한다
+        'When a choice comes out, make sure that the English capital letter corresponding to the choice comes out immediately after the line change comes out', #-선택지가 나오면, 선택지에 해당하는 영문 대문자가 라인변경이 나온 직후에 나오도록 한다
         'After the user makes a choice, do not reveal their selection again.', #사용자가 선택한 후에는 선택한 항목을 다시 표시하지 않습니다
-        'If the user selects a choice, continue the novel based on the selected option.', #사용자가 선택한 항목을 선택한 경우 선택한 옵션을 기준으로 소설을 계속합니다.
-        'The maximum number of times a user can choose a choice is three', #사용자에게 선택지를 고르는 횟수는 최대 3번으로 하자. -
-        'If the user chooses three choices, the novel is finished',
         "When writing a novel, please include a description of the character's conversation or situation",
+        'Write the title of the novel at the start of the novel',#소설의 제목은 소설이 시작 될때 작성해줘
+        'When you give a title to a novel, add "Title:"', #소설의 제목을 줄때 "Title: " 을 붙여서 줘
+        "Let's capitalize on the choice in English", #선택지를 선택하는것은 영어 대문자로 하자
+        "Please don't let the answers in gpt overlap", #gpt의 답변이 중복되지 않게 해줘
     ]
 
     chat_logs = load_chat_logs(novel_id)
@@ -341,17 +340,33 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
         for instruction in system_instructions
     ]
 
-    user_message = {"role": "user", "content": message}
-    messages.append(user_message)
+    novel_instance = Novel.objects.get(id=novel_id)
+    characters = novel_instance.novel_character.all()
+    backgrounds = novel_instance.novel_background.all()
+
+    # Append character data to messages
+    for character in characters:
+        character_data = {
+            "role": "assistant",
+            "content": f"Character Name: {character.name}, Personality: {character.personality}",
+        }
+        messages.append(character_data)
+
+    # Append background data to messages
+    for background in backgrounds:
+        background_data = {
+            "role": "assistant",
+            "content": f"Genre: {background.genre}, Time Period: {background.time_period}, Time Projection: {background.time_projection}, Summary: {background.summary}",
+        }
+        messages.append(background_data) 
+
 
     for log in chat_logs:
         messages.append({"role": log.role, "content": log.chat_log})
     if len(messages) == 1:
-
-        messages.append({'role': 'user', 'content': message})
-
-
+        messages.append({'role': 'user', 'content': message}) 
     print(messages)
+    
     # Send message to GPT API
     data = {"model": "gpt-3.5-turbo", "messages": messages, "temperature": 1.0}
     try:
@@ -362,6 +377,19 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
 
 
         image_url = dalleIMG(answer)
+
+        if answer.startswith("Title: "):
+            title = answer.split("\n")[0][len("Title: "):]
+            try:
+                novel_instance = Novel.objects.get(id=novel_id)
+                novel_instance.novel_name = None
+
+                novel_instance.novel_name = title
+                novel_instance.save()
+            except Novel.DoesNotExist:
+                return {"response_message": "Novel with the given ID does not exist."}
+
+
         
         chat_log = ChatLog(novel_id=novel_id, role='assistant', chat_log=answer)
         chat_log.save()
@@ -370,6 +398,18 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
 
         novel_story = NovelStory.objects.create(novel_id=novel_id, page=page_number, content=answer, image=image_url)
         novel_story.save()
+
+        try:
+            novel_instance = Novel.objects.get(id=novel_id)
+        except Novel.DoesNotExist:
+            return {"response_message": "Novel with the given ID does not exist."}
+
+
+        if not novel_instance.novel_image:
+            novel_instance.novel_image = image_url
+            novel_instance.save()
+        else:
+            print("Data already exists in the novel. Image URL not added.")
 
         return {
             'response_message': answer,
