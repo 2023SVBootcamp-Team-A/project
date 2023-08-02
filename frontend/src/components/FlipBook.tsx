@@ -7,13 +7,30 @@ interface FlipBookProps {
   novel_id: number | undefined;
 }
 
+const PageCover : React.FC<{ children: React.ReactNode; }> = (props) =>{
+  return (
+    <div
+    className="overflow-y-scroll h-full p-3 text-left bg-[#e3d0b5] text-black"
+    style={{
+      boxShadow:
+        "inset -7px 0 30px -7px rgba(0, 0, 0, 0.4), 10px 10px 4px rgba(0, 0, 0, 0.20)",
+    }}
+    >
+      <div className="w-full h-full p-1 color-[#785e3a] border-spacing-1 overflow-y-scroll">
+            <div className="w-full h-full flex flex-col justify-center">
+              <div>{props.children}</div>
+            </div>
+      </div>
+    </div>
+  );
+};
+
 const Page: React.FC<{ children: React.ReactNode; number: number; left:boolean }> = React.forwardRef(
   (props, ref: React.Ref<HTMLInputElement>) => {
   
     return (
       <div className="w-full h-full p-1 color-[#785e3a] border-spacing-1 overflow-y-scroll" ref={ref}>
-            <div 
-              className="w-full h-full flex flex-col justify-between">
+            <div className="w-full h-full flex flex-col justify-between">
                 <div className="h-11/12 flex-grow-1 text-size-[18px] text-justify mt-6 p-10 lg:text-18 text-15">{props.children}</div>
                 {!props.left && <h2 className="h-auto font-[20px] text-right mr-5 mb-2 ml-5 text-black">{props.number}</h2>}
                 {props.left && <h2 className="h-auto font-[20px] text-left mr-5 mb-2 ml-5 text-black">{props.number}</h2>}
@@ -69,7 +86,7 @@ function PageList(novelStory: novelStory[]) {
             >
               <Page key={data.id} number={2*index+1} left={true}>
                 <div className="flex flex-col items-center">
-                  <span className="mb-8 text-center text-5xl text-[#744624]">Chapter {index+1}</span>
+                  <span className="mb-8 text-center text-5xl text-[#744624] font-['Inria']">Chapter {index+1}</span>
                   <img src={data.image} className="w-4/5 h-3/4 flex flex-col items-center object-cover" />
                 </div>
               </Page>
@@ -112,9 +129,9 @@ const FlipBook: React.FC<FlipBookProps> = (props  => {
   const book = useRef(null);
   return ( 
     novelStory && pageList &&
-    <div className="w-screen h-screen ">
+    <div className="w-screen h-screen">
       <div className="h-11/12 flex flex-col justify-center items-center">
-        <div className="xl:w-9/12 md:w-10/12 sm:w-9/12 w-11/12 h-4/6 absolute md:top-28 top-20">
+        <div className="xl:w-9/12 md:w-10/12 sm:w-9/12 w-11/12 h-4/6 absolute md:top-24">
           <div className="flex flex-col animate-fade-up animate-once animate-duration-1000 animate-ease-linear">
             <HTMLFlipBook
               width={580}
@@ -142,18 +159,20 @@ const FlipBook: React.FC<FlipBookProps> = (props  => {
               style={{ }}
               ref={book}
             >
-              <div className="bg-beige">
-                  <div className="w-full h-full flex flex-col justify-center border-solid">
-                      <h2 className="text-center text-2xl pt-1/2">소설</h2>
-                  </div>
+              <div>
+                <PageCover>
+                    <div className="text-center pt-1/2 text-4xl text-[#785e3a] border-solid font-['Inria']">
+                      <span className="border-solid border-2 border-[#785e3a] p-3">Make Your World</span>
+                    </div>
+                </PageCover>
               </div>
               {
                 pageList.map((data, index) => <div key={index}>{data}</div>)
               }
-              <div className="page page-cover page-cover-bottom" data-density="hard">
-                  <div className="page-content">
-                      <h2>THE END</h2>
-                  </div>
+              <div>
+                <PageCover>
+                  <div className="text-center pt-1/2 text-4xl text-[#785e3a] border-solid font-['Inria']">- The End -</div>
+                </PageCover>
               </div>
             </HTMLFlipBook>
           </div>
