@@ -1,7 +1,6 @@
 import React, {useRef, useEffect, useState} from "react";
 import HTMLFlipBook from "react-pageflip";
 import axios from "axios";
-import classNames from "classnames";
 
 interface FlipBookProps {
   novel_id: number | undefined;
@@ -10,16 +9,16 @@ interface FlipBookProps {
 const PageCover : React.FC<{ children: React.ReactNode; }> = (props) =>{
   return (
     <div
-    className="overflow-y-scroll h-full p-3 text-left bg-[#e3d0b5] text-black"
-    style={{
-      boxShadow:
-        "inset -7px 0 30px -7px rgba(0, 0, 0, 0.4), 10px 10px 4px rgba(0, 0, 0, 0.20)",
-    }}
+      className="h-full p-3 text-left text-black bg-[#ECECEC]"
+      style={{
+        boxShadow:
+          "inset -7px 0 30px -7px rgba(0, 0, 0, 0.4), 10px 10px 4px rgba(0, 0, 0, 0.20)",
+      }}
     >
-      <div className="w-full h-full p-1 color-[#785e3a] border-spacing-1 overflow-y-scroll">
-            <div className="w-full h-full flex flex-col justify-center">
-              <div>{props.children}</div>
-            </div>
+      <div className="w-full h-full p-1 color-[#F5F5F5] border-spacing-1">
+        <div className="w-full h-full flex flex-col justify-center">
+          <div>{props.children}</div>
+        </div>
       </div>
     </div>
   );
@@ -29,12 +28,12 @@ const Page: React.FC<{ children: React.ReactNode; number: number; left:boolean }
   (props, ref: React.Ref<HTMLInputElement>) => {
   
     return (
-      <div className="w-full h-full p-1 color-[#785e3a] border-spacing-1 overflow-y-scroll" ref={ref}>
-            <div className="w-full h-full flex flex-col justify-between">
-                <div className="h-11/12 flex-grow-1 text-size-[18px] text-justify mt-6 p-10 lg:text-18 text-15">{props.children}</div>
-                {!props.left && <h2 className="h-auto font-[20px] text-right mr-5 mb-2 ml-5 text-black">{props.number}</h2>}
-                {props.left && <h2 className="h-auto font-[20px] text-left mr-5 mb-2 ml-5 text-black">{props.number}</h2>}
-            </div>
+      <div className="w-full h-full p-1 color-[#785e3a] border-spacing-1" ref={ref}>
+        <div className="w-full h-full flex flex-col justify-between">
+          <div className="overflow-y-scroll h-11/12 flex-grow-1 text-size-[18px] text-justify mt-6 p-10 lg:text-18 text-15">{props.children}</div>
+          {!props.left && <h2 className="h-auto font-[20px] text-right mr-5 mb-2 ml-5 text-black">{props.number}</h2>}
+          {props.left && <h2 className="h-auto font-[20px] text-left mr-5 mb-2 ml-5 text-black">{props.number}</h2>}
+        </div>
       </div>
     );
   }
@@ -61,14 +60,14 @@ function PageList(novelStory: novelStory[]) {
         pageList.push(
           (i == 1) ? (
             <div
-              className="overflow-y-scroll h-full p-3 text-left bg-[#fdfaf7] text-black"
+              className="h-full p-3 text-left bg-[#fdfaf7] text-black"
               style={{
                 boxShadow:
                   "inset -7px 0 30px -7px rgba(0, 0, 0, 0.4), 10px 10px 4px rgba(0, 0, 0, 0.20)",
               }}
             >
               <Page key={data.id} number={2*index+2} left={false}>
-                <div className="h-full overflow-scroll">
+                <div className="h-full">
                 {(novelStory != null) && data.content.split("\n").map((line, index) => (
                     <span key={index}>{line}<br/></span>
                   ))}
@@ -76,7 +75,7 @@ function PageList(novelStory: novelStory[]) {
               </Page>
             </div> ) : (
             <div
-              className="overflow-y-scroll h-full p-3 text-left bg-[#fdfaf7] text-black"
+              className="h-full p-3 text-left bg-[#fdfaf7] text-black"
               style={{
                 boxShadow:
                   "inset 7px 0 36px -7px rgba(0, 0, 0, 0.4), 10px 10px 4px rgba(0, 0, 0, 0.20)",
@@ -131,7 +130,7 @@ const FlipBook: React.FC<FlipBookProps> = (props  => {
     novelStory && pageList &&
     <div className="w-screen h-screen">
       <div className="h-11/12 flex flex-col justify-center items-center">
-        <div className="xl:w-9/12 md:w-10/12 sm:w-9/12 w-11/12 h-4/6 absolute md:top-24">
+        <div className="xl:w-9/12 md:w-10/12 sm:w-9/12 w-11/12 h-4/6 absolute md:top-24 top-24">
           <div className="flex flex-col animate-fade-up animate-once animate-duration-1000 animate-ease-linear">
             <HTMLFlipBook
               width={580}
@@ -149,7 +148,7 @@ const FlipBook: React.FC<FlipBookProps> = (props  => {
               startZIndex={30}
               autoSize={true}
               maxShadowOpacity={0.5}
-              showCover={true}
+              showCover={false}
               mobileScrollSupport={true}
               clickEventForward={true}
               useMouseEvents={true}
@@ -159,10 +158,22 @@ const FlipBook: React.FC<FlipBookProps> = (props  => {
               style={{ }}
               ref={book}
             >
+              <div className="w-full h-full">
+                <div 
+                  className="w-full h-full bg-cover" 
+                  style={{backgroundImage: `url(/images/book.png)`,
+                  boxShadow:
+                    "inset -7px 0 30px -7px rgba(0, 0, 0, 0.4), 10px 10px 4px rgba(0, 0, 0, 0.20)",}}
+                >
+                  <div className="w-full h-full text-center text-4xl text-white font-['Inria'] pt-32">
+                      <span className="border-solid border-2 border-white mt-24 p-3">My World</span>
+                  </div>
+                </div>
+              </div>
               <div>
                 <PageCover>
-                    <div className="text-center pt-1/2 text-4xl text-[#785e3a] border-solid font-['Inria']">
-                      <span className="border-solid border-2 border-[#785e3a] p-3">Make Your World</span>
+                    <div className="text-center pb-1/2 text-4xl text-[#785e3a] border-solid font-['Inria']">
+                      <span></span>
                     </div>
                 </PageCover>
               </div>
