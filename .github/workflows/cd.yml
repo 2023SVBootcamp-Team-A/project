@@ -1,112 +1,138 @@
 name: Continuous Integration and Deployment
+# 워크플로우는 "Continuous Integration and Deployment"로 명명되었습니다.
+# 주로 "pull_request" 이벤트와 "push" 이벤트를 사용합니다.
 
 on:
   pull_request:
     types:
       - closed
     branches: [main]
+# 메인 브랜치에 풀 리퀘스트가 클로즈될 때 실행합니다.
+# 풀 리퀘스트가 머지되거나 닫힐 때 CI/CD가 실행됩니다.
+# 주로 메인 브랜치에서 풀 리퀘스트가 머지되면 배포를 자동으로 수행하고자 할 때 사용합니다.
+
+  push:
+    branches: [main]
+# 메인 브랜치에 푸시될 때 실행합니다.
+# 주로 메인 브랜치에 새로운 코드가 푸시되면 자동으로 테스트 및 빌드, 배포를 수행하고자 할 때 사용합니다.
 
 jobs:
+ # "build-and-test"라는 이름의 job을 정의합니다.
   build-and-test:
+  # Ubuntu 최신 버전을 기반으로 실행합니다.
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    # 리포지토리를 체크아웃합니다.
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Write environment variables to root .env file
-        run: |
-          echo "GF_USER=${{ secrets.GF_USER }}" > .env
-          echo "GF_PASSWORD=${{ secrets.GF_PASSWORD }}" >> .env
-          echo "DEBUG=${{ secrets.DEBUG }}" >> .env
+    # 백엔드와 프론트엔드에서 사용할 환경 변수를 .env 파일에 작성합니다.
+    - name: Write environment variables to root .env file
+      run: |
+        echo "GF_USER=${{ secrets.GF_USER }}" > .env
+        echo "GF_PASSWORD=${{ secrets.GF_PASSWORD }}" >> .env
+        echo "DEBUG=${{ secrets.DEBUG }}" >> .env
 
-      - name: Write environment variables to backend .env file
-        run: |
-          echo "OPENAI_SECRET_KEY=${{ secrets.OPENAI_SECRET_KEY }}" > backend/config/.env
-          echo "DEBUG=${{ secrets.DEBUG }}" >> backend/config/.env
-          echo "DB_ENGINE=${{ secrets.DB_ENGINE }}" >> backend/config/.env
-          echo "DB_NAME=${{ secrets.DB_NAME }}" >> backend/config/.env
-          echo "DB_USER=${{ secrets.DB_USER }}" >> backend/config/.env
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> backend/config/.env
-          echo "DB_HOST=${{ secrets.DB_HOST }}" >> backend/config/.env
-          echo "DB_PORT=${{ secrets.DB_PORT }}" >> backend/config/.env
-          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> backend/config/.env
-          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> backend/config/.env
-          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> backend/config/.env
-          echo "AWS_STORAGE_BUCKET_NAME=${{ secrets.AWS_STORAGE_BUCKET_NAME }}" >> backend/config/.env
-          echo "AWS_S3_REGION_NAME=${{ secrets.AWS_S3_REGION_NAME }}" >> backend/config/.env
-          echo "AWS_S3_ENDPOINT_URL=${{ secrets.AWS_S3_ENDPOINT_URL }}" >> backend/config/.env
-          echo "AWS_S3_DOWNLOAD_URL=${{ secrets.AWS_S3_DOWNLOAD_URL }}" >> backend/config/.env
-          echo "CORS_ORIGIN_WHITELIST=${{ secrets.CORS_ORIGIN_WHITELIST }}" >> backend/config/.env
-          echo "ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }}" >> backend/config/.env
+    - name: Write environment variables to backend .env file
+      run: |
+        echo "OPENAI_SECRET_KEY=${{ secrets.OPENAI_SECRET_KEY }}" > backend/config/.env
+        echo "DEBUG=${{ secrets.DEBUG }}" >> backend/config/.env
+        echo "DB_ENGINE=${{ secrets.DB_ENGINE }}" >> backend/config/.env
+        echo "DB_NAME=${{ secrets.DB_NAME }}" >> backend/config/.env
+        echo "DB_USER=${{ secrets.DB_USER }}" >> backend/config/.env
+        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> backend/config/.env
+        echo "DB_HOST=${{ secrets.DB_HOST }}" >> backend/config/.env
+        echo "DB_PORT=${{ secrets.DB_PORT }}" >> backend/config/.env
+        echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> backend/config/.env
+        echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> backend/config/.env
+        echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> backend/config/.env
+        echo "AWS_STORAGE_BUCKET_NAME=${{ secrets.AWS_STORAGE_BUCKET_NAME }}" >> backend/config/.env
+        echo "AWS_S3_REGION_NAME=${{ secrets.AWS_S3_REGION_NAME }}" >> backend/config/.env
+        echo "AWS_S3_ENDPOINT_URL=${{ secrets.AWS_S3_ENDPOINT_URL }}" >> backend/config/.env
+        echo "AWS_S3_DOWNLOAD_URL=${{ secrets.AWS_S3_DOWNLOAD_URL }}" >> backend/config/.env
+        echo "CORS_ORIGIN_WHITELIST=${{ secrets.CORS_ORIGIN_WHITELIST }}" >> backend/config/.env
+        echo "ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }}" >> backend/config/.env
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: "3.8"
+    # Python 환경을 설정합니다.
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
 
-      - name: Install dependencies
-        run: |
-          cd backend
-          pip install -r requirements.txt
+    # 백엔드 종속성을 설치합니다.
+    - name: Install dependencies
+      run: |
+        cd backend
+        pip install -r requirements.txt
 
-      - name: Django test
-        run: |
-          cd backend
-          python manage.py check
-          python manage.py test
+    # Django 앱의 테스트를 실행합니다.
+    - name: Django test
+      run: |
+        cd backend
+        python manage.py check
+        python manage.py test
 
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v2
-        with:
-          node-version: "18"
+    # Node.js 환경을 설정합니다.
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18'
 
-      - name: Install dependencies
-        run: |
-          cd frontend
-          yarn install
+    # 프론트엔드 종속성을 설치합니다.
+    - name: Install dependencies
+      run: |
+        cd frontend
+        yarn install
 
-      - name: Yarn test
-        run: |
-          cd frontend
-          yarn build
+    # 프론트엔드 테스트를 실행합니다.
+    - name: Yarn test
+      run: |
+        cd frontend
+        yarn build
 
+  # "deploy"라는 이름의 job을 정의합니다.
   deploy:
+    # "build-and-test" job이 성공적으로 완료되어야 실행됩니다.
     needs: build-and-test
+    # Ubuntu 최신 버전을 기반으로 실행합니다.
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    # 리포지토리를 체크아웃합니다.
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+    # Docker Buildx를 설정합니다.
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
 
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+    # DockerHub에 로그인합니다.
+    - name: Login to DockerHub
+      uses: docker/login-action@v1 
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Docker compose build
-        run: docker-compose -f docker-compose.prod.yml  -f docker-compose.logging.yml build
+    # Docker Compose를 사용하여 프로덕션 환경을 위한 이미지를 빌드합니다.
+    - name: Docker compose build
+      run: docker-compose -f docker-compose.prod.yml build
 
-      - name: Docker compose push
-        run: docker-compose -f docker-compose.prod.yml  -f docker-compose.logging.yml push
+    # Docker Compose를 사용하여 프로덕션 환경에 이미지를 푸시합니다.
+    - name: Docker compose push
+      run: docker-compose -f docker-compose.prod.yml push
 
-      # ssh를 통해 EC2에 접속, 접속한 후에 실행할 스크립트 작성
-      - name: Connect to EC2 using SSH
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{secrets.EC2_HOST}}
-          username: ${{secrets.EC2_USER}}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: GITHUB_SHA
-          script: |
-            cd project
-            git pull origin main
-            josephuk77
-            ${{ secrets.GIT_TOKKEN }}
-            sudo docker-compose -f docker-compose.prod.yml  -f docker-compose.logging.yml down
-            sudo docker-compose -f docker-compose.prod.yml  -f docker-compose.logging.yml pull
-            sudo docker-compose -f docker-compose.prod.yml  -f docker-compose.logging.yml up -d
+    # SSH를 통해 EC2에 접속하여 배포 스크립트를 실행합니다.
+    - name: Deploy to AWS EC2
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{secrets.EC2_HOST}}
+        username: ${{secrets.EC2_USER}}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        envs: GITHUB_SHA
+        script: |
+          cd project
+          git pull origin main
+          sudo docker-compose -f docker-compose.prod.yml down
+          sudo docker-compose -f docker-compose.prod.yml pull
+          sudo docker-compose -f docker-compose.prod.yml up -d
