@@ -8,6 +8,8 @@ import icon_next from ".././assets/icon_next.png";
 import { useNavigate } from "react-router";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
+import * as Sentry from "@sentry/react";
 // import required modules
 import { Navigation, Pagination } from "swiper/modules";
 // Import Swiper styles
@@ -35,42 +37,42 @@ export default function MainPage() {
   const [slides, setSlides] = useState([
     {
       image:
-        "https://raw.github.com/peterwestendorp/shelves/master/photos/1.jpg",
+        "https://team-a-s3-bucket.s3.ap-northeast-2.amazonaws.com/images/2023-07-27-23-36-23_7157.png",
       caption: "Slide 1",
     },
     {
       image:
-        "https://raw.github.com/peterwestendorp/shelves/master/photos/2.jpg",
+        "https://team-a-s3-bucket.s3.ap-northeast-2.amazonaws.com/images/2023-07-28-03-20-02_2480.png",
       caption: "Slide 1",
     },
     {
       image:
-        "https://raw.github.com/peterwestendorp/shelves/master/photos/3.jpg",
+        "https://team-a-s3-bucket.s3.ap-northeast-2.amazonaws.com/images/2023-07-28-03-10-19_2505.png",
       caption: "Slide 1",
     },
     {
       image:
-        "https://raw.github.com/peterwestendorp/shelves/master/photos/4.jpg",
+        "https://team-a-s3-bucket.s3.ap-northeast-2.amazonaws.com/images/2023-07-28-03-07-49_2781.png",
       caption: "Slide 1",
     },
     {
       image:
-        "https://raw.github.com/peterwestendorp/shelves/master/photos/5.jpg",
+        "https://team-a-s3-bucket.s3.ap-northeast-2.amazonaws.com/images/2023-07-28-02-52-28_2399.png",
       caption: "Slide 1",
     },
     {
       image:
-        "https://raw.github.com/peterwestendorp/shelves/master/photos/6.jpg",
+        "https://team-a-s3-bucket.s3.ap-northeast-2.amazonaws.com/images/2023-07-28-02-32-35_4155.png",
       caption: "Slide 1",
     },
     {
       image:
-        "https://raw.github.com/peterwestendorp/shelves/master/photos/7.jpg",
+        "https://team-a-s3-bucket.s3.ap-northeast-2.amazonaws.com/images/2023-07-28-02-31-39_7409.png",
       caption: "Slide 1",
     },
     {
       image:
-        "https://raw.github.com/peterwestendorp/shelves/master/photos/8.jpg",
+        "https://team-a-s3-bucket.s3.ap-northeast-2.amazonaws.com/images/2023-07-28-02-20-24_7899.png",
       caption: "Slide 1",
     },
   ]);
@@ -106,9 +108,9 @@ export default function MainPage() {
             // type: "fraction",
           }}
           loop={true}
-          autoplay={false}
-          navigation={true}
-          modules={[Pagination, Navigation]}
+          autoplay={{ delay: 3000 }} // 자동재생! (3초 지연 시간 설정)
+          navigation={false}
+          modules={[Autoplay, Pagination, Navigation]}
           className="mySwiper"
         >
           {/* <!-- Slides --> */}

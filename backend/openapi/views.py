@@ -72,7 +72,7 @@ def mynovel_list(request):
           paramType: header
     """
     if request.method == "GET":
-        per_page = 12  # 페이지당 노벨 수
+        per_page = 8  # 페이지당 노벨 수
         id_param = request.META.get("HTTP_ID")
         novels = Novel.objects.filter(user_id=id_param).order_by("-create_at")
 
@@ -133,7 +133,7 @@ def novel_list(request):
           paramType: query
     """
     if request.method == "GET":
-        per_page = 12  # 페이지당 노벨 수
+        per_page = 8  # 페이지당 노벨 수
         novels = Novel.objects.filter().order_by("-create_at")
 
         paginator = Paginator(novels, per_page)

@@ -27,7 +27,6 @@ export default function MyPage() {
   const [novelList, setNovelList] = useState<Novel[]>([]);
   const [novelList1, setNovelList1] = useState<Novel[]>([]);
   const [novelList2, setNovelList2] = useState<Novel[]>([]);
-  const [novelList3, setNovelList3] = useState<Novel[]>([]);
   const [metaData, setMetaData] = useState<Meta>();
 
   // 보낼 데이터
@@ -60,13 +59,11 @@ export default function MyPage() {
         // 내용이 없으면 null 또는 undefined로 들어감!
         const novelList1 = novel.slice(0, 4);
         const novelList2 = novel.slice(4, 8);
-        const novelList3 = novel.slice(8, 12);
 
         setNovelList(novel); // You can still set the original array if needed
         // Set the individual lists in separate states if required
         setNovelList1(novelList1);
         setNovelList2(novelList2);
-        setNovelList3(novelList3);
 
         setMetaData(response.data.meta);
       })
@@ -84,8 +81,7 @@ export default function MyPage() {
   useEffect(() => {
     // console.log(novelList1);
     // console.log(novelList2);
-    // console.log(novelList3);
-  }, [novelList1, novelList2, novelList3]);
+  }, [novelList1, novelList2]);
 
   useEffect(() => {
     // console.log(metaData);
@@ -150,15 +146,9 @@ export default function MyPage() {
           ))}
         </div>
         <div className="floor-thickness"></div>
-        <div className="books-container">
-          {novelList3.map((novel) => (
-            <NovelBook key={novel.id} novel={novel} />
-          ))}
-        </div>
-        <div className="floor-thickness"></div>
       </div>
       <nav aria-label="Page navigation example">
-        <ul className="inline-flex -space-x-px text-base h-10 mt-12">
+        <ul className="inline-flex -space-x-px text-base h-10 mt-20">
           {/* <li>
             <a href="#" className="navLeftArrow">
               &lt;

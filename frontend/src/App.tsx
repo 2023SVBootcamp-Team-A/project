@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import * as Sentry from "@sentry/react";
 import "./App.css";
 import ChoicePage from "./pages/ChoicePage";
 import NavigationBar from "./components/NavigationBar";
@@ -17,11 +18,13 @@ import Logout from "./pages/Logout";
 import MyPage from "./pages/MyPage";
 
 function App() {
+  const SentryRoutes = Sentry.withSentryReactRouterV6Routing(Routes);
+
   return (
     <Provider store={store}>
       <div className="App">
         <Background>
-          <Routes>
+          <SentryRoutes>
             <Route path="" element={<MainPage />} />
             <Route path="/choice" element={<ChoicePage />} />
             <Route path="/setting" element={<SettingPage />} />
@@ -32,7 +35,7 @@ function App() {
             <Route path="/result" element={<ResultPage />} />
             <Route path="/settingfirst" element={<SettingPageFirst />} />
             <Route path="/mypage" element={<MyPage />} />
-          </Routes>
+          </SentryRoutes>
         </Background>
       </div>
       <NavigationBar />
