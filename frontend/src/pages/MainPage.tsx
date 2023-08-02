@@ -235,21 +235,6 @@ export default function MainPage() {
       >
         로그인됐나요?
       </div> */}
-      <button
-        onClick={() => {
-          try {
-            methodDoesNotExist();
-          } catch (e) {
-            console.log("오류 발생!");
-            Sentry.captureException(e);
-            console.error(e);
-          }
-        }}
-      >
-        Break the world
-      </button>
-      <button onClick={() => console.log(HelioOr7r5l)}>Break the world</button>
-      {/* <button onClick={methodDoesNotExist()}>Bad Button</button> */}
     </div>
   );
 }

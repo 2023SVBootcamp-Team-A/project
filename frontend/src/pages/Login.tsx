@@ -29,8 +29,8 @@ function Login() {
     e.preventDefault();
 
     const response = await axios
-      // .post("http://www.techeer-team-a.store:8000/api/v1/user/login/", formData)
-      .post("http://localhost:8000/api/v1/user/login/", formData)
+      .post("http://www.techeer-team-a.store:8000/api/v1/user/login/", formData)
+      // .post("http://localhost:8000/api/v1/user/login/", formData)
       .then((response) => {
         if (response.status === 200) {
           const token = response.data;

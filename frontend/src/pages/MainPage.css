@@ -37,7 +37,7 @@
   }
 
   .carousel {
-    @apply w-[80%] px-6 py-4 bg-[#b5b5b5] opacity-70 rounded-2xl relative mb-10 ml-[10rem] mt-[7rem];
+    @apply w-[80%] px-6 py-4 bg-[#b5b5b5] opacity-70 rounded-2xl relative mb-10 mt-[7rem] ml-auto mr-auto;
   }
 
   .btnGroup {
@@ -123,7 +123,7 @@
   background-color: #e2e1e0;
   border-radius: 20px;
   position: relative;
-  margin-bottom: 5rem;
+  margin: 7rem auto 2.5rem auto;
 }
 
 .startButton {

@@ -45,8 +45,8 @@ export default function MyPage() {
 
     const response = await axios
       .get(
-        // `http://www.techeer-team-a.store:8000/api/v1/mynovels${queryString}`,
-        `http://localhost:8000/api/v1/mynovels${queryString}`,
+        `http://www.techeer-team-a.store:8000/api/v1/mynovels${queryString}`,
+        // `http://localhost:8000/api/v1/mynovels${queryString}`,
         config
       )
       .then(function (response) {
