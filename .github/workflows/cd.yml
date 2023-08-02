@@ -133,6 +133,10 @@ jobs:
         script: |
           cd project
           git pull origin main
-          sudo docker-compose -f docker-compose.prod.yml  -f docker-compose.logging.yml down
+          docker stop $(docker ps -aq)
+          docker rm $(docker ps -aq)
+          docker rmi $(docker images -aq)
+          docker volume prune -f
+          sudo yum clean all
           sudo docker-compose -f docker-compose.prod.yml  -f docker-compose.logging.yml pull
           sudo docker-compose -f docker-compose.prod.yml  -f docker-compose.logging.yml up -d
