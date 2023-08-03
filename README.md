@@ -156,6 +156,9 @@ We can track error caused by frontend side with Sentry, the frontend error monit
 ## Swagger
 <img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/b65939a0-933b-488b-b16a-ad6de76d13d4"/>
 Swagger를 통해 API 명세서를 작성하였습니다.
+<br/>
+<br/>
+We made the API specification with Swagger.
 </div>
 
 
