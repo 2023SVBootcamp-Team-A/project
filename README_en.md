@@ -7,7 +7,7 @@
 by Team-A (ChaG.P.T) (2023.06 ~ 2023.08)
 </div>
 
-### 📕 The new story that complety inspired by you.
+### 📕 The new story complety inspired by you.
 Create the your own novel is that easy with our MyW. Just select the keyword and write simple plot, then proceed sequentially, and you will get your own novel!
 
 - - - 
