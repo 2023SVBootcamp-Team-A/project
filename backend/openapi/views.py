@@ -290,6 +290,8 @@ def send_message(novel_id):  # novel_id를 매개변수로 추가
         'Write the title of the novel at the start of the novel',#소설의 제목은 소설이 시작 될때 작성해줘
         "Let's capitalize on the choice in English", #선택지를 선택하는것은 영어 대문자로 하자
         "Please don't let the answers in gpt overlap", #gpt의 답변이 중복되지 않게 해줘
+        'Please leave a space before the English capital letters'
+        'You have at least three choices'
 
     ]
 
@@ -394,9 +396,9 @@ class init_setting_APIView(APIView):
             characters = data["character"]
             character_message = ""
             for i in range(len(data["character"])):
-                character_message += f"({i+1}) Character Name: {characters[i]['name']} / Personality: {characters[i]['personality']}"
-        
-            ChatLog(novel_id=novel_instance.id, role="assistant", chat_log=character_message).save()
+                message = f"Character Name: {characters[i]['name']} / Personality: {characters[i]['personality']}"
+                ChatLog(novel_id=novel_instance.id, role="assistant", chat_log=message).save()
+
             send_message(novel_instance.id)
             return Response(response_data, status=201)
         else:
