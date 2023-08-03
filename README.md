@@ -130,7 +130,7 @@ Tailwind CSS를 사용함으로서 HTML 상에서 클래스명을 설정하는 �
 Swagger를 통해 API 명세서를 작성하였습니다.
 </div>
 
-## Monitoring
+## Monitoring (승욱님 수정 필요!)
 Grafana + Prometheus, ELK
 
 |**Django** |**Node exporter**|
