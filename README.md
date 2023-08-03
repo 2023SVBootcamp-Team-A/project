@@ -1,7 +1,7 @@
 # MyW (Make your World) - 당신만의 이야기를 만들어 보세요!
 
 <div align=center>
-<img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/1a30c1dc-1021-4f14-a8ac-4acbc3a63caa"/>
+<img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/e5b4c9b9-cdd1-4859-aa4b-60fc256cd804"/>
 </div>
 <div align=center>
 by Team-A (ChaG.P.T) (2023.06 ~ 2023.08)
