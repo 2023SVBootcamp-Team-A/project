@@ -1,4 +1,4 @@
-# MyW (Make your World) - 당신만의 이야기를 만들어 보세요!
+<img width="1680" alt="스크린샷 2023-08-04 오전 12 07 22" src="https://github.com/2023SVBootcamp-Team-A/project/assets/69853298/9b8ebc2c-20de-4cc5-9d68-a26f3e5e0e17"># MyW (Make your World) - 당신만의 이야기를 만들어 보세요!
 
 <div align=center>
 <img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/1a30c1dc-1021-4f14-a8ac-4acbc3a63caa"/>
@@ -135,12 +135,14 @@ Grafana + Prometheus, ELK
 
 |**Django** |**Node exporter**|
 |-----|-----|
-<img src = "https://user-images.githubusercontent.com/112836685/215755917-d95d1f67-284e-46bc-bb1a-4b4d60d0248d.png" width="500px" height="300px">|<img src = "https://user-images.githubusercontent.com/112836685/215756393-afd0c358-198c-475b-afc4-2a61ef44a20d.png" width="500px" height="300px">
+<img alt="스크린샷 2023-08-04 오전 12 11 52" src="https://github.com/2023SVBootcamp-Team-A/project/assets/69853298/852a392a-fc06-431c-bd5a-2f635db1e84d" width="500px" height="300px">|<img alt="스크린샷 2023-08-03 오후 11 50 55" src="https://github.com/2023SVBootcamp-Team-A/project/assets/69853298/2df30dff-e206-40b0-8ea3-5e09289ca271" width="500px" height="300px">
+
 
 
 |**cAdvisor** |**ELK**|
 |-----|-----|
-<img src = "https://user-images.githubusercontent.com/112836685/215756456-c339b819-463f-4b1b-9434-075df74f3684.png" width="500px" height="300px">|<img src = "https://user-images.githubusercontent.com/112836685/216101722-55819672-9a8e-4165-b45e-6b42f7b3f101.png" width="500px" height="300px">
+<img alt="스크린샷 2023-08-04 오전 12 15 41" src="https://github.com/2023SVBootcamp-Team-A/project/assets/69853298/bb85b7d4-82d1-4e0a-91f2-c16ee72936de" width="500px" height="300px">|<img alt="스크린샷 2023-08-04 오전 12 07 22" src="https://github.com/2023SVBootcamp-Team-A/project/assets/69853298/b7408adf-c067-44ba-95a3-a19a05bf435e" width="500px" height="300px">
+
   
 Django에서 Prometheus를 통해 request,response에 대한 정보를 수집을 한 후 Grafana를 통해 시각화 하였습니다. Slack과 Grafana를 연동하여 설정한 CPU 사용량 범위를 벗어날 경우 Slack에 경고 알림이 오도록 구현하였습니다. CAdvisor를 활용해 각 컨테이너의 cpu, memory사용량등을 알수 있게 하였고, 컨테이너별 네트워크 사용량을 알 수 있게하였습니다. node exporter를 통해 서버의 메모리, cpu 사용량, network traffic 등을 알 수 있게 하였습니다. ELK 스택을 활용하여 nginx log를 모니터링하고, 시간대, 사이트별 응답코드, 응답코드 비율등을 모니터링 할 수 있게 설계하였습니다.
 </details>  
