@@ -4,12 +4,11 @@
 <img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/1a30c1dc-1021-4f14-a8ac-4acbc3a63caa"/>
 </div>
 <div align=center>
-by Team-A (ChaG.P.T)
+by Team-A (ChaG.P.T) (2023.06 ~ 2023.08)
 </div>
 
 ### 📕 당신이 만드는, 당신만의 색다른 새로운 이야기를 만들고 싶으시다면, 만들어 드리겠습니다!
-MyW라는 저희의 서비스는 여러분이 원하는 소설과 관련하여 새로운 이야기 콘텐츠를 제공합니다!
-사이트에 접속 후 원하는 방향의 관련 제시어들을 입력만 하고 순차적으로 진행을 하면, 최종적인 당신만의 소설책을 만들어 드립니다!
+Make your World를 통해 여러분이 원하는 새로운 이야기를 소설로 만들어보세요! 사이트에 접속 후 원하는 방향의 관련 제시어들을 입력만 하고 순차적으로 진행을 하면, 최종적인 당신만의 소설책을 만들어 드립니다!
 
 - - - 
 
@@ -114,6 +113,9 @@ Area| Tech Stack|
 <br/>
 ESModule 기반의 Vite를 사용하여 개발 서버를 더욱 빠르게 구동했으며, SPA인 React를 사용함으로써 UX를 향상시켰습니다. 정적 타입 언어인 Typescript을 사용하여 컴파일 단계에서 에러를 빠르게 확인할 수 있게 하였습니다.
 
+## Tailwind CSS
+Tailwind CSS를 사용함으로서 HTML 상에서 클래스명을 설정하는 것만으로 미리 정의된 스타일을 적용할 수 있습니다. 덕분에 네이밍 규칙을 통일하고 구조를 문서화하는 시간과 반응형 레이아웃 설정에 들이는 노력을 덜 수 있었으며, 일부 컴포넌트의 경우 별도의 CSS 파일 없이 스타일링을 적용할 수 있었습니다.
+
 ## Monitoring
 <img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/fdfe912a-40a2-4e00-846a-5c4065333101"/><br/>
 프론트엔드 에러 모니터링 및 트래킹 툴인 Sentry를 사용하여 에러를 추적할 수 있게 하였습니다. 에러의 종류, 발생 위치 등에 대한 정보를 제공하므로 원인을 찾는 데 들이는 시간을 덜 수 있으며, 에러 발생 즉시 메일 알림을 받아 빠르게 확인할 수 있습니다.
@@ -123,7 +125,7 @@ ESModule 기반의 Vite를 사용하여 개발 서버를 더욱 빠르게 구동
 <summary><h3>Backend</h3></summary>
 
 ## API
-### Swagger
+## Swagger
 <img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/b65939a0-933b-488b-b16a-ad6de76d13d4"/>
 Swagger를 통해 API 명세서를 작성하였습니다.
 </div>
