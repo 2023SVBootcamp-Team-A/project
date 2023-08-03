@@ -3,6 +3,9 @@ import { useLocation } from "react-router";
 import Choice from "../components/Choice";
 import data from "../data/choice-data.json";
 import axios from "axios";
+import { Provider, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { loginSuccess, logout } from "../redux/authActions";
 
 interface StoryResponse {
     "story": string,
@@ -14,8 +17,10 @@ export default function ChociePage() {
     const [visible, setVisible] = useState(false);
     const [resposeData, setResponseData] = useState<StoryResponse>();
     const location = useLocation();
+    const dispatch = useDispatch();
     const novel_id = location.state.novel;
     const url = 'http://localhost:8000/api/v1/novels/'+ novel_id
+    const authState = useSelector((state: any) => state);
     const GetData = async () => {
         try {
             const response = await axios.get<StoryResponse>(url, {
@@ -32,10 +37,12 @@ export default function ChociePage() {
         }
     };
 
-  useEffect(() => {
-    GetData();
-  }, []);
-
+    useEffect(() => {
+        GetData();
+        if (localStorage.getItem("id") !== null) {
+            dispatch(loginSuccess());
+        }
+    }, []);
     return(
         <div className="w-screen h-screen min-h-screen relative overflow-scroll">
             <div
