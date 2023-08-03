@@ -24,6 +24,9 @@ http://www.techeer-team-a.store/
 ## Demo Video (데모 업로드 후 수정 필요!)
 [![Video Label](http://img.youtube.com/vi/OSPhfQPK0x8/0.jpg)](https://youtu.be/OSPhfQPK0x8)
 
+## System Architecture
+<img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/8a6dc146-d11f-44a4-be31-1e6f98c344d8">
+
 ## Installation (수정 필요!)
 
 ### 서버 시작하기
@@ -59,7 +62,8 @@ $ docker-compose -f docker-compose-dev.yml up -d
 
 ## Features
 
-### 소설 설정 작성
+<details>
+<summary><h3>소설 설정 작성</h3></summary>
 <img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/7c44a770-09e2-4022-8d34-2cf782d75633"/>
 <img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/50590bbc-2bcc-4fb4-b3b9-3cd255810787"/>
 <br />
@@ -68,8 +72,10 @@ $ docker-compose -f docker-compose-dev.yml up -d
 <br />
 <br/>
 It provides the ability to select the genre, spatial background, historical background, characters, and plot of the novel to be created as desired. In addition to the built-in options, users can freely add genres, spaces, and eras of they want.
+</details>
 
-### 대화형 소설 진행
+<details>
+<summary><h3>대화형 소설 진행</h3></summary>
 <img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/1428844a-7ba8-4960-9849-dd122d4482d1"/>
 <br />
 <br />
@@ -77,8 +83,10 @@ It provides the ability to select the genre, spatial background, historical back
 <br />
 <br/>
 Create a novel with the story you want by repeating progression and selection. You can continue by choosing one of the options provided, or you can end the writing at any point and go to the results page.
+</details>
 
-### 완성된 소설 확인
+<details>
+<summary><h3>완성된 소설 확인</h3></summary>
 <img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/b3d3fb08-a301-43e8-b937-51b7c6201bb4"/>
 <br />
 <br />
@@ -86,8 +94,10 @@ Create a novel with the story you want by repeating progression and selection. Y
 <br />
 <br/>
 The completed novel is expressed in a UI similar to reading a real book, providing the same experience as reading a novel you created as an e-book.
+</details>
 
-### 내가 쓴 소설 목록
+<details>
+<summary><h3>내가 쓴 소설 목록</h3></summary>
 <img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/635ee70b-b488-4a26-9b09-fe5fd7a65364"/>
 <br />
 <br />
@@ -95,8 +105,10 @@ The completed novel is expressed in a UI similar to reading a real book, providi
 <br />
 <br/>
 The novel list written by each user is provided in a UI that can be checked in the form of a bookshelf. Clicking on the book shape will take you to a page confirming the completed content of that novel.
+</details>
 
-### 전체 소설 목록
+<details>
+<summary><h3>전체 소설 목록</h3></summary>
 <img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/025bd505-3215-44d6-9e82-48c42a783eaf"/>
 <br />
 <br />
@@ -104,10 +116,7 @@ The novel list written by each user is provided in a UI that can be checked in t
 <br />
 <br/>
 You can also check the entire list of novels written by all users, not just the user himself, through the bookshelf-style UI. You can browse page by page with pagination applied, and similarly, click the book shape to see the completed contents of the novel.
-
-- - - 
-## System Architecture
-<img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/8a6dc146-d11f-44a4-be31-1e6f98c344d8">
+</details>
 
 - - - 
 ## Tech Stack
