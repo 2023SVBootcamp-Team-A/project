@@ -22,7 +22,7 @@ http://www.techeer-team-a.store/
 ## Demo Video (데모 업로드 후 수정 필요!)
 [![Video Label](http://img.youtube.com/vi/OSPhfQPK0x8/0.jpg)](https://youtu.be/OSPhfQPK0x8)
 
-## Installation
+## Installation (수정 필요!)
 
 ### 서버 시작하기
 
@@ -83,7 +83,7 @@ $ docker-compose -f docker-compose-dev.yml up -d
 사용자별로 자신이 쓴 목록을 책장 형태로 확인 가능한 UI로 제공합니다. 책 모양을 클릭하면 해당 소설의 완성된 내용을 확인하는 페이지로 이동합니다.
 
 ### 전체 소설 목록
-<img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/6579534b-f2ef-49b6-a340-a067f5883636"/>
+<img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/025bd505-3215-44d6-9e82-48c42a783eaf"/>
 <br />
 <br />
 사용자 본인 뿐만이 아닌, 모든 사용자가 작성한 전체 소설 목록 또한 책장 형태의 UI로 확인할 수 있습니다. 페이지네이션을 적용하여 페이지별로 둘러볼 수 있으며, 마찬가지로 책 모양을 클릭하면 해당 소설의 완성된 내용을 확인할 수 있습니다.
@@ -123,7 +123,7 @@ ESModule 기반의 Vite를 사용하여 개발 서버를 더욱 빠르게 구동
 <summary><h3>Backend</h3></summary>
 
 ## API
-### swagger
+### Swagger
 <img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/b65939a0-933b-488b-b16a-ad6de76d13d4"/>
 Swagger를 통해 API 명세서를 작성하였습니다.
 </div>
@@ -145,9 +145,6 @@ Django에서 Prometheus를 통해 request,response에 대한 정보를 수집을
  
 <details>
 <summary><h3>Devops</h3></summary>
-## HTTPS
-![image](https://user-images.githubusercontent.com/112836685/216560063-cbd003b8-e160-488a-a6ba-ffc83c925f18.png)
-SSL인증서를 발급받아 Https를 적용하여 웹사이트의 무결성을 보호하도록 하였습니다.
 
 ## Github Actions
 Github Actions를 통해 CI/CD 파이프라인을 구축하여 코드 변경사항을 서버에 원할하게 반영할 수 있게 하였습니다.
@@ -166,10 +163,4 @@ GitHub | <center>[@homebdy](https://github.com/homebdy)</center> | <center>[@Alg
 | Profile |<center><img width="110px" height="110px" src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/b0476434-30fd-4222-b98d-21178e774189" /></center>|<center><img width="110px" height="110px" src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/2e55e092-5587-463d-8612-ab50e75c2761" /></center>|<center><img width="110px" height="110px" src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/731a3d49-c8f3-449d-9e30-970cbca92d23" /></center>|<center><img width="110px" height="110px" src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/25d3181f-8992-4ae9-a8b7-d9a28e7271ba" /></center>|
 | Role    | <center>Backend,<br> DevOps</center> | <center>Backend</center> | <center>Frontend</center> | <center>Backend</center> |
 GitHub | <center>[@josephuk77](https://github.com/josephuk77)</center> | <center>[@LeeTaek2T](https://github.com/LeeTaek2T) </center>| <center>[@V2LLAIN](https://github.com/V2LLAIN) </center>| <center>[@youngjin516](https://github.com/youngjin516)</center>
-
-| Name    | <center>김연진</center>|<center>강석규</center> |<center>김하은</center> | <center>이승욱</center> | <center>이택</center> | <center>임형찬</center> | <center>채영진</center>
-| ------- | --------------------------------------------- | ------------------------------------ | --------------------------------------------- | --------------------------------------- | --------------------------------------- | --------------------------------------- | --------------------------------------- |
-| Profile | <center><img width="110px" height="110px" src="https://avatars.githubusercontent.com/u/86517634?v=4" /></center>|<center><img width="110px" height="110px" src="https://avatars.githubusercontent.com/u/8746067?v=4" /></center>|<center><img width="110px" height="110px" src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/e1998a20-40e0-4bc3-a242-14161ac453f3" /></center>|<center><img width="110px" height="110px" src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/b0476434-30fd-4222-b98d-21178e774189" /></center>|<center><img width="110px" height="110px" src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/2e55e092-5587-463d-8612-ab50e75c2761" /></center> | <center><img width="110px" height="110px" src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/731a3d49-c8f3-449d-9e30-970cbca92d23" /></center>|<center><img width="110px" height="110px" src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/25d3181f-8992-4ae9-a8b7-d9a28e7271ba" /></center>|
-| Role    | <center>Team Leader<br> Frontend, DevOps</center>   | <center>Frontend, <br> DevOps</center>    | <center>Frontend</center> | <center>Backend,<br> DevOps</center> | <center>Backend</center> | <center>Frontend</center> | <center>Backend</center> |
-GitHub | <center>[@homebdy](https://github.com/homebdy)</center> | <center>[@AlgeMoya](https://github.com/AlgeMoya) </center>| <center>[@HaeunKim01](https://github.com/HaeunKim01) </center>|<center>[@josephuk77](https://github.com/josephuk77)</center> | <center>[@LeeTaek2T](https://github.com/LeeTaek2T) </center>| <center>[@V2LLAIN](https://github.com/V2LLAIN) </center>| <center>[@youngjin516](https://github.com/youngjin516)</center> |
 
