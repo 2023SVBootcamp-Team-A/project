@@ -515,7 +515,7 @@ def my_api_view(request):
 
 class TestServer(APIView):
     def get(self, request, novel_id):
-        data = NovelStory.objects.filter(novel_id=novel_id).values()
+        data = NovelStory.objects.filter(novel_id=novel_id).order_by('create_at').values()
         novel = Novel.objects.get(id=novel_id)
         res = {
             "novel_name": novel.novel_name,
