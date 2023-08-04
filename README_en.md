@@ -18,7 +18,7 @@ http://www.techeer-team-a.store/
 
 ## 📹 Demo Video
 Click to watch the Demo Video<br /><br />
-[![Video Label](http://img.youtube.com/vi/tLz3Q9irjgA/0.jpg)](https://youtu.be/tLz3Q9irjgA)
+[![Video Label](http://img.youtube.com/vi/-bl8gOl9nDA/0.jpg)](https://youtu.be/-bl8gOl9nDA)
 
 ## 📁 System Architecture
 <img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/8a6dc146-d11f-44a4-be31-1e6f98c344d8">
