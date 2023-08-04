@@ -27,6 +27,7 @@ http://www.techeer-team-a.store/
 ### 사용설명서
 준비물
 - OpenAI secret key ([발급받으러 가기(비용이 발생할 수 있음)](https://platform.openai.com/))
+- AWS S3 Bucket ([만들러 가기(비용이 발생할 수 있음)](https://aws.amazon.com/ko/s3/getting-started/))
 
 1. Docker를 시스템에 설치합니다.
 2. 아래의 shell 명령문을 똑같이 따라 칩니다.
@@ -100,6 +101,12 @@ DB_USER=myuser
 DB_PASSWORD=mypassword
 DB_HOST=db
 DB_PORT=5432
+AWS_ACCESS_KEY_ID=(여기에 AWS access key id 입력)
+AWS_SECRET_ACCESS_KEY=(여기에 AWS secret access key 입력)
+AWS_STORAGE_BUCKET_NAME=(여기에 AWS S3 Bucket name 입력)
+AWS_S3_REGION_NAME=(여기에 AWS region name 입력)
+AWS_S3_ENDPOINT_URL=(여기에 AWS S3 endpoint URL 입력)
+AWS_S3_DOWNLOAD_URL=(여기에 AWS S3 download URL 입력)
 SECRET_KEY=django-insecure-
 CORS_ORIGIN_WHITELIST=http://127.0.0.1:5173,http://13.125.48.224:5173,http://frontend:5173,http://13.125.48.224,http://www.techeer-team-a.store,http://www.techeer-team-a.store:5173,http://localhost:5173
 ALLOWED_HOSTS=backend,13.125.48.224,www.techeer-team-a.store,techeer-team-a.store,localhost,127.0.0.1
@@ -122,6 +129,12 @@ DB_USER=myuser
 DB_PASSWORD=mypassword
 DB_HOST=db
 DB_PORT=5432
+AWS_ACCESS_KEY_ID=(여기에 AWS access key id 입력)
+AWS_SECRET_ACCESS_KEY=(여기에 AWS secret access key 입력)
+AWS_STORAGE_BUCKET_NAME=(여기에 AWS S3 Bucket name 입력)
+AWS_S3_REGION_NAME=(여기에 AWS region name 입력)
+AWS_S3_ENDPOINT_URL=(여기에 AWS S3 endpoint URL 입력)
+AWS_S3_DOWNLOAD_URL=(여기에 AWS S3 download URL 입력)
 SECRET_KEY=django-insecure-(여기에 django secret key 입력)
 CORS_ORIGIN_WHITELIST=http://127.0.0.1:5173,http://13.125.48.224:5173,http://frontend:5173,http://13.125.48.224,http://www.techeer-team-a.store,http://www.techeer-team-a.store:5173,http://localhost:5173
 ALLOWED_HOSTS=backend,13.125.48.224,www.techeer-team-a.store,techeer-team-a.store,localhost,127.0.0.1
