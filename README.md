@@ -27,7 +27,6 @@ http://www.techeer-team-a.store/
 ### 사용설명서
 준비물
 - OpenAI secret key ([발급받으러 가기(비용이 발생할 수 있음)](https://platform.openai.com/))
-- django secret key ([발급 방법](https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/5c0e98cb-fad9-46c4-b0f3-95363cbb4dd6))
 
 1. Docker를 시스템에 설치합니다.
 2. 아래의 shell 명령문을 똑같이 따라 칩니다.
