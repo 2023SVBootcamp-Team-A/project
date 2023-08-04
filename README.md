@@ -1,4 +1,7 @@
-# MyW (Make your World) - 당신만의 이야기를 만들어 보세요!
+# :pushpin:  나만의 소설 만들기: Make your World 
+
+
+Make your World를 통해 여러분이 원하는 새로운 이야기를 소설로 만들어보세요! 
 
 <div align=center>
 <img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/e5b4c9b9-cdd1-4859-aa4b-60fc256cd804"/>
@@ -8,10 +11,6 @@ by Team-A (ChaG.P.T) (2023.06 ~ 2023.08)
 </div>
 
 ### [English Version](https://github.com/2023SVBootcamp-Team-A/project/blob/b6edd24334e1d8366e95945ecdda2353a8c17dbd/README_en.md)
-
-### 📕 당신이 만드는, 당신만의 색다른 새로운 이야기를 만들고 싶으시다면, 만들어 드리겠습니다!
-Make your World를 통해 여러분이 원하는 새로운 이야기를 소설로 만들어보세요! 사이트에 접속 후 원하는 방향의 관련 제시어들을 입력만 하고 순차적으로 진행을 하면, 최종적인 당신만의 소설책을 만들어 드립니다!
-
 - - - 
 
 ## Medium.com
@@ -20,10 +19,10 @@ Make your World를 통해 여러분이 원하는 새로운 이야기를 소설�
 ## Production
 http://www.techeer-team-a.store/
 
-## Demo Video (데모 업로드 후 수정 필요!)
+## 📹 Demo Video (데모 업로드 후 수정 필요!)
 [![Video Label](http://img.youtube.com/vi/OSPhfQPK0x8/0.jpg)](https://youtu.be/OSPhfQPK0x8)
 
-## System Architecture
+## 📁 System Architecture
 <img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/8a6dc146-d11f-44a4-be31-1e6f98c344d8">
 
 ## Installation (수정 필요!)
@@ -59,15 +58,17 @@ $ docker-compose -f docker-compose-dev.yml up -d
 
 - - - 
 
-## Features
+## :page_with_curl: Features
 
 <details>
-<summary><h3>소설 설정 작성</h3></summary>
+<summary><h3>소설 설정 입력</h3></summary>
 <img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/7c44a770-09e2-4022-8d34-2cf782d75633"/>
 <img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/50590bbc-2bcc-4fb4-b3b9-3cd255810787"/>
 <br />
 <br />
-만들 소설의 장르, 공간적 배경, 시대적 배경, 등장인물, 줄거리를 원하는 대로 선택하는 기능을 제공합니다. 기본 제공되는 선택지 외에도 사용자가 원하는 장르, 공간, 시대를 자유롭게 추가할 수 있습니다.
+만들 소설의 장르, 공간적 배경, 시대적 배경, 등장인물, 줄거리를 원하는 대로 선택하는 기능을 제공합니다. 
+
+ 기본 제공되는 선택지 외에도 사용자가 원하는 장르, 공간, 시대를 자유롭게 추가할 수 있습니다.
 </details>
 
 <details>
@@ -103,7 +104,7 @@ $ docker-compose -f docker-compose-dev.yml up -d
 </details>
 
 - - - 
-## Tech Stack
+## 🔌 Tech Stack
 <div align =center>
 
 Area| Tech Stack|
@@ -122,15 +123,23 @@ Area| Tech Stack|
 ## React Vite TypeScript
 <img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/3c1afbf5-fcd7-4af2-9ce2-4e2b4a03db2b"/>
 <br/>
-React 프레임워크를 사용함으로서 SPA(Single Page Application) 형식의 페이지를 만들었으며, 로딩 지연 없이 변화된 콘텐츠만을 표시하는 방법으로로 사용자 경험을 향상시켰습니다. 또한 정적 타입 언어인 TypeScript를 사용함으로서 컴파일 단계에서 에러를 빠르게 확인하고, 오류를 검색하는 시간을 줄이는 이점을 확보할 수 있었습니다. 또한 번들러로 ESModule 기반의 Vite를 사용하여 전체를 번들링하지 않고도 서버를 실행함으로서 개발 서버의 실행 속도를 향상시켰습니다.
+React 프레임워크를 사용함으로서 SPA(Single Page Application) 형식의 페이지를 만들었으며, 로딩 지연 없이 변화된 콘텐츠만을 표시하는 방법으로로 사용자 경험을 향상시켰습니다. 
+
+또한 정적 타입 언어인 TypeScript를 사용함으로서 컴파일 단계에서 에러를 빠르게 확인하고, 오류를 검색하는 시간을 줄이는 이점을 확보할 수 있었습니다. 
+
+또한 번들러로 ESModule 기반의 Vite를 사용하여 전체를 번들링하지 않고도 서버를 실행함으로서 개발 서버의 실행 속도를 향상시켰습니다.
 
 
 ## Tailwind CSS
-Tailwind CSS를 사용함으로서 HTML 상에서 클래스명을 설정하는 것만으로 미리 정의된 스타일을 적용할 수 있습니다. 덕분에 네이밍 규칙을 통일하고 구조를 문서화하는 시간과 반응형 레이아웃 설정에 들이는 노력을 덜 수 있었으며, 일부 컴포넌트의 경우 별도의 CSS 파일 없이 스타일링을 적용할 수 있었습니다.
+Tailwind CSS를 사용함으로서 HTML 상에서 클래스명을 설정하는 것만으로 미리 정의된 스타일을 적용할 수 있습니다. 
+
+덕분에 네이밍 규칙을 통일하고 구조를 문서화하는 시간과 반응형 레이아웃 설정에 들이는 노력을 덜 수 있었으며, 일부 컴포넌트의 경우 별도의 CSS 파일 없이 스타일링을 적용할 수 있었습니다.
 
 ## Monitoring
 <img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/fdfe912a-40a2-4e00-846a-5c4065333101"/><br/>
-프론트엔드 에러 모니터링 및 트래킹 툴인 Sentry를 사용하여 에러를 추적할 수 있게 하였습니다. 에러의 종류, 발생 위치 등에 대한 정보를 제공하므로 원인을 찾는 데 들이는 시간을 덜 수 있으며, 에러 발생 즉시 메일 알림을 받아 빠르게 확인할 수 있습니다.
+프론트엔드 에러 모니터링 및 트래킹 툴인 Sentry를 사용하여 에러를 추적할 수 있게 하였습니다. 
+
+에러의 종류, 발생 위치 등에 대한 정보를 제공하므로 원인을 찾는 데 들이는 시간을 덜 수 있으며, 에러 발생 즉시 메일 알림을 받아 빠르게 확인할 수 있습니다.
 </details>  
 
 <details> 
@@ -139,7 +148,6 @@ Tailwind CSS를 사용함으로서 HTML 상에서 클래스명을 설정하는 �
 ## API
 ## Swagger
 <img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/b65939a0-933b-488b-b16a-ad6de76d13d4"/>
-Swagger를 통해 API 명세서를 작성하였습니다.
 </div>
 
 
@@ -159,7 +167,11 @@ Grafana + Prometheus, ELK
 |-----|-----|
 <img alt="스크린샷 2023-08-04 오전 12 15 41" src="https://github.com/2023SVBootcamp-Team-A/project/assets/69853298/bb85b7d4-82d1-4e0a-91f2-c16ee72936de" width="500px" height="300px">|<img alt="스크린샷 2023-08-04 오전 12 07 22" src="https://github.com/2023SVBootcamp-Team-A/project/assets/69853298/b7408adf-c067-44ba-95a3-a19a05bf435e" width="500px" height="300px">
 
-Django에서 Prometheus를 통해 request,response에 대한 정보를 수집을 한 후 Grafana를 통해 시각화 하였습니다. Slack과 Grafana를 연동하여 설정한 CPU 사용량 범위를 벗어날 경우 Slack에 경고 알림이 오도록 구현하였습니다. CAdvisor를 활용해 각 컨테이너의 cpu, memory사용량등을 알수 있게 하였고, 컨테이너별 네트워크 사용량을 알 수 있게하였습니다. node exporter를 통해 서버의 메모리, cpu 사용량, network traffic 등을 알 수 있게 하였습니다. ELK 스택을 활용하여 nginx log를 모니터링하고, 시간대, 사이트별 응답코드, 응답코드 비율등을 모니터링 할 수 있게 설계하였습니다.
+1. Django에서 Prometheus를 통해 request,response에 대한 정보를 수집을 한 후 Grafana를 통해 시각화 하였습니다. 
+2. Slack과 Grafana를 연동하여 설정한 CPU 사용량 범위를 벗어날 경우 Slack에 경고 알림이 오도록 구현하였습니다.
+3. CAdvisor를 활용해 각 컨테이너의 cpu, memory사용량등을 알수 있게 하였고, 컨테이너별 네트워크 사용량을 알 수 있게하였습니다.
+4. node exporter를 통해 서버의 메모리, cpu 사용량, network traffic 등을 알 수 있게 하였습니다. 
+5. ELK 스택을 활용하여 nginx log를 모니터링하고, 시간대, 사이트별 응답코드, 응답코드 비율등을 모니터링 할 수 있게 설계하였습니다.
 
 ## Github Actions
 Github Actions를 통해 CI/CD 파이프라인을 구축하여 코드 변경사항을 서버에 원할하게 반영할 수 있게 하였습니다.
