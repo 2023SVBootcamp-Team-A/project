@@ -30,7 +30,7 @@ http://www.techeer-team-a.store/
 - django secret key ([발급 방법](https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/5c0e98cb-fad9-46c4-b0f3-95363cbb4dd6))
 
 1. Docker를 시스템에 설치합니다.
-2. 아래의 shell을 따라 진행합니다.
+2. 아래의 shell 명령문을 똑같이 따라 칩니다.
 ```shell
 $ git clone https://github.com/2023SVBootcamp-Team-A/project.git
 ```
@@ -55,7 +55,7 @@ SECRET_KEY=(여기에 django secret key 입력)
 CORS_ORIGIN_WHITELIST=http://127.0.0.1:5173,http://13.125.48.224:5173,http://frontend:5173,http://13.125.48.224,http://www.techeer-team-a.store,http://www.techeer-team-a.store:5173,http://localhost:5173
 ALLOWED_HOSTS=backend,13.125.48.224,www.techeer-team-a.store,techeer-team-a.store,localhost,127.0.0.1
 ```
-2. 아래의 shell을 따라 진행합니다.
+4. 아래의 shell 명령문을 똑같이 따라 칩니다.
 ```shell
 $ cd project
 $ docker compose up -d --build
