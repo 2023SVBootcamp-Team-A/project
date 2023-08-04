@@ -25,36 +25,47 @@ http://www.techeer-team-a.store/
 ## 📁 System Architecture
 <img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/8a6dc146-d11f-44a4-be31-1e6f98c344d8">
 
-## Installation (수정 필요!)
+## 🛠 Installation
 
-### 서버 시작하기
+### Set development server
+Requirement
+- Your own django secret key ([Get your key from here(may incur costs)](https://platform.openai.com/))
+- Your own django secret key ([How to get](https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/5c0e98cb-fad9-46c4-b0f3-95363cbb4dd6))
 
-Backend .env file
-
-- config/.env
-
-```
-DJANGO_SECRET_KEY=
-DJANGO_PASSWORD=
-```
-
+1. Install Docker on your system
+2. follow the shell command below
 ```shell
-$ git clone https://github.com/SV-Team-B/docker.git
-$ git submodule update --recursive --remote --init
-$ cd frontend
-$ yarn
-$ yarn build
-$ cd ..
-$ docker-compose up --build -d
+$ git clone https://github.com/2023SVBootcamp-Team-A/project.git
+$ cd project
+$ docker compose up -d --build
 ```
-
-### 개발 서버 시작하기
-
+3. make the .env file at right location
+- /.env (Directory where docker-compose.yml is located)
+```
+DEBUG=True
+GF_USER=team-a
+GF_PASSWORD=team-a
+```
+- /backend/config/.env
+```
+OPENAI_SECRET_KEY=(input your OpenAI secret key here)
+DEBUG=True
+DB_ENGINE=django.db.backends.postgresql
+DB_NAME=mydatabase
+DB_USER=myuser
+DB_PASSWORD=mypassword
+DB_HOST=db
+DB_PORT=5432
+SECRET_KEY=(input your django secret key here)
+CORS_ORIGIN_WHITELIST=http://127.0.0.1:5173,http://13.125.48.224:5173,http://frontend:5173,http://13.125.48.224,http://www.techeer-team-a.store,http://www.techeer-team-a.store:5173,http://localhost:5173
+ALLOWED_HOSTS=backend,13.125.48.224,www.techeer-team-a.store,techeer-team-a.store,localhost,127.0.0.1
+```
+4. follow the shell command below
 ```shell
-$ git clone https://github.com/SV-Team-B/docker.git
-$ git submodule update --recursive --remote --init
-$ docker-compose -f docker-compose-dev.yml up -d
+$ cd project
+$ docker compose up -d --build
 ```
+5. Check the docker container runs correctly at docker desktop, then enjoy!
 
 - - - 
 
@@ -178,7 +189,7 @@ Github Actions를 통해 CI/CD 파이프라인을 구축하여 코드 변경사�
 </details>
 
 - - - 
-## Members
+## 👪 Members
 | Name    | <center>김연진</center>|<center>강석규</center> |<center>김하은</center> | 
 | ------- | --------------------------------------------- | ------------------------------------ | --------------------------------------------- | 
 | Profile | <center><img width="110px" height="110px" src="https://avatars.githubusercontent.com/u/86517634?v=4" /></center>|<center><img width="110px" height="110px" src="https://avatars.githubusercontent.com/u/8746067?v=4" /></center>|<center><img width="110px" height="110px" src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/e1998a20-40e0-4bc3-a242-14161ac453f3" /></center>|
