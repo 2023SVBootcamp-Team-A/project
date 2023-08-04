@@ -101,8 +101,7 @@ DB_USER=myuser
 DB_PASSWORD=mypassword
 DB_HOST=db
 DB_PORT=5432
-SECRET_KEY=django-insecure-(여기에 django secret key 입력)
-SECRET_KEY=
+SECRET_KEY=django-insecure-
 CORS_ORIGIN_WHITELIST=http://127.0.0.1:5173,http://13.125.48.224:5173,http://frontend:5173,http://13.125.48.224,http://www.techeer-team-a.store,http://www.techeer-team-a.store:5173,http://localhost:5173
 ALLOWED_HOSTS=backend,13.125.48.224,www.techeer-team-a.store,techeer-team-a.store,localhost,127.0.0.1
 ```
@@ -112,7 +111,28 @@ $ cd project
 $ docker compose up -d --build
 ```
 5. Docker Desktop에서 Docker Container들이 잘 실행되고 있는지 확인합니다.
-6. 그 상태에서 'localhost:5173'에 접속하면 사용할 수 있습니다. 재밌는 시간 되길 바랍니다!
+6. Docker Desktop에서 backend container를 선택한 다음, django secret key를 확인합니다. ([확인 방법](https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/5c0e98cb-fad9-46c4-b0f3-95363cbb4dd6))
+7. 확인한 django secret key를 .env 파일에 추가합니다.
+- /backend/config/.env
+```
+OPENAI_SECRET_KEY=(여기에 OpenAI secret key 입력)
+DEBUG=True
+DB_ENGINE=django.db.backends.postgresql
+DB_NAME=mydatabase
+DB_USER=myuser
+DB_PASSWORD=mypassword
+DB_HOST=db
+DB_PORT=5432
+SECRET_KEY=django-insecure-(여기에 django secret key 입력)
+CORS_ORIGIN_WHITELIST=http://127.0.0.1:5173,http://13.125.48.224:5173,http://frontend:5173,http://13.125.48.224,http://www.techeer-team-a.store,http://www.techeer-team-a.store:5173,http://localhost:5173
+ALLOWED_HOSTS=backend,13.125.48.224,www.techeer-team-a.store,techeer-team-a.store,localhost,127.0.0.1
+```
+8. 아래의 shell 명령문을 똑같이 따라 칩니다.
+```shell
+$ docker compose up -d --build
+```
+9. Docker Desktop에서 Docker Container들이 잘 실행되고 있는지 한 번 더 확인합니다.
+10. 그 상태에서 'localhost:5173'에 접속하면 사용할 수 있습니다. 재밌는 시간 되길 바랍니다!
 
 - - - 
 
