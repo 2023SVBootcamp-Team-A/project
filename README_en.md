@@ -1,5 +1,5 @@
-# MyW (Make your World)
-
+# :pushpin: MyW (Make your World)
+Create the your own novel is that easy with our MyW. Just select the keyword and write simple plot, then proceed sequentially, and you will get your own novel!
 <div align=center>
 <img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/e5b4c9b9-cdd1-4859-aa4b-60fc256cd804"/>
 </div>
@@ -7,9 +7,7 @@
 by Team-A (ChaG.P.T) (2023.06 ~ 2023.08)
 </div>
 
-### 📕 The new story complety inspired by you.
-Create the your own novel is that easy with our MyW. Just select the keyword and write simple plot, then proceed sequentially, and you will get your own novel!
-
+### [Korean Version](https://github.com/2023SVBootcamp-Team-A/project/blob/b6edd24334e1d8366e95945ecdda2353a8c17dbd/README.md)
 - - - 
 
 ## Medium.com
@@ -18,46 +16,56 @@ Create the your own novel is that easy with our MyW. Just select the keyword and
 ## Production
 http://www.techeer-team-a.store/
 
-## Demo Video (데모 업로드 후 수정 필요!)
+## 📹 Demo Video (데모 업로드 후 수정 필요!)
 [![Video Label](http://img.youtube.com/vi/OSPhfQPK0x8/0.jpg)](https://youtu.be/OSPhfQPK0x8)
 
-## System Architecture
+## 📁 System Architecture
 <img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/8a6dc146-d11f-44a4-be31-1e6f98c344d8">
 
-## Installation (수정 필요!)
+## 🛠 Installation
 
-### How to start the server
+### How to start the server
+Requirement
+- Your own OpenAI secret key ([Get your key from here(may incur costs)](https://platform.openai.com/))
+- Your own django secret key ([How to get](https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/5c0e98cb-fad9-46c4-b0f3-95363cbb4dd6))
 
-Backend .env file
-
-- config/.env
-
-```
-DJANGO_SECRET_KEY=
-DJANGO_PASSWORD=
-```
-
+1. Install Docker on your system
+2. follow the shell command below
 ```shell
-$ git clone https://github.com/SV-Team-B/docker.git
-$ git submodule update --recursive --remote --init
-$ cd frontend
-$ yarn
-$ yarn build
-$ cd ..
-$ docker-compose up --build -d
+$ git clone https://github.com/2023SVBootcamp-Team-A/project.git
 ```
-
-### Set dev server
-
+3. make the .env file at right location
+- /.env (Directory where docker-compose.yml is located)
+```
+DEBUG=True
+GF_USER=team-a
+GF_PASSWORD=team-a
+```
+- /backend/config/.env
+```
+OPENAI_SECRET_KEY=(input your OpenAI secret key here)
+DEBUG=True
+DB_ENGINE=django.db.backends.postgresql
+DB_NAME=mydatabase
+DB_USER=myuser
+DB_PASSWORD=mypassword
+DB_HOST=db
+DB_PORT=5432
+SECRET_KEY=(input your django secret key here)
+CORS_ORIGIN_WHITELIST=http://127.0.0.1:5173,http://13.125.48.224:5173,http://frontend:5173,http://13.125.48.224,http://www.techeer-team-a.store,http://www.techeer-team-a.store:5173,http://localhost:5173
+ALLOWED_HOSTS=backend,13.125.48.224,www.techeer-team-a.store,techeer-team-a.store,localhost,127.0.0.1
+```
+4. follow the shell command below
 ```shell
-$ git clone https://github.com/SV-Team-B/docker.git
-$ git submodule update --recursive --remote --init
-$ docker-compose -f docker-compose-dev.yml up -d
+$ cd project
+$ docker compose up -d --build
 ```
+5. Check the Docker Containers running correctly at Docker Desktop,
+6. Access to 'localhost:5173' on your web browser. then, enjoy!
 
 - - - 
 
-## Features
+## :page_with_curl: Features
 
 <details>
 <summary><h3>Setting the background for the novel</h3></summary>
@@ -101,7 +109,7 @@ You can also check the entire list of novels written by all users, not just the 
 </details>
 
 - - - 
-## Tech Stack
+## 🔌 Tech Stack
 <div align =center>
 
 Area| Tech Stack|
@@ -165,7 +173,7 @@ By building a CI/CD pipeline through Github Actions, code changes can be smoothl
 </details>
 
 - - - 
-## Members
+## 👪 Members
 | Name    | <center>Yeonjin Kim</center>|<center>Seokkyoo Kang</center> |<center>Haeun Kim</center> | 
 | ------- | --------------------------------------------- | ------------------------------------ | --------------------------------------------- | 
 | Profile | <center><img width="110px" height="110px" src="https://avatars.githubusercontent.com/u/86517634?v=4" /></center>|<center><img width="110px" height="110px" src="https://avatars.githubusercontent.com/u/8746067?v=4" /></center>|<center><img width="110px" height="110px" src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/e1998a20-40e0-4bc3-a242-14161ac453f3" /></center>|
