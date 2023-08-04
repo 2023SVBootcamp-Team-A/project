@@ -17,7 +17,8 @@ by Team-A (ChaG.P.T) (2023.06 ~ 2023.08)
 http://www.techeer-team-a.store/
 
 ## 📹 Demo Video (데모 업로드 후 수정 필요!)
-[![Video Label](http://img.youtube.com/vi/OSPhfQPK0x8/0.jpg)](https://youtu.be/OSPhfQPK0x8)
+Click to watch the Demo Video
+[![Video Label](http://img.youtube.com/vi/tLz3Q9irjgA/0.jpg)](https://youtu.be/tLz3Q9irjgA)
 
 ## 📁 System Architecture
 <img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/8a6dc146-d11f-44a4-be31-1e6f98c344d8">
