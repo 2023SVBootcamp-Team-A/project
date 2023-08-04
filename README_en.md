@@ -27,7 +27,6 @@ http://www.techeer-team-a.store/
 ### How to start the server
 Requirement
 - Your own OpenAI secret key ([Get your key from here(may incur costs)](https://platform.openai.com/))
-- Your own django secret key 
 
 1. Install Docker on your system
 2. follow the shell command below
