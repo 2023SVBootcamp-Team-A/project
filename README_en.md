@@ -17,7 +17,7 @@ by Team-A (ChaG.P.T) (2023.06 ~ 2023.08)
 http://www.techeer-team-a.store/
 
 ## 📹 Demo Video
-Click to watch the Demo Video
+Click to watch the Demo Video<br /><br />
 [![Video Label](http://img.youtube.com/vi/tLz3Q9irjgA/0.jpg)](https://youtu.be/tLz3Q9irjgA)
 
 ## 📁 System Architecture
