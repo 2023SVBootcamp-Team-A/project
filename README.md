@@ -1,8 +1,5 @@
 # :pushpin:  나만의 소설 만들기: Make your World 
-
-
 Make your World를 통해 여러분이 원하는 새로운 이야기를 소설로 만들어보세요! 
-
 <div align=center>
 <img src="https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/e5b4c9b9-cdd1-4859-aa4b-60fc256cd804"/>
 </div>
@@ -27,20 +24,18 @@ http://www.techeer-team-a.store/
 
 ## 🛠 Installation
 
-### Set development server
-Requirement
-- Your own django secret key ([Get your key from here(may incur costs)](https://platform.openai.com/))
-- Your own django secret key ([How to get](https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/5c0e98cb-fad9-46c4-b0f3-95363cbb4dd6))
+### 사용설명서
+준비물
+- OpenAI secret key ([발급받으러 가기(비용이 발생할 수 있음)](https://platform.openai.com/))
+- django secret key ([발급 방법](https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/5c0e98cb-fad9-46c4-b0f3-95363cbb4dd6))
 
-1. Install Docker on your system
-2. follow the shell command below
+1. Docker를 시스템에 설치합니다.
+2. 아래의 shell을 따라 진행합니다.
 ```shell
 $ git clone https://github.com/2023SVBootcamp-Team-A/project.git
-$ cd project
-$ docker compose up -d --build
 ```
-3. make the .env file at right location
-- /.env (Directory where docker-compose.yml is located)
+3. .env 파일을 알맞은 위치에 작성합니다.
+- /.env (docker-compose.yml 파일과 같은 디렉토리)
 ```
 DEBUG=True
 GF_USER=team-a
@@ -48,7 +43,7 @@ GF_PASSWORD=team-a
 ```
 - /backend/config/.env
 ```
-OPENAI_SECRET_KEY=(input your OpenAI secret key here)
+OPENAI_SECRET_KEY=(여기에 OpenAI secret key 입력)
 DEBUG=True
 DB_ENGINE=django.db.backends.postgresql
 DB_NAME=mydatabase
@@ -56,16 +51,17 @@ DB_USER=myuser
 DB_PASSWORD=mypassword
 DB_HOST=db
 DB_PORT=5432
-SECRET_KEY=(input your django secret key here)
+SECRET_KEY=(여기에 django secret key 입력)
 CORS_ORIGIN_WHITELIST=http://127.0.0.1:5173,http://13.125.48.224:5173,http://frontend:5173,http://13.125.48.224,http://www.techeer-team-a.store,http://www.techeer-team-a.store:5173,http://localhost:5173
 ALLOWED_HOSTS=backend,13.125.48.224,www.techeer-team-a.store,techeer-team-a.store,localhost,127.0.0.1
 ```
-4. follow the shell command below
+2. 아래의 shell을 따라 진행합니다.
 ```shell
 $ cd project
 $ docker compose up -d --build
 ```
-5. Check the docker container runs correctly at docker desktop, then enjoy!
+5. Docker Desktop에서 Docker Container들이 잘 실행되고 있는지 확인합니다.
+6. 그 상태에서 'localhost:5173'에 접속하면 사용할 수 있습니다. 재밌는 시간 되길 바랍니다!
 
 - - - 
 
