@@ -13,8 +13,6 @@ export default function ResultPage() {
     novel = location.state as ResultPageProps;
   }
 
-  //   console.log(novel?.novel_id);
-
   return (
     <div className="w-screen h-screen">
       <FlipBook novel_id={novel?.novel_id} />
