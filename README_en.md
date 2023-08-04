@@ -27,7 +27,7 @@ http://www.techeer-team-a.store/
 ### How to start the server
 Requirement
 - Your own OpenAI secret key ([Get your key from here(may incur costs)](https://platform.openai.com/))
-- Your own django secret key ([How to get](https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/5c0e98cb-fad9-46c4-b0f3-95363cbb4dd6))
+- Your own django secret key 
 
 1. Install Docker on your system
 2. follow the shell command below
@@ -101,7 +101,7 @@ DB_USER=myuser
 DB_PASSWORD=mypassword
 DB_HOST=db
 DB_PORT=5432
-SECRET_KEY=django-insecure-(input your django secret key here)
+SECRET_KEY=django-insecure-
 CORS_ORIGIN_WHITELIST=http://127.0.0.1:5173,http://13.125.48.224:5173,http://frontend:5173,http://13.125.48.224,http://www.techeer-team-a.store,http://www.techeer-team-a.store:5173,http://localhost:5173
 ALLOWED_HOSTS=backend,13.125.48.224,www.techeer-team-a.store,techeer-team-a.store,localhost,127.0.0.1
 ```
@@ -110,8 +110,29 @@ ALLOWED_HOSTS=backend,13.125.48.224,www.techeer-team-a.store,techeer-team-a.stor
 $ cd project
 $ docker compose up -d --build
 ```
-5. Check the Docker Containers running correctly at Docker Desktop,
-6. Access to 'localhost:5173' on your web browser. then, enjoy!
+5. Check the Docker Containers running correctly at Docker Desktop.
+6. Go to the backend container on Docker Desktop, then get your django secret key. ([How to get](https://github.com/2023SVBootcamp-Team-A/project/assets/8746067/5c0e98cb-fad9-46c4-b0f3-95363cbb4dd6))
+7. Add your django secret key to .env file
+- /backend/config/.env
+```
+OPENAI_SECRET_KEY=(input your OpenAI secret key here)
+DEBUG=True
+DB_ENGINE=django.db.backends.postgresql
+DB_NAME=mydatabase
+DB_USER=myuser
+DB_PASSWORD=mypassword
+DB_HOST=db
+DB_PORT=5432
+SECRET_KEY=django-insecure-(input your django secret key here)
+CORS_ORIGIN_WHITELIST=http://127.0.0.1:5173,http://13.125.48.224:5173,http://frontend:5173,http://13.125.48.224,http://www.techeer-team-a.store,http://www.techeer-team-a.store:5173,http://localhost:5173
+ALLOWED_HOSTS=backend,13.125.48.224,www.techeer-team-a.store,techeer-team-a.store,localhost,127.0.0.1
+```
+8. follow the shell command below
+```shell
+$ docker compose up -d --build
+```
+9. Check the Docker Containers running correctly at Docker Desktop once again.
+10. Access to 'localhost:5173' on your web browser. then, enjoy!
 
 - - - 
 
