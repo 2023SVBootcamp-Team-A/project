@@ -106,7 +106,6 @@ def mynovel_list(request):
                 {"error": "Invalid page number"}, status=status.HTTP_400_BAD_REQUEST
             )
 
-
 @swagger_auto_schema(
     method="get",
     manual_parameters=[
@@ -224,7 +223,7 @@ class NovelView(APIView):
 
                 for line in answer.split("\n"):
                     line = line.strip()
-                    if line.startswith("A") or line.startswith("1"):
+                    if line.startswith("A") or line.startswith("1") or line.startswith("("):
                         parsing_choices = True
                         choices.append(line[2:])
                     elif parsing_choices:
@@ -240,14 +239,13 @@ class NovelView(APIView):
             'message': 'No parsed result found for the given novel_id.'
         })
     def post(self, request, novel_id):
-        print(request.data)
         input_data = request.data.get('input_field')
         if (input_data == "end"):
             input_data = "여기서 소설 작성을 멈추고 결말을 작성해주세요."
         print(input_data)
         chat_log = ChatLog(novel_id=novel_id, role="user", chat_log=input_data)
         chat_log.save()
-        response_message = send_message(input_data, novel_id)
+        response_message = send_message(novel_id)
         print(send_message)
         # 응답 본문에 챗봇의 응답 포함
         response_data = {
@@ -264,49 +262,6 @@ def chat(request):
     response_message = send_message(message)  # novel_id
     return HttpResponse(response_message)
 
-
-@csrf_exempt
-def load_chat_logs(novel_id):
-    chat_logs = ChatLog.objects.filter(novel_id=novel_id, role="assistant").last()
-    print(chat_logs)
-    return chat_logs
-
-
-@csrf_exempt
-def chat_with_history(request, novel_id):
-    message = request.POST.get("message", "")
-
-    chat_logs = load_chat_logs(novel_id)
-    messages = [
-        {"role": "system", "content": "You are a helpful assistant."},
-    ]
-    for log in chat_logs:
-        if log.role == "user":
-            messages.append({"role": "user", "content": log.chat_log})
-        elif log.role == "assistant":
-            messages.append({"role": "assistant", "content": log.chat_log})
-
-    messages.append({"role": "user", "content": message})
-
-    response_message = send_message(messages, novel_id)  # novel_id를 send_message 함수로 전달
-
-    message_content = response_message['response_message']  # 챗봇의 응답 메시지 가져오기
-    image_url = response_message['image_url']
-
-
-    for log in messages:
-        if log["role"] == "user":
-            chat_log = ChatLog(novel_id=novel_id, role="user", chat_log=log["content"])
-        elif log["role"] == "assistant":
-            chat_log = ChatLog(
-                novel_id=novel_id, role="assistant", chat_log=log["content"]
-            )
-        chat_log.save()
-
-    processed_data = process_data(message_content)
-    return render(request, 'chat_with_history.html', {'result': processed_data, 'response_message': message_content, 'image_url': image_url})
-  
-
 @csrf_exempt
 def load_chat_logs(novel_id):
     chat_logs = ChatLog.objects.filter(novel_id=novel_id).order_by("create_at")
@@ -315,7 +270,7 @@ def load_chat_logs(novel_id):
 
 # send_message 함수는 ChatGPT API를 사용하여 메시지를 보내고, 챗봇의 응답을 반환
 @csrf_exempt
-def send_message(message, novel_id):  # novel_id를 매개변수로 추가
+def send_message(novel_id):  # novel_id를 매개변수로 추가
     url = "https://api.openai.com/v1/chat/completions"
     headers = {
         "Authorization": f'Bearer {os.getenv("OPENAI_SECRET_KEY")}',
@@ -333,9 +288,10 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
         'After the user makes a choice, do not reveal their selection again.', #사용자가 선택한 후에는 선택한 항목을 다시 표시하지 않습니다
         "When writing a novel, please include a description of the character's conversation or situation",
         'Write the title of the novel at the start of the novel',#소설의 제목은 소설이 시작 될때 작성해줘
-        'When you give a title to a novel, add "Title:"', #소설의 제목을 줄때 "Title: " 을 붙여서 줘
         "Let's capitalize on the choice in English", #선택지를 선택하는것은 영어 대문자로 하자
         "Please don't let the answers in gpt overlap", #gpt의 답변이 중복되지 않게 해줘
+        'Please leave a space before the English capital letters'
+        'You have at least three choices'
 
     ]
 
@@ -346,57 +302,10 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
     ]
 
     novel_instance = Novel.objects.get(id=novel_id)
-    characters = novel_instance.novel_character.all()
-    backgrounds = novel_instance.novel_background.all()
-
-    # Append character data to messages
-    for character in characters:
-        character_data = {
-            "role": "assistant",
-            "content": f"Character Name: {character.name}, Personality: {character.personality}",
-        }
-        messages.append(character_data)
-
-    # Append background data to messages
-    for background in backgrounds:
-        background_data = {
-            "role": "assistant",
-            "content": f"Genre: {background.genre}, Time Period: {background.time_period}, Time Projection: {background.time_projection}, Summary: {background.summary}",
-        }
-        messages.append(background_data) 
         
     for log in chat_logs:
         messages.append({"role": log.role, "content": log.chat_log})
-
-    if len(messages) == 12:
-        messages.append({'role': 'user', 'content': message})
-
-    novel_instance = Novel.objects.get(id=novel_id)
-    characters = novel_instance.novel_character.all()
-    backgrounds = novel_instance.novel_background.all()
-
-    for character in characters:
-        character_data = {
-            "role": "assistant",
-            "content": f"Character Name: {character.name}, Personality: {character.personality}",
-        }
-        messages.append(character_data)
-
-    # Append background data to messages
-    for background in backgrounds:
-        background_data = {
-            "role": "assistant",
-            "content": f"Genre: {background.genre}, Time Period: {background.time_period}, Time Projection: {background.time_projection}, Summary: {background.summary}",
-        }
-        messages.append(background_data)
-
-    for log in chat_logs:
-        messages.append({"role": log.role, "content": log.chat_log})
-    if len(messages) == 1:
-        messages.append({'role': 'user', 'content': message}) 
     print(messages)
-    
-
     data = {"model": "gpt-3.5-turbo", "messages": messages, "temperature": 1.0}
     try:
         response = requests.post(url, headers=headers, json=data)
@@ -419,7 +328,6 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
 
         if answer.startswith('A') or answer.startswith(' A'):
             answer = answer[2:]
-        print(answer)
         
         chat_log = ChatLog(novel_id=novel_id, role='assistant', chat_log=answer)
         chat_log.save()
@@ -440,8 +348,6 @@ def send_message(message, novel_id):  # novel_id를 매개변수로 추가
             novel_instance.save()
         else:
             print("Data already exists in the novel. Image URL not added.")
-
-        print(messages)
         return 200
     
     except requests.exceptions.RequestException as e:
@@ -483,18 +389,20 @@ class init_setting_APIView(APIView):
                         status=400,
                     )
             response_data = {"novel": novel_instance.id}
-            message = getFirstQuestion(
-                data["genre"],
-                data["time_period"],
-                data["time_projection"],
-                data["summary"],
-                data["character"],
-            )
-            send_message(message, novel_instance.id)
+            background = ""
+            background += f"Genre: {data['genre'][0]}, Time Period: {data['time_period'][0]}, Time Projection: {data['time_projection'][0]}, Summary: {data['summary']}"
+            ChatLog(novel_id=novel_instance.id, role="assistant", chat_log=background).save()
+            
+            characters = data["character"]
+            character_message = ""
+            for i in range(len(data["character"])):
+                message = f"Character Name: {characters[i]['name']} / Personality: {characters[i]['personality']}"
+                ChatLog(novel_id=novel_instance.id, role="assistant", chat_log=message).save()
+
+            send_message(novel_instance.id)
             return Response(response_data, status=201)
         else:
             return Response({"error": novel_serializer.errors}, status=400)
-
 
 def dalleIMG(query):
     OPENAI_API_KEY = os.getenv("OPENAI_SECRET_KEY")
@@ -576,7 +484,6 @@ def dalleIMG(query):
 
     return image_s3_url
 
-
 def save_image_to_s3(image, bucket_name, file_name):
     try:
         # S3에 이미지 업로드
@@ -608,7 +515,7 @@ def my_api_view(request):
 
 class TestServer(APIView):
     def get(self, request, novel_id):
-        data = NovelStory.objects.filter(novel_id=novel_id).values()
+        data = NovelStory.objects.filter(novel_id=novel_id).order_by('create_at').values()
         novel = Novel.objects.get(id=novel_id)
         res = {
             "novel_name": novel.novel_name,
