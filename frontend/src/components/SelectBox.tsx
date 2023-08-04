@@ -18,7 +18,7 @@ export default function SelectBox({seq, question, end, novel_id}: SelectBoxProps
 
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    const url = "http://localhost:8000/api/v1/novels/"+novel_id
+    const url = "http://www.techeer-team-a.store:8000/api/v1/novels/"+novel_id
     const PostResponse = async () => {
         setLoading(true);
         try {

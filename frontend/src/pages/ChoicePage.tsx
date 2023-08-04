@@ -15,7 +15,7 @@ export default function ChociePage() {
     const [resposeData, setResponseData] = useState<StoryResponse>();
     const location = useLocation();
     const novel_id = location.state.novel;
-    const url = 'http://localhost:8000/api/v1/novels/'+ novel_id
+    const url = 'http://www.techeer-team-a.store:8000/api/v1/novels/'+ novel_id
     const GetData = async () => {
         try {
             const response = await axios.get<StoryResponse>(url, {
