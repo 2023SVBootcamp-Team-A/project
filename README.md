@@ -101,7 +101,8 @@ DB_USER=myuser
 DB_PASSWORD=mypassword
 DB_HOST=db
 DB_PORT=5432
-SECRET_KEY=(여기에 django secret key 입력)
+SECRET_KEY=django-insecure-(여기에 django secret key 입력)
+SECRET_KEY=
 CORS_ORIGIN_WHITELIST=http://127.0.0.1:5173,http://13.125.48.224:5173,http://frontend:5173,http://13.125.48.224,http://www.techeer-team-a.store,http://www.techeer-team-a.store:5173,http://localhost:5173
 ALLOWED_HOSTS=backend,13.125.48.224,www.techeer-team-a.store,techeer-team-a.store,localhost,127.0.0.1
 ```
