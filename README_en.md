@@ -27,6 +27,7 @@ http://www.techeer-team-a.store/
 ### How to start the server
 Requirement
 - Your own OpenAI secret key ([Get your key from here(may incur costs)](https://platform.openai.com/))
+- Your own AWS S3 Bucket ([Get your AWS S3 Bucket from here(may incur costs)](https://aws.amazon.com/ko/s3/getting-started/))
 
 1. Install Docker on your system
 2. follow the shell command below
@@ -100,6 +101,12 @@ DB_USER=myuser
 DB_PASSWORD=mypassword
 DB_HOST=db
 DB_PORT=5432
+AWS_ACCESS_KEY_ID=(input your AWS access key id here)
+AWS_SECRET_ACCESS_KEY=(input your AWS secret access key here)
+AWS_STORAGE_BUCKET_NAME=(input your AWS S3 Bucket name here)
+AWS_S3_REGION_NAME=(input your AWS region name here)
+AWS_S3_ENDPOINT_URL=(input your AWS S3 endpoint URL here)
+AWS_S3_DOWNLOAD_URL=(input your AWS S3 download URL here)
 SECRET_KEY=django-insecure-
 CORS_ORIGIN_WHITELIST=http://127.0.0.1:5173,http://13.125.48.224:5173,http://frontend:5173,http://13.125.48.224,http://www.techeer-team-a.store,http://www.techeer-team-a.store:5173,http://localhost:5173
 ALLOWED_HOSTS=backend,13.125.48.224,www.techeer-team-a.store,techeer-team-a.store,localhost,127.0.0.1
@@ -122,6 +129,12 @@ DB_USER=myuser
 DB_PASSWORD=mypassword
 DB_HOST=db
 DB_PORT=5432
+AWS_ACCESS_KEY_ID=(input your AWS access key id here)
+AWS_SECRET_ACCESS_KEY=(input your AWS secret access key here)
+AWS_STORAGE_BUCKET_NAME=(input your AWS S3 Bucket name here)
+AWS_S3_REGION_NAME=(input your AWS region name here)
+AWS_S3_ENDPOINT_URL=(input your AWS S3 endpoint URL here)
+AWS_S3_DOWNLOAD_URL=(input your AWS S3 download URL here)
 SECRET_KEY=django-insecure-(input your django secret key here)
 CORS_ORIGIN_WHITELIST=http://127.0.0.1:5173,http://13.125.48.224:5173,http://frontend:5173,http://13.125.48.224,http://www.techeer-team-a.store,http://www.techeer-team-a.store:5173,http://localhost:5173
 ALLOWED_HOSTS=backend,13.125.48.224,www.techeer-team-a.store,techeer-team-a.store,localhost,127.0.0.1
