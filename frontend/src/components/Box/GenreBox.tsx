@@ -93,77 +93,40 @@ const GenreBox: React.FC<GenreBoxProps> = ({
 
   return (
     <div
+      className="h-full bg-white flex flex-col"
       style={{
-        display: "flex",
-        height: "530px",
-        background: "white",
-        flexDirection: "column",
         boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.4)",
       }}
     >
       <div
+        className="flex items-center bg-white p-18 mb-2"
         style={{
-          display: "flex",
-          alignItems: "center",
-          backgroundColor: "#C8C0B8",
-          padding: "0 18px",
-          marginBottom: "2px",
           boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.4)",
         }}
       >
-        <p style={{ color: "#FFFFFF", fontSize: "20px", marginLeft: "-10px" }}>
-          장르
-        </p>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            marginLeft: "auto",
-            flex: "1",
-          }}
-        >
-          <input
-            type="text"
-            value={newGenre}
-            onChange={handleInputChange}
-            onKeyDown={handleInputKeyDown}
-            placeholder="원하는 장르를 추가하세요"
-            style={{
-              width: "100%",
-              height: "44px",
-              marginLeft: "10px",
-              marginRight: "2px",
-              padding: "10px",
-              fontSize: "15px",
-            }}
-          />
-          <div>
-            <button
-              style={{
-                display: "flex",
-                alignItems: "center",
-                cursor: "pointer",
-                fontSize: "10px",
-                marginRight: "-12px",
-              }}
-              onClick={handleAddGenre}
-            >
-              <img src={addLogo} alt="추가 버튼" className="w-8 h-7" />
-            </button>
+        <div className="w-full flex">
+          <p className="text-18 p-2 px-3 text-white bg-[#C8C0B8]">
+            장르
+          </p>
+          <div className="flex items-center ml-auto flex-1">
+            <input
+              type="text"
+              value={newGenre}
+              onChange={handleInputChange}
+              onKeyDown={handleInputKeyDown}
+              placeholder="원하는 장르를 추가하세요"
+              className="w-11/12 h-[44px] text-15 ml-[10px] flex-1"
+              />
           </div>
+          <button
+              className="flex items-center pr-1"
+              onClick={handleAddGenre}
+          >
+            <img src={addLogo} alt="추가 버튼" className="w-8 h-8 cursor-pointer" />
+          </button>
         </div>
       </div>
-      <div
-        style={{
-          width: "auto",
-          height: "auto",
-          margin: "17px",
-          backgroundColor: "#FFFFFF",
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "center",
-        }}
-      >
+      <div className="w-auto h-auto flex flex-wrap justify-center mt-1 overflow-scroll">
         {renderGenreButtons()}
       </div>
     </div>
