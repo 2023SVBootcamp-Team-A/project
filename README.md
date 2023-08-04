@@ -34,7 +34,57 @@ http://www.techeer-team-a.store/
 ```shell
 $ git clone https://github.com/2023SVBootcamp-Team-A/project.git
 ```
-3. .env 파일을 알맞은 위치에 작성합니다.
+3.  docker-compose.yml 파일과 .env 파일을 알맞은 위치에 작성합니다.
+- .docker-compose.yml
+```
+version: "3"
+
+services:
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - 5173:5173
+    stdin_open: true
+    volumes:
+      - ./frontend/:/frontend
+      - /frontend/node_modules
+    tty: true
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=mydatabase
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@makeyourworld.com
+      - PGADMIN_DEFAULT_PASSWORD=password
+    ports:
+      - "8080:80"
+
+  web:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend:/backend/
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    container_name: backend
+    environment:
+      - DJANGO_DEBUG=True
+```
 - /.env (docker-compose.yml 파일과 같은 디렉토리)
 ```
 DEBUG=True
