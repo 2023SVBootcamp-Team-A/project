@@ -29,7 +29,7 @@ function SignUp() {
 
     try {
       const response = await axios.post(
-        "http://:www.techeer-team-a.store:8000/api/v1/user/sign/",
+        "http://www.techeer-team-a.store:8000/api/v1/user/sign/",
         formData
       );
 
